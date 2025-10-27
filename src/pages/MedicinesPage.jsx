@@ -305,6 +305,36 @@ const MedicinesPage = ({ token, isAdmin }) => {
                     <p className="font-bold text-gray-900 mb-1">Usage:</p>
                     <p className="text-gray-600 text-sm line-clamp-3">{med.usage}</p>
                   </div>
+
+                  {med.sideEffect && Array.isArray(med.sideEffect) && med.sideEffect.length > 0 && (
+                    <div className="mb-4 pb-4 border-b border-gray-200">
+                      <p className="font-bold text-gray-900 mb-2 flex items-center gap-2">
+                        <AlertCircle className="w-4 h-4 text-orange-600" />
+                        Side Effects:
+                      </p>
+                      <ul className="list-disc list-inside space-y-1">
+                        {med.sideEffect.map((effect, idx) => (
+                          <li key={idx} className="text-sm text-gray-600">{effect}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {med.tags && Array.isArray(med.tags) && med.tags.length > 0 && (
+                    <div className="mb-2">
+                      <p className="font-bold text-gray-900 mb-2">Tags:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {med.tags.map((tag, idx) => (
+                          <span
+                            key={idx}
+                            className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
