@@ -16,10 +16,12 @@ export const LoginPage = ({ onSwitchToSignup, onLoginSuccess }) => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const resetMsg = () => setMessage({ text: "", type: "" });
+
   const handleLogin = async (e) => {
     e.preventDefault();
+    resetMsg();
     setLoading(true);
-    setMessage({ text: "", type: "" });
 
     try {
       const res = await fetch(`${API_BASE}/login`, {
@@ -33,13 +35,10 @@ export const LoginPage = ({ onSwitchToSignup, onLoginSuccess }) => {
         setStep("otp");
         setMessage({ text: data.message, type: "success" });
       } else {
-        setMessage({
-          text: data.error || data.message || "Login failed",
-          type: "error",
-        });
+        setMessage({ text: data.error || "Login failed", type: "error" });
       }
     } catch {
-      setMessage({ text: "Network error, please try again.", type: "error" });
+      setMessage({ text: "Network error", type: "error" });
     } finally {
       setLoading(false);
     }
@@ -47,8 +46,8 @@ export const LoginPage = ({ onSwitchToSignup, onLoginSuccess }) => {
 
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
+    resetMsg();
     setLoading(true);
-    setMessage({ text: "", type: "" });
 
     try {
       const res = await fetch(`${API_BASE}/verify-login-otp`, {
@@ -63,19 +62,16 @@ export const LoginPage = ({ onSwitchToSignup, onLoginSuccess }) => {
         localStorage.setItem("hp:user", JSON.stringify(data.user || {}));
         window.dispatchEvent(new Event("storage"));
 
-        setMessage({ text: "Login successful!", type: "success" });
+        setMessage({ text: "Login successful", type: "success" });
         setTimeout(() => {
           const role = data.user?.role === "admin" ? "admin" : "user";
           onLoginSuccess(data.token, role);
-        }, 800);
+        }, 600);
       } else {
-        setMessage({
-          text: data.error || data.message || "Invalid OTP",
-          type: "error",
-        });
+        setMessage({ text: data.error || "Invalid OTP", type: "error" });
       }
     } catch {
-      setMessage({ text: "Network error, please try again.", type: "error" });
+      setMessage({ text: "Network error", type: "error" });
     } finally {
       setLoading(false);
     }
@@ -83,8 +79,8 @@ export const LoginPage = ({ onSwitchToSignup, onLoginSuccess }) => {
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
+    resetMsg();
     setLoading(true);
-    setMessage({ text: "", type: "" });
 
     try {
       const res = await fetch(`${API_BASE}/forgot-password`, {
@@ -96,12 +92,12 @@ export const LoginPage = ({ onSwitchToSignup, onLoginSuccess }) => {
 
       if (res.ok) {
         setStep("reset");
-        setMessage({ text: data.message || "OTP sent to your email.", type: "success" });
+        setMessage({ text: data.message, type: "success" });
       } else {
-        setMessage({ text: data.error || "Failed to send OTP.", type: "error" });
+        setMessage({ text: data.error || "Failed to send OTP", type: "error" });
       }
     } catch {
-      setMessage({ text: "Network error, please try again.", type: "error" });
+      setMessage({ text: "Network error", type: "error" });
     } finally {
       setLoading(false);
     }
@@ -110,10 +106,10 @@ export const LoginPage = ({ onSwitchToSignup, onLoginSuccess }) => {
   const handleResetPassword = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword)
-      return setMessage({ text: "Passwords do not match.", type: "error" });
+      return setMessage({ text: "Passwords do not match", type: "error" });
 
+    resetMsg();
     setLoading(true);
-    setMessage({ text: "", type: "" });
 
     try {
       const res = await fetch(`${API_BASE}/reset-password`, {
@@ -124,25 +120,26 @@ export const LoginPage = ({ onSwitchToSignup, onLoginSuccess }) => {
       const data = await res.json();
 
       if (res.ok) {
-        setMessage({ text: data.message || "Password reset successful!", type: "success" });
-        setTimeout(() => setStep("login"), 1000);
+        setMessage({ text: data.message, type: "success" });
+        setTimeout(() => setStep("login"), 800);
       } else {
-        setMessage({ text: data.error || "Reset failed", type: "error" });
+        setMessage({ text: data.error, type: "error" });
       }
     } catch {
-      setMessage({ text: "Network error, please try again.", type: "error" });
+      setMessage({ text: "Network error", type: "error" });
     } finally {
       setLoading(false);
     }
   };
 
+  // ✅ Google login (OTP required)
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+        const r = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
           headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
         });
-        const profile = await res.json();
+        const profile = await r.json();
 
         const otpRes = await fetch(`${API_BASE}/google`, {
           method: "POST",
@@ -151,19 +148,15 @@ export const LoginPage = ({ onSwitchToSignup, onLoginSuccess }) => {
         });
 
         const result = await otpRes.json();
-
-        if (otpRes.ok && result.message?.toLowerCase().includes("otp")) {
+        if (otpRes.ok && result.success) {
           setEmail(profile.email);
           setStep("otp");
           setMessage({ text: result.message, type: "success" });
         } else {
-          setMessage({
-            text: result.error || result.message || "Google OTP failed",
-            type: "error",
-          });
+          setMessage({ text: "Google login failed", type: "error" });
         }
       } catch {
-        setMessage({ text: "Google login failed. Try again.", type: "error" });
+        setMessage({ text: "Google login error", type: "error" });
       }
     },
   });
@@ -171,8 +164,6 @@ export const LoginPage = ({ onSwitchToSignup, onLoginSuccess }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden">
-
-       
         <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-6 text-center">
           <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
           <p className="text-blue-100">
@@ -183,16 +174,12 @@ export const LoginPage = ({ onSwitchToSignup, onLoginSuccess }) => {
         </div>
 
         <div className="p-8">
-
-          
           {step === "login" && (
-            <div className="flex gap-2 mb-8 bg-gray-100 p-1 rounded-xl">
+            <div className="flex gap-2 mb-6 bg-gray-100 p-1 rounded-xl">
               <button
                 onClick={() => setIsAdmin(false)}
                 className={`flex-1 py-3 rounded-lg font-semibold ${
-                  !isAdmin
-                    ? "bg-blue-600 text-white shadow-md"
-                    : "text-gray-600 hover:text-gray-900"
+                  !isAdmin ? "bg-blue-600 text-white shadow-md" : "text-gray-600"
                 }`}
               >
                 User Login
@@ -200,9 +187,7 @@ export const LoginPage = ({ onSwitchToSignup, onLoginSuccess }) => {
               <button
                 onClick={() => setIsAdmin(true)}
                 className={`flex-1 py-3 rounded-lg font-semibold ${
-                  isAdmin
-                    ? "bg-blue-600 text-white shadow-md"
-                    : "text-gray-600 hover:text-gray-900"
+                  isAdmin ? "bg-blue-600 text-white shadow-md" : "text-gray-600"
                 }`}
               >
                 Admin Login
@@ -210,57 +195,54 @@ export const LoginPage = ({ onSwitchToSignup, onLoginSuccess }) => {
             </div>
           )}
 
-       
           {step === "login" && (
             <form onSubmit={handleLogin} className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="text-sm font-medium text-gray-700 mb-2 block">
                   Email Address
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 text-gray-400" />
                   <input
                     type="email"
+                    required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@example.com"
-                    required
                     className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="text-sm font-medium text-gray-700 mb-2 block">
                   Password
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 text-gray-400" />
                   <input
                     type={showPassword ? "text" : "password"}
+                    required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
-                    required
-                    className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl"
                   />
-                  <button
-                    type="button"
+                  <span
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400"
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
+                    {showPassword ? <EyeOff /> : <Eye />}
+                  </span>
                 </div>
               </div>
 
-             
               {!isAdmin && (
                 <div className="text-right">
                   <button
                     type="button"
                     onClick={() => setStep("forgot")}
-                    className="text-sm text-blue-600 hover:underline font-medium"
+                    className="text-sm text-blue-600 hover:underline"
                   >
                     Forgot Password?
                   </button>
@@ -270,134 +252,68 @@ export const LoginPage = ({ onSwitchToSignup, onLoginSuccess }) => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition shadow-lg disabled:opacity-50"
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-semibold disabled:opacity-50"
               >
                 {loading ? "Sending OTP..." : "Sign In"}
               </button>
-            </form>
-          )}
 
-  
-          {step === "forgot" && (
-            <form onSubmit={handleForgotPassword} className="space-y-5">
-              <p className="text-gray-600 text-center">
-                Enter your registered email to get reset code
-              </p>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="you@example.com"
-                className="w-full py-3 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition disabled:opacity-50"
-              >
-                {loading ? "Sending OTP..." : "Send OTP"}
-              </button>
               <button
                 type="button"
-                onClick={() => setStep("login")}
-                className="w-full text-gray-600 hover:text-gray-900 font-medium"
+                onClick={() => googleLogin()}
+                className="w-full flex items-center justify-center gap-3 border border-gray-300 py-3 rounded-xl text-gray-700 hover:bg-gray-100"
               >
-                ← Back to Login
+                <img
+                  src="https://developers.google.com/identity/images/g-logo.png"
+                  className="w-6 h-6"
+                  alt="Google"
+                />
+                Continue with Google
               </button>
-            </form>
-          )}
 
-        
-          {step === "reset" && (
-            <form onSubmit={handleResetPassword} className="space-y-5">
-              <p className="text-center text-gray-600">
-                Enter the OTP sent to <span className="text-blue-600">{email}</span>
-              </p>
-              <input
-                type="text"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                placeholder="6-digit OTP"
-                className="w-full text-center py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500"
-                required
-              />
-              <input
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="New password"
-                className="w-full py-3 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500"
-                required
-              />
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirm password"
-                className="w-full py-3 px-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500"
-                required
-              />
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition disabled:opacity-50"
-              >
-                {loading ? "Resetting..." : "Reset Password"}
-              </button>
-              <button
-                type="button"
-                onClick={() => setStep("login")}
-                className="w-full text-gray-600 hover:text-gray-900 font-medium"
-              >
-                ← Back to Login
-              </button>
-            </form>
-          )}
-
-      
-          {step === "otp" && (
-            <form onSubmit={handleVerifyOTP} className="space-y-5">
-              <div className="text-center text-gray-600">
-                We sent a 6-digit verification code to
-                <div className="text-blue-600 font-semibold">{email}</div>
+              {/* ✅ Switch to Signup */}
+              <div className="mt-4 text-center text-sm text-gray-600">
+                New here{" "}
+                <button
+                  type="button"
+                  onClick={onSwitchToSignup}
+                  className="text-blue-600 font-semibold hover:text-blue-800"
+                >
+                  Create an account
+                </button>
               </div>
-              <input
-                type="text"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                placeholder="000000"
-                maxLength={6}
-                required
-                className="w-full text-center text-2xl tracking-widest py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                type="submit"
-                disabled={loading || otp.length !== 6}
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition shadow-lg disabled:opacity-50"
-              >
-                {loading ? "Verifying..." : "Verify & Login"}
-              </button>
-              <button
-                type="button"
-                onClick={() => setStep("login")}
-                className="w-full text-gray-600 hover:text-gray-900 font-medium"
-              >
-                ← Back to login
-              </button>
             </form>
           )}
 
-          {message.text && (
+          {/* Forgot, Reset, OTP Screens... */}
+          {step !== "login" && message.text && (
             <div
               className={`mt-4 p-4 rounded-xl ${
                 message.type === "error"
-                  ? "bg-red-50 text-red-700 border border-red-200"
-                  : "bg-green-50 text-green-700 border border-green-200"
+                  ? "bg-red-50 text-red-700"
+                  : "bg-green-50 text-green-700"
               }`}
             >
               {message.text}
             </div>
+          )}
+
+          {step === "otp" && (
+            <form onSubmit={handleVerifyOTP} className="space-y-5 mt-3">
+              <input
+                type="text"
+                value={otp}
+                onChange={(e) =>
+                  setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))
+                }
+                placeholder="Enter OTP"
+                maxLength={6}
+                required
+                className="w-full text-center py-3 border rounded-xl text-xl tracking-widest"
+              />
+              <button className="w-full bg-blue-600 text-white py-3 rounded-xl">
+                Verify & Login
+              </button>
+            </form>
           )}
         </div>
       </div>

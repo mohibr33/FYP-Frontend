@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Mail, Lock, Phone, Eye, EyeOff } from "lucide-react";
 import { useGoogleLogin } from "@react-oauth/google";
-import { useNavigate } from "react-router-dom";
-import api from "../utils/api";
 
 export default function SignupPage({ onSwitchToLogin }) {
   const [formData, setFormData] = useState({
@@ -15,10 +13,9 @@ export default function SignupPage({ onSwitchToLogin }) {
   });
   const [otp, setOtp] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [step, setStep] = useState("signup"); // "signup" | "verify"
+  const [step, setStep] = useState("signup");
   const [message, setMessage] = useState({ text: "", type: "" });
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   // STEP 1 — SIGNUP
   const handleSignup = async (e) => {
@@ -27,19 +24,22 @@ export default function SignupPage({ onSwitchToLogin }) {
     setMessage({ text: "", type: "" });
 
     try {
-      // ✅ correct endpoint (uses /api)
-      const { data } = await api.post("/api/auth/signup", formData);
-      if (data?.message) {
+      const res = await fetch("http://localhost:5000/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
         setStep("verify");
         setMessage({ text: data.message, type: "success" });
       } else {
-        setMessage({ text: "Signup failed", type: "error" });
+        setMessage({ text: data.error || data.message || "Signup failed", type: "error" });
       }
-    } catch (err) {
-      setMessage({
-        text: err.response?.data?.message || "Network error. Try again.",
-        type: "error",
-      });
+    } catch {
+      setMessage({ text: "Network error. Try again.", type: "error" });
     } finally {
       setLoading(false);
     }
@@ -52,48 +52,54 @@ export default function SignupPage({ onSwitchToLogin }) {
     setMessage({ text: "", type: "" });
 
     try {
-      const { data } = await api.post("/api/auth/verify-otp", {
-        email: formData.email,
-        otp,
+      const res = await fetch("http://localhost:5000/api/auth/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email, otp }),
       });
 
-      if (data?.message?.toLowerCase().includes("success")) {
-        setMessage({ text: "Email verified successfully!", type: "success" });
-        setTimeout(() => navigate("/login"), 1000);
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage({ text: data.message || "Email verified successfully!", type: "success" });
+        setTimeout(() => onSwitchToLogin(), 1000); // ✅ FIXED redirection
       } else {
-        setMessage({ text: data?.message || "Invalid OTP", type: "error" });
+        setMessage({ text: data.error || "Invalid OTP", type: "error" });
       }
-    } catch (err) {
-      setMessage({
-        text: err.response?.data?.message || "Verification failed",
-        type: "error",
-      });
+    } catch {
+      setMessage({ text: "Verification failed", type: "error" });
     } finally {
       setLoading(false);
     }
   };
 
-  // GOOGLE SIGNUP / LOGIN
+  // ✅ Google Signup / Login with OTP
   const googleSignup = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
         const r = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
           headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
         });
+
         const user = await r.json();
 
-        // ✅ correct endpoint (uses /api)
-        const { data } = await api.post("/api/auth/google", {
-          email: user.email,
-          name: user.name,
+        const res = await fetch("http://localhost:5000/api/auth/google", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: user.email,
+            name: user.name,
+          }),
         });
 
-        if (data?.token) {
-          localStorage.setItem("token", data.token);
-          setMessage({ text: "Google sign-in successful!", type: "success" });
-          setTimeout(() => navigate("/dashboard"), 800);
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          setFormData({ ...formData, email: user.email });
+          setStep("verify");
+          setMessage({ text: data.message, type: "success" });
         } else {
-          setMessage({ text: data?.message || "Google sign-in failed.", type: "error" });
+          setMessage({ text: data.error || "Google sign-in failed.", type: "error" });
         }
       } catch {
         setMessage({ text: "Google login error. Try again.", type: "error" });
@@ -212,6 +218,16 @@ export default function SignupPage({ onSwitchToLogin }) {
             >
               {loading ? "Creating Account..." : "Sign Up"}
             </button>
+
+            <div className="mt-6 text-center text-sm text-gray-600">
+              Already have an account?{" "}
+              <button
+                onClick={onSwitchToLogin}
+                className="text-blue-600 font-semibold hover:text-blue-700"
+              >
+                Sign in here
+              </button>
+            </div>
           </form>
         ) : (
           // VERIFY STEP
@@ -286,16 +302,6 @@ export default function SignupPage({ onSwitchToLogin }) {
             {message.text}
           </div>
         )}
-
-        <div className="mt-6 text-center text-sm text-gray-600">
-          Already have an account?{" "}
-          <button
-            onClick={onSwitchToLogin}
-            className="text-blue-600 font-semibold hover:text-blue-700"
-          >
-            Sign in here
-          </button>
-        </div>
       </div>
     </div>
   );
