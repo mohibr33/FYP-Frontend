@@ -67,9 +67,7 @@ function AdminUsers() {
         body: JSON.stringify({
           firstName: editData.firstName,
           lastName: editData.lastName,
-          phone: editData.phone,
           email: editData.email,
-          gender: editData.gender,
           role: editData.role,
         }),
       });
@@ -138,41 +136,37 @@ function AdminUsers() {
           <p className="mt-3 text-gray-600">Loading users...</p>
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-md overflow-hidden">
-          {/* compact + fixed layout */}
-          <table className="w-full table-fixed text-sm">
+        <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
+          {/* compact + fixed layout with visible borders */}
+          <table className="w-full table-fixed text-sm border-collapse">
             <colgroup>
               <col style={{ width: "12%" }} /> {/* ID */}
-              <col style={{ width: "18%" }} /> {/* Name */}
-              <col style={{ width: "30%" }} /> {/* Email */}
-              <col style={{ width: "16%" }} /> {/* Phone */}
-              <col style={{ width: "14%" }} /> {/* Gender */}
-              <col style={{ width: "10%" }} /> {/* Role */}
-              <col style={{ width: "10%" }} /> {/* Actions */}
+              <col style={{ width: "24%" }} /> {/* Name */}
+              <col style={{ width: "38%" }} /> {/* Email */}
+              <col style={{ width: "12%" }} /> {/* Role */}
+              <col style={{ width: "14%" }} /> {/* Actions */}
             </colgroup>
 
-            <thead className="bg-gray-100">
+            <thead className="bg-gray-50">
               <tr>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700">ID</th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700">Name</th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700">Email</th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700">Phone</th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700">Gender</th>
-                <th className="px-4 py-3 text-left font-semibold text-gray-700">Role</th>
-                <th className="px-4 py-3 text-right font-semibold text-gray-700">Actions</th>
+                <th className="px-4 py-3 text-left font-bold text-gray-800 border-b border-gray-200">ID</th>
+                <th className="px-4 py-3 text-left font-bold text-gray-800 border-b border-gray-200">Name</th>
+                <th className="px-4 py-3 text-left font-bold text-gray-800 border-b border-gray-200">Email</th>
+                <th className="px-4 py-3 text-left font-bold text-gray-800 border-b border-gray-200">Role</th>
+                <th className="px-4 py-3 text-right font-bold text-gray-800 border-b border-gray-200">Actions</th>
               </tr>
             </thead>
 
-            <tbody className="divide-y">
+            <tbody className="">
               {filtered.map((u) => (
                 <tr key={u._id} className="hover:bg-gray-50">
                   {/* ID (read-only) */}
-                  <td className="px-4 py-3 text-gray-700">
+                  <td className="px-4 py-3 text-gray-700 border-b border-gray-100">
                     <span title={u._id}>{String(u._id).slice(0, 8)}…</span>
                   </td>
 
                   {/* Name */}
-                  <td className="px-4 py-3 font-medium">
+                  <td className="px-4 py-3 font-medium border-b border-gray-100">
                     {editingId === u._id ? (
                       <div className="flex gap-2">
                         <input
@@ -194,7 +188,7 @@ function AdminUsers() {
                   </td>
 
                   {/* Email */}
-                  <td className="px-4 py-3 text-gray-700">
+                  <td className="px-4 py-3 text-gray-700 border-b border-gray-100">
                     {editingId === u._id ? (
                       <input
                         value={editData.email || ""}
@@ -206,38 +200,8 @@ function AdminUsers() {
                     )}
                   </td>
 
-                  {/* Phone */}
-                  <td className="px-4 py-3 text-gray-700">
-                    {editingId === u._id ? (
-                      <input
-                        value={editData.phone || ""}
-                        onChange={(e) => handleChange("phone", e.target.value)}
-                        className="border rounded px-2 py-1 w-full"
-                      />
-                    ) : (
-                      <span className="block">{u.phone || "-"}</span>
-                    )}
-                  </td>
-
-                  {/* Gender */}
-                  <td className="px-4 py-3 text-gray-700">
-                    {editingId === u._id ? (
-                      <select
-                        value={editData.gender || ""}
-                        onChange={(e) => handleChange("gender", e.target.value)}
-                        className="border rounded px-2 py-1 w-full bg-white"
-                      >
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                      </select>
-                    ) : (
-                      <span>{u.gender}</span>
-                    )}
-                  </td>
-
                   {/* Role */}
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 border-b border-gray-100">
                     {editingId === u._id ? (
                       <select
                         value={editData.role || ""}
@@ -261,7 +225,7 @@ function AdminUsers() {
                   </td>
 
                   {/* Actions */}
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 border-b border-gray-100">
                     {editingId === u._id ? (
                       <div className="flex justify-end gap-2">
                         <button

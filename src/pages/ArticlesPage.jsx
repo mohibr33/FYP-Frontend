@@ -34,6 +34,21 @@ const ArticlesPage = () => {
   const [loading, setLoading] = useState(false);
   const [showingAll, setShowingAll] = useState(false); // ✅ NEW: track if we've expanded to all
 
+  // NEW: copy-source button state & handler
+  const [copiedSource, setCopiedSource] = useState(false);
+  const handleCopySource = async () => {
+    try {
+      const src = selectedArticle?.SourceLink;
+      if (!src) return;
+      const url = src.startsWith("http") ? src : new URL(src, window.location.origin).href;
+      await navigator.clipboard.writeText(url);
+      setCopiedSource(true);
+      setTimeout(() => setCopiedSource(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy source link:", err);
+    }
+  };
+
   // ✅ Fetch articles for a category (supports limit)
   const fetchArticles = async (category, limit = 3) => {
     try {
@@ -265,14 +280,24 @@ const ArticlesPage = () => {
                   }}
                 />
                 {selectedArticle.SourceLink && (
-                  <a
-                    href={selectedArticle.SourceLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block mt-6 text-blue-600 font-semibold hover:underline"
-                  >
-                    🔗 Source
-                  </a>
+                  <div className="mt-6 flex items-center gap-3">
+                    <a
+                      href={selectedArticle.SourceLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center px-3 py-2 bg-white border border-gray-200 text-blue-600 font-semibold rounded-lg hover:bg-gray-50 transition"
+                    >
+                      🔗 Open Source Link
+                    </a>
+                    <button
+                      type="button"
+                      onClick={handleCopySource}
+                      className="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm hover:opacity-90 transition"
+                      title="Copy source link"
+                    >
+                      {copiedSource ? "Copied" : "Copy Source"}
+                    </button>
+                  </div>
                 )}
               </div>
             </div>

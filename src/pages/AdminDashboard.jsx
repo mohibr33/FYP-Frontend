@@ -139,13 +139,7 @@ const AdminDashboard = () => {
                 desc="Manage medicine reviews and feedback"
                 color="yellow"
               />
-              <StatCard
-                icon={Pill}
-                title="Medicine"
-                value="Database"
-                desc="Manage medicine database"
-                color="green"
-              />
+              {/* Medicine stat intentionally hidden on dashboard; module remains in sidebar */}
               <StatCard
                 icon={HelpCircle}
                 title="Tickets"

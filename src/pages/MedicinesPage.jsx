@@ -270,12 +270,20 @@ const MedicinesPage = ({ token, isAdmin }) => {
                     <span className="absolute top-4 left-4 px-4 py-1 bg-white/95 text-blue-700 rounded-full text-sm font-bold shadow-lg">
                       {med.category}
                     </span>
+                    {/* FDA Approved badge moved to bottom-right and colored red */}
+                    <span className="absolute bottom-4 right-4 px-3 py-1 bg-red-600 text-white rounded-full text-xs font-semibold shadow-md">
+                      FDA Approved
+                    </span>
                   </div>
                 ) : (
                   <div className="h-56 bg-gradient-to-br from-blue-500 to-sky-600 flex items-center justify-center relative">
                     <Pill className="w-20 h-20 text-white opacity-30" />
                     <span className="absolute top-4 left-4 px-4 py-1 bg-white/95 text-blue-700 rounded-full text-sm font-bold shadow-lg">
                       {med.category}
+                    </span>
+                    {/* FDA Approved badge for placeholder (bottom-right, red) */}
+                    <span className="absolute bottom-4 right-4 px-3 py-1 bg-red-600 text-white rounded-full text-xs font-semibold shadow-md">
+                      FDA Approved
                     </span>
                   </div>
                 )}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Mail, Lock, Phone, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useGoogleLogin } from "@react-oauth/google";
 
 export default function SignupPage({ onSwitchToLogin }) {
@@ -8,8 +8,6 @@ export default function SignupPage({ onSwitchToLogin }) {
     lastName: "",
     email: "",
     password: "",
-    phone: "",
-    gender: "Male",
   });
   const [otp, setOtp] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -182,34 +180,7 @@ export default function SignupPage({ onSwitchToLogin }) {
               </div>
             </div>
 
-            {/* PHONE + GENDER */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
-                <div className="relative">
-                  <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+92 300 1234567"
-                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Gender</label>
-                <select
-                  value={formData.gender}
-                  onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white"
-                >
-                  <option>Male</option>
-                  <option>Female</option>
-                  <option>Other</option>
-                </select>
-              </div>
-            </div>
+            {/* PHONE and GENDER fields removed */}
 
             <button
               type="submit"

@@ -85,10 +85,10 @@ const AboutPage = ({ onNavigate }) => {
       <section className="py-16 bg-blue-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+            <h3 className="text-3xl md:text-4xl font-bold text-white mb-3">
               What We Offer
             </h3>
-            <p className="text-lg text-black-600">
+            <p className="text-lg text-white">
               Trusted healthcare tools and information at your fingertips
             </p>
           </div>

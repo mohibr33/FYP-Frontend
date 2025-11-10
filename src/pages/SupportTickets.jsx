@@ -13,8 +13,7 @@ const SUPPORT_DUMMY = {
   whatToInclude: [
     "Clear description of the issue",
     "Steps to reproduce the problem",
-    "Screenshots if applicable",
-    "Your account email",
+  
   ],
   contactEmail: "DigitalHealthAssistance@gmx.com",
   faqs: [
@@ -30,11 +29,11 @@ const SUPPORT_DUMMY = {
       q: "How do I update my medication schedule?",
       a: 'Go to the Medication Adherence module and click "Add Medicine" to update your schedule.',
     },
-    {
-      q: "Is my health data secure?",
-      a: "Yes, we use industry-standard encryption and comply with HIPAA regulations to protect your data.",
-    },
-  ],
+    
+    { q: "How can I contact support?",
+      a: "You can submit a support ticket using the form on this page or email us at DigitalHealthAssistance@gmx.com"
+}
+],
 };
 
 

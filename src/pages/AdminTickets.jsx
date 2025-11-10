@@ -1,7 +1,34 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Eye, CheckCircle2, Trash2, Search, X, Send } from "lucide-react";
 
-const API = "http://localhost:5000/api";
+const API = "http://localhost:5000/api"; // make sure this matches your backend
+
+// Client-side ticket filtering helper (frontend only)
+function filterTickets(list = [], priorityFilter = "", statusFilter = "", search = "") {
+  const q = (search || "").trim().toLowerCase();
+  return (list || []).filter((t) => {
+    // search across subject / description / user email
+    const hay = `${t.subject || ""} ${t.description || ""} ${t.user?.email || ""}`.toLowerCase();
+    if (q && !hay.includes(q)) return false;
+
+    // normalize priority (handles 'Priority' or 'priority' from backend)
+    const p = (t.priority || t.Priority || "").toString().toLowerCase();
+    if (priorityFilter && p !== priorityFilter.toLowerCase()) return false;
+
+    // normalize status and support matching "open" / "close" (accepts closed/resolved)
+    const s = (t.status || "").toString().toLowerCase();
+    if (statusFilter) {
+      if (statusFilter === "open" && !s.includes("open")) return false;
+      if (
+        statusFilter === "close" &&
+        !(s.includes("close") || s.includes("closed") || s.includes("resolved"))
+      )
+        return false;
+    }
+
+    return true;
+  });
+}
 
 function AdminTickets() {
   const token = localStorage.getItem("hp:token");
@@ -12,6 +39,9 @@ function AdminTickets() {
 
   const [list, setList] = useState([]);
   const [search, setSearch] = useState("");
+  // frontend-only filters (no backend change)
+  const [priorityFilter, setPriorityFilter] = useState(""); // "", "high", "medium", "low"
+  const [statusFilter, setStatusFilter] = useState(""); // "", "open", "close"
   const [message, setMessage] = useState("");
   const [focus, setFocus] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -56,12 +86,10 @@ function AdminTickets() {
     load();
   }, []); // eslint-disable-line
 
-  const filtered = list.filter(
-    (t) =>
-      t.subject?.toLowerCase().includes(search.toLowerCase()) ||
-      t.userId?.email?.toLowerCase().includes(search.toLowerCase()) ||
-      t.userId?.firstName?.toLowerCase().includes(search.toLowerCase()) ||
-      t.userId?.lastName?.toLowerCase().includes(search.toLowerCase())
+  // derived filtered list (applies search + priority + status on client)
+  const filtered = useMemo(
+    () => filterTickets(list, priorityFilter, statusFilter, search),
+    [list, priorityFilter, statusFilter, search]
   );
 
   const resolve = async (id) => {
@@ -90,6 +118,26 @@ function AdminTickets() {
     } catch (error) {
       console.error("Error resolving ticket:", error);
       alert("Failed to resolve ticket: " + error.message);
+    }
+  };
+
+  // DELETE ticket on server (support route) and update local list
+  const deleteTicket = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this ticket?")) return;
+    try {
+      const res = await fetch(`${API}/support/${id}`, {
+        method: "DELETE",
+        headers,
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || `Delete failed (${res.status})`);
+      }
+      // remove locally after successful server delete
+      setList((prev) => prev.filter((t) => String(t._id) !== String(id)));
+    } catch (err) {
+      console.error("Delete ticket error:", err);
+      alert(err.message || "Failed to delete ticket. Check Network tab / server logs.");
     }
   };
 
@@ -130,14 +178,38 @@ function AdminTickets() {
         </div>
       )}
 
-      <div className="bg-white rounded-2xl shadow-lg p-4 mb-6 flex items-center gap-3">
-        <Search className="w-5 h-5 text-gray-400" />
+      <div className="flex items-center gap-3 w-full md:w-auto mb-4">
         <input
-          className="outline-none flex-1 text-lg"
-          placeholder="Search tickets by subject, email, or name..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search tickets..."
+          className="input"
         />
+
+        {/* Priority filter */}
+        <select
+          value={priorityFilter}
+          onChange={(e) => setPriorityFilter(e.target.value)}
+          className="input w-40"
+          aria-label="Filter by priority"
+        >
+          <option value="">Priority (any)</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+        
+        {/* Status filter */}
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="input w-40"
+          aria-label="Filter by status"
+        >
+          <option value="">Status (any)</option>
+          <option value="open">Open</option>
+          <option value="close">Close</option>
+        </select>
       </div>
 
       {loading ? (
@@ -216,15 +288,11 @@ function AdminTickets() {
                       )}
 
                       <button
-                        className="p-1 hover:bg-red-50 rounded text-red-600"
-                        onClick={() => {
-                          if (window.confirm("Remove this ticket from the list? (This only removes it locally)")) {
-                            removeLocal(t._id);
-                          }
-                        }}
-                        title="Remove from list"
+                        className="px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition"
+                        onClick={() => deleteTicket(t._id)}
+                        title="Delete ticket"
                       >
-                        <Trash2 className="w-3 h-3" />
+                        Delete
                       </button>
                     </div>
                   </td>
