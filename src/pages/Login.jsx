@@ -279,7 +279,7 @@ export const LoginPage = ({ onSwitchToSignup, onLoginSuccess }) => {
                       alt="Google"
                       className="w-6 h-6"
                     />
-                    Continue with Google
+                    SignIn with Google
                   </button>
 
                   {/* ✅ Switch to Signup */}
@@ -398,6 +398,7 @@ export const LoginPage = ({ onSwitchToSignup, onLoginSuccess }) => {
               >
                 ← Back to Login
               </button>
+              
             </form>
           )}
 

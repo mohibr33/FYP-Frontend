@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Phone, Eye, EyeOff } from "lucide-react";
 import { useGoogleLogin } from "@react-oauth/google";
 
 export default function SignupPage({ onSwitchToLogin }) {
@@ -180,8 +180,6 @@ export default function SignupPage({ onSwitchToLogin }) {
               </div>
             </div>
 
-            {/* PHONE and GENDER fields removed */}
-
             <button
               type="submit"
               disabled={loading}
@@ -189,6 +187,7 @@ export default function SignupPage({ onSwitchToLogin }) {
             >
               {loading ? "Creating Account..." : "Sign Up"}
             </button>
+            
 
             <div className="mt-6 text-center text-sm text-gray-600">
               Already have an account?{" "}
@@ -223,17 +222,27 @@ export default function SignupPage({ onSwitchToLogin }) {
             >
               {loading ? "Verifying..." : "Verify Email"}
             </button>
-            <button
-              type="button"
-              onClick={() => setStep("signup")}
-              className="w-full text-gray-600 hover:text-gray-900 font-medium"
-            >
-              ← Back to signup
-            </button>
+           <button
+  type="button"
+  onClick={() => {
+    setStep("signup");             
+    setOtp("");                     
+    setMessage({ text: "", type: "" }); 
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+    });
+  }}
+  className="w-full text-gray-600 hover:text-gray-900 font-medium"
+>
+  ← Back to signup
+</button>
           </form>
         )}
 
-        {/* Divider + Google */}
+        {/* Divider + Google
         {step === "signup" && (
           <>
             <div className="relative my-6">
@@ -258,8 +267,8 @@ export default function SignupPage({ onSwitchToLogin }) {
               </svg>
               <span className="text-gray-700 font-medium text-sm">Sign up with Google</span>
             </button>
-          </>
-        )}
+          </> */}
+        {/* )} */}
 
         {/* Inline message */}
         {message.text && (

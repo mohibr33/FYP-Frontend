@@ -205,10 +205,8 @@ const ArticlesPage = () => {
                           {a.ShortDescription}
                         </p>
                         <div className="flex items-center justify-between text-sm text-gray-500 mb-3">
-                          <span>
-                            By {a.createdBy ? a.createdBy.name || "Dr. Smith" : "Dr. Smith"}
-                          </span>
-                          <span>{new Date(a.createdAt).toLocaleDateString()}</span>
+                      
+                      
                         </div>
                         <button
                           onClick={() => fetchArticleDetail(a._id)}
@@ -295,7 +293,7 @@ const ArticlesPage = () => {
                       className="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm hover:opacity-90 transition"
                       title="Copy source link"
                     >
-                      {copiedSource ? "Copied" : "Copy Source"}
+                      {copiedSource ? "Copied" : "Share Source"}
                     </button>
                   </div>
                 )}
