@@ -557,14 +557,15 @@ function MedicinePage({ params }) {
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                         className: "text-lg text-slate-600",
                                                         children: [
-                                                            "Brand: ",
+                                                            "Brand:",
+                                                            " ",
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "font-semibold text-slate-800",
                                                                 children: medicine.brand
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                                lineNumber: 162,
-                                                                columnNumber: 28
+                                                                lineNumber: 163,
+                                                                columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
@@ -575,37 +576,39 @@ function MedicinePage({ params }) {
                                                     medicine.productDetails.generics && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                         className: "text-lg text-slate-600",
                                                         children: [
-                                                            "Generic: ",
+                                                            "Generic:",
+                                                            " ",
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "font-semibold text-slate-800",
                                                                 children: medicine.productDetails.generics
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                                lineNumber: 166,
-                                                                columnNumber: 32
+                                                                lineNumber: 170,
+                                                                columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                        lineNumber: 165,
+                                                        lineNumber: 168,
                                                         columnNumber: 21
                                                     }, this),
                                                     medicine.productDetails.dosage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                         className: "text-lg text-slate-600",
                                                         children: [
-                                                            "Dosage: ",
+                                                            "Dosage:",
+                                                            " ",
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "font-semibold text-slate-800",
                                                                 children: medicine.productDetails.dosage
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                                lineNumber: 171,
-                                                                columnNumber: 31
+                                                                lineNumber: 178,
+                                                                columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                        lineNumber: 170,
+                                                        lineNumber: 176,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
@@ -630,14 +633,14 @@ function MedicinePage({ params }) {
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                        lineNumber: 180,
+                                                        lineNumber: 189,
                                                         columnNumber: 19
                                                     }, this),
                                                     medicine.usedFor
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                lineNumber: 179,
+                                                lineNumber: 188,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -647,14 +650,14 @@ function MedicinePage({ params }) {
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                        lineNumber: 184,
+                                                        lineNumber: 193,
                                                         columnNumber: 19
                                                     }, this),
                                                     medicine.childCategory
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                lineNumber: 183,
+                                                lineNumber: 192,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -664,7 +667,7 @@ function MedicinePage({ params }) {
                                                         className: "w-4 h-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                        lineNumber: 194,
+                                                        lineNumber: 203,
                                                         columnNumber: 19
                                                     }, this),
                                                     "Rx: ",
@@ -672,13 +675,13 @@ function MedicinePage({ params }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                lineNumber: 187,
+                                                lineNumber: 196,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                        lineNumber: 178,
+                                        lineNumber: 187,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -688,7 +691,7 @@ function MedicinePage({ params }) {
                                                 className: "w-5 h-5 fill-amber-400"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                lineNumber: 201,
+                                                lineNumber: 210,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -696,7 +699,7 @@ function MedicinePage({ params }) {
                                                 children: avgRating
                                             }, void 0, false, {
                                                 fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                lineNumber: 202,
+                                                lineNumber: 211,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -708,13 +711,13 @@ function MedicinePage({ params }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                lineNumber: 203,
+                                                lineNumber: 214,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                        lineNumber: 200,
+                                        lineNumber: 209,
                                         columnNumber: 15
                                     }, this)
                                 ]
@@ -724,7 +727,7 @@ function MedicinePage({ params }) {
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex-shrink-0",
+                                className: "shrink-0",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "relative w-64 h-64 bg-slate-50 rounded-xl border border-slate-200",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -735,17 +738,17 @@ function MedicinePage({ params }) {
                                         priority: true
                                     }, void 0, false, {
                                         fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                        lineNumber: 212,
+                                        lineNumber: 223,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 211,
+                                    lineNumber: 222,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                lineNumber: 210,
+                                lineNumber: 221,
                                 columnNumber: 13
                             }, this)
                         ]
@@ -774,19 +777,19 @@ function MedicinePage({ params }) {
                                                 className: "w-5 h-5 text-blue-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                lineNumber: 230,
+                                                lineNumber: 241,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 229,
+                                            lineNumber: 240,
                                             columnNumber: 17
                                         }, this),
                                         "Description"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 228,
+                                    lineNumber: 239,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -794,13 +797,13 @@ function MedicinePage({ params }) {
                                     children: medicine.productDetails.description
                                 }, void 0, false, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 234,
+                                    lineNumber: 245,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                            lineNumber: 227,
+                            lineNumber: 238,
                             columnNumber: 13
                         }, this),
                         medicine.productDetails.howItWorks && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -815,19 +818,19 @@ function MedicinePage({ params }) {
                                                 className: "w-5 h-5 text-teal-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                lineNumber: 244,
+                                                lineNumber: 255,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 243,
+                                            lineNumber: 254,
                                             columnNumber: 17
                                         }, this),
                                         "How It Works"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 242,
+                                    lineNumber: 253,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -835,19 +838,19 @@ function MedicinePage({ params }) {
                                     children: medicine.productDetails.howItWorks
                                 }, void 0, false, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 248,
+                                    lineNumber: 259,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                            lineNumber: 241,
+                            lineNumber: 252,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                    lineNumber: 225,
+                    lineNumber: 236,
                     columnNumber: 9
                 }, this),
                 medicine.productDetails.indication && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -862,19 +865,19 @@ function MedicinePage({ params }) {
                                         className: "w-5 h-5 text-indigo-600"
                                     }, void 0, false, {
                                         fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                        lineNumber: 260,
+                                        lineNumber: 271,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 259,
+                                    lineNumber: 270,
                                     columnNumber: 15
                                 }, this),
                                 "Medical Indication"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                            lineNumber: 258,
+                            lineNumber: 269,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -882,13 +885,13 @@ function MedicinePage({ params }) {
                             children: medicine.productDetails.indication
                         }, void 0, false, {
                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                            lineNumber: 264,
+                            lineNumber: 275,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                    lineNumber: 257,
+                    lineNumber: 268,
                     columnNumber: 11
                 }, this),
                 (medicine.productDetails.sideEffects || medicine.productDetails.whenNotToUse) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -906,19 +909,19 @@ function MedicinePage({ params }) {
                                                 className: "w-5 h-5 text-rose-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                lineNumber: 277,
+                                                lineNumber: 289,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 276,
+                                            lineNumber: 288,
                                             columnNumber: 19
                                         }, this),
                                         "Side Effects"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 275,
+                                    lineNumber: 287,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -926,13 +929,13 @@ function MedicinePage({ params }) {
                                     children: medicine.productDetails.sideEffects
                                 }, void 0, false, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 281,
+                                    lineNumber: 293,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                            lineNumber: 274,
+                            lineNumber: 286,
                             columnNumber: 15
                         }, this),
                         medicine.productDetails.whenNotToUse && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -947,19 +950,19 @@ function MedicinePage({ params }) {
                                                 className: "w-5 h-5 text-amber-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                lineNumber: 291,
+                                                lineNumber: 303,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 290,
+                                            lineNumber: 302,
                                             columnNumber: 19
                                         }, this),
                                         "When Not to Use"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 289,
+                                    lineNumber: 301,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -967,19 +970,19 @@ function MedicinePage({ params }) {
                                     children: medicine.productDetails.whenNotToUse
                                 }, void 0, false, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 295,
+                                    lineNumber: 307,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                            lineNumber: 288,
+                            lineNumber: 300,
                             columnNumber: 15
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                    lineNumber: 272,
+                    lineNumber: 284,
                     columnNumber: 11
                 }, this),
                 (medicine.productDetails.precautions || medicine.productDetails.warning1 || medicine.productDetails.warning2 || medicine.productDetails.warning3) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -994,19 +997,19 @@ function MedicinePage({ params }) {
                                         className: "w-5 h-5 text-orange-600"
                                     }, void 0, false, {
                                         fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                        lineNumber: 311,
+                                        lineNumber: 323,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 310,
+                                    lineNumber: 322,
                                     columnNumber: 15
                                 }, this),
                                 "Precautions & Warnings"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                            lineNumber: 309,
+                            lineNumber: 321,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1020,7 +1023,7 @@ function MedicinePage({ params }) {
                                             children: "General Precautions"
                                         }, void 0, false, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 318,
+                                            lineNumber: 330,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1028,13 +1031,13 @@ function MedicinePage({ params }) {
                                             children: medicine.productDetails.precautions
                                         }, void 0, false, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 321,
+                                            lineNumber: 333,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 317,
+                                    lineNumber: 329,
                                     columnNumber: 17
                                 }, this),
                                 (medicine.productDetails.warning1 || medicine.productDetails.warning2 || medicine.productDetails.warning3) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1048,7 +1051,7 @@ function MedicinePage({ params }) {
                                                     children: "⚠️ Warning 1"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 332,
+                                                    lineNumber: 344,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1056,13 +1059,13 @@ function MedicinePage({ params }) {
                                                     children: medicine.productDetails.warning1
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 335,
+                                                    lineNumber: 347,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 331,
+                                            lineNumber: 343,
                                             columnNumber: 21
                                         }, this),
                                         medicine.productDetails.warning2 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1073,7 +1076,7 @@ function MedicinePage({ params }) {
                                                     children: "⚠️ Warning 2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 342,
+                                                    lineNumber: 354,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1081,13 +1084,13 @@ function MedicinePage({ params }) {
                                                     children: medicine.productDetails.warning2
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 345,
+                                                    lineNumber: 357,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 341,
+                                            lineNumber: 353,
                                             columnNumber: 21
                                         }, this),
                                         medicine.productDetails.warning3 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1098,7 +1101,7 @@ function MedicinePage({ params }) {
                                                     children: "⚠️ Warning 3"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 352,
+                                                    lineNumber: 364,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1106,31 +1109,31 @@ function MedicinePage({ params }) {
                                                     children: medicine.productDetails.warning3
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 355,
+                                                    lineNumber: 367,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 351,
+                                            lineNumber: 363,
                                             columnNumber: 21
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 329,
+                                    lineNumber: 341,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                            lineNumber: 315,
+                            lineNumber: 327,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                    lineNumber: 308,
+                    lineNumber: 320,
                     columnNumber: 11
                 }, this),
                 (medicine.productDetails.drugInteractions || medicine.productDetails.storageYesOrNo || medicine.productDetails.pregnancyCategory) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1148,19 +1151,19 @@ function MedicinePage({ params }) {
                                                 className: "w-5 h-5 text-purple-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                lineNumber: 375,
+                                                lineNumber: 387,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 374,
+                                            lineNumber: 386,
                                             columnNumber: 19
                                         }, this),
                                         "Drug Interactions"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 373,
+                                    lineNumber: 385,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1168,13 +1171,13 @@ function MedicinePage({ params }) {
                                     children: medicine.productDetails.drugInteractions
                                 }, void 0, false, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 379,
+                                    lineNumber: 391,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                            lineNumber: 372,
+                            lineNumber: 384,
                             columnNumber: 15
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1192,12 +1195,12 @@ function MedicinePage({ params }) {
                                                         className: "w-4 h-4 text-cyan-600"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                        lineNumber: 390,
+                                                        lineNumber: 402,
                                                         columnNumber: 23
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 389,
+                                                    lineNumber: 401,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1205,13 +1208,13 @@ function MedicinePage({ params }) {
                                                     children: "Storage"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 392,
+                                                    lineNumber: 404,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 388,
+                                            lineNumber: 400,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1219,13 +1222,13 @@ function MedicinePage({ params }) {
                                             children: medicine.productDetails.storageYesOrNo
                                         }, void 0, false, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 394,
+                                            lineNumber: 408,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 387,
+                                    lineNumber: 399,
                                     columnNumber: 17
                                 }, this),
                                 medicine.productDetails.pregnancyCategory && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1240,12 +1243,12 @@ function MedicinePage({ params }) {
                                                         className: "w-4 h-4 text-violet-600"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                        lineNumber: 404,
+                                                        lineNumber: 418,
                                                         columnNumber: 23
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 403,
+                                                    lineNumber: 417,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1253,13 +1256,13 @@ function MedicinePage({ params }) {
                                                     children: "Pregnancy"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 406,
+                                                    lineNumber: 420,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 402,
+                                            lineNumber: 416,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1267,25 +1270,25 @@ function MedicinePage({ params }) {
                                             children: medicine.productDetails.pregnancyCategory
                                         }, void 0, false, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 408,
+                                            lineNumber: 424,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 401,
+                                    lineNumber: 415,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                            lineNumber: 385,
+                            lineNumber: 397,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                    lineNumber: 370,
+                    lineNumber: 382,
                     columnNumber: 11
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1304,14 +1307,14 @@ function MedicinePage({ params }) {
                                                     className: "w-6 h-6 text-amber-500 fill-amber-400"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 422,
+                                                    lineNumber: 438,
                                                     columnNumber: 17
                                                 }, this),
                                                 "User Reviews"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 421,
+                                            lineNumber: 437,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1322,7 +1325,7 @@ function MedicinePage({ params }) {
                                                     children: avgRating
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 426,
+                                                    lineNumber: 442,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1330,7 +1333,7 @@ function MedicinePage({ params }) {
                                                     children: "★★★★★"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 427,
+                                                    lineNumber: 445,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1341,19 +1344,19 @@ function MedicinePage({ params }) {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 428,
+                                                    lineNumber: 446,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 425,
+                                            lineNumber: 441,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 420,
+                                    lineNumber: 436,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1364,7 +1367,7 @@ function MedicinePage({ params }) {
                                             children: "Leave a Review"
                                         }, void 0, false, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 434,
+                                            lineNumber: 454,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1377,7 +1380,7 @@ function MedicinePage({ params }) {
                                                             children: "Rating"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                            lineNumber: 437,
+                                                            lineNumber: 459,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1394,18 +1397,18 @@ function MedicinePage({ params }) {
                                                                     children: "★"
                                                                 }, i, false, {
                                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                                    lineNumber: 440,
+                                                                    lineNumber: 464,
                                                                     columnNumber: 23
                                                                 }, this))
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                            lineNumber: 438,
+                                                            lineNumber: 462,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 436,
+                                                    lineNumber: 458,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1415,7 +1418,7 @@ function MedicinePage({ params }) {
                                                             children: "Your Review"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                            lineNumber: 453,
+                                                            lineNumber: 479,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -1425,13 +1428,13 @@ function MedicinePage({ params }) {
                                                             className: "w-full p-3 border border-slate-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none min-h-24 text-slate-700"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                            lineNumber: 454,
+                                                            lineNumber: 482,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 452,
+                                                    lineNumber: 478,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1439,25 +1442,25 @@ function MedicinePage({ params }) {
                                                     children: "Submit Review"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 461,
+                                                    lineNumber: 489,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 435,
+                                            lineNumber: 457,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 433,
+                                    lineNumber: 453,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                            lineNumber: 419,
+                            lineNumber: 435,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1475,7 +1478,7 @@ function MedicinePage({ params }) {
                                                             children: review.title
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                            lineNumber: 477,
+                                                            lineNumber: 505,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1486,33 +1489,33 @@ function MedicinePage({ params }) {
                                                                     children: review.author
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                                    lineNumber: 479,
+                                                                    lineNumber: 509,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                     children: "•"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                                    lineNumber: 480,
+                                                                    lineNumber: 512,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                     children: new Date(review.date).toLocaleDateString()
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                                    lineNumber: 481,
+                                                                    lineNumber: 513,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                            lineNumber: 478,
+                                                            lineNumber: 508,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 476,
+                                                    lineNumber: 504,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1520,13 +1523,13 @@ function MedicinePage({ params }) {
                                                     children: "★".repeat(review.rating)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                                    lineNumber: 484,
+                                                    lineNumber: 516,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 475,
+                                            lineNumber: 503,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1534,24 +1537,24 @@ function MedicinePage({ params }) {
                                             children: review.comment
                                         }, void 0, false, {
                                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                            lineNumber: 488,
+                                            lineNumber: 520,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, review.id, true, {
                                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                                    lineNumber: 471,
+                                    lineNumber: 499,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/app/medicines/[slug]/page.tsx",
-                            lineNumber: 469,
+                            lineNumber: 497,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/medicines/[slug]/page.tsx",
-                    lineNumber: 418,
+                    lineNumber: 434,
                     columnNumber: 9
                 }, this)
             ]

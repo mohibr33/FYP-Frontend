@@ -26,7 +26,6 @@ The API integration for Articles and Medicines has been successfully implemented
   - `getMedicineBrands()`
   - `getMedicinesByCategory(category, page, limit)`
   - `getMedicinesByBrand(brand, page, limit)`
-  - `getMedicineById(id)`
   - `getMedicineBySlug(slug)`
 
 #### 3. **Updated Pages**
@@ -39,7 +38,7 @@ The API integration for Articles and Medicines has been successfully implemented
 **Medicines Section:**
 
 - ✅ `/medicines` - List page with search, brand filtering, pagination
-- ✅ `/medicines/[id]` - Detail page for individual medicines
+- ✅ `/medicines/[slug]` - Detail page for individual medicines (SEO-friendly)
 
 #### 4. **Features Implemented**
 
@@ -90,7 +89,7 @@ The API integration for Articles and Medicines has been successfully implemented
 - `GET /api/medicines/brands` - Get all brands
 - `GET /api/medicines/category/:category` - Get by category
 - `GET /api/medicines/brand/:brand` - Get by brand
-- `GET /api/medicines/:id` - Get single medicine
+- `GET /api/medicines/slug/:slug` - Get single medicine by slug
 
 ### Files Created/Modified
 
@@ -108,7 +107,7 @@ The API integration for Articles and Medicines has been successfully implemented
 
 - `app/articles/page.tsx` - Updated to use API
 - `app/medicines/page.tsx` - Updated to use API
-- `app/medicines/[id]/page.tsx` - Updated to use API
+- `app/medicines/[slug]/page.tsx` - Updated to use slug-based API
 - `package.json` - Added axios dependency
 
 ### Key Benefits

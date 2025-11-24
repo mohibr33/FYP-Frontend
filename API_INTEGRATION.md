@@ -67,14 +67,13 @@ const article = await getArticleBySlug(slug);
 
 ### Medicines API
 
-```typescript
+````typescript
 import {
   getAllMedicines,
   searchMedicines,
   getMedicineBrands,
   getMedicinesByCategory,
   getMedicinesByBrand,
-  getMedicineById,
   getMedicineBySlug,
 } from "@/lib/api/medicines";
 
@@ -93,12 +92,57 @@ const categoryMeds = await getMedicinesByCategory(category, page, limit);
 // Get medicines by brand
 const brandMeds = await getMedicinesByBrand(brand, page, limit);
 
-// Get single medicine by ID
-const medicine = await getMedicineById(id);
-
 // Get single medicine by slug
 const medicine = await getMedicineBySlug(slug);
-```
+
+### Authentication & Users API
+
+```typescript
+import {
+  registerUser,
+  verifyOtp,
+  loginUser,
+  getProfile,
+  requestPasswordReset,
+  resetPassword,
+} from "@/lib/api/users";
+
+// Register new user (returns basic user info, sends OTP email)
+await registerUser({ name, email, password, phone });
+
+// Verify OTP after registration
+await verifyOtp({ email, otp });
+
+// Login (stores token in localStorage via context)
+const { token, user } = await loginUser({ email, password });
+
+// Fetch profile (requires token automatically added by interceptor)
+const profile = await getProfile();
+
+// Request password reset OTP
+await requestPasswordReset({ email });
+
+// Reset password using OTP
+await resetPassword({ email, otp, newPassword });
+````
+
+### Auth Pages Added
+
+- `/auth/register` – user registration
+- `/auth/verify-otp` – email + OTP verification
+- `/auth/login` – login form
+- `/profile` – protected profile page (client-side redirect if not logged in)
+- `/auth/forgot-password` – request password reset OTP
+- `/auth/reset-password` – submit OTP + new password
+
+### Auth Usage Notes
+
+- Token stored in `localStorage` as `authToken`.
+- Axios interceptor automatically attaches `Authorization: Bearer <token>`.
+- `AuthProvider` context supplies `login`, `logout`, `refreshProfile`, and user state.
+- Redirect to `/auth/login` if accessing `/profile` without token.
+
+````
 
 ## TypeScript Types
 
@@ -119,7 +163,7 @@ interface Article {
   createdAt: string;
   updatedAt: string;
 }
-```
+````
 
 ### Medicine Type
 
@@ -186,12 +230,11 @@ interface Pagination {
 - Loading and error states
 - Responsive grid layout
 
-### 4. Medicine Detail Page (`/medicines/[id]`)
+### 4. Medicine Detail Page (`/medicines/[slug]`)
 
-- Fetches single medicine by ID
+- Fetches single medicine by slug
 - Displays comprehensive medicine information
-- Side effects and warnings
-- User reviews section
+- Side effects, warnings, interactions (conditionally rendered)
 - Loading and error states
 
 ## Features

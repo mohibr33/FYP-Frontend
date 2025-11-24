@@ -1,4 +1,11 @@
 {
-  "/medicines/[slug]/page": "app/medicines/[slug]/page.js",
+  "/about/page": "app/about/page.js",
+  "/articles/page": "app/articles/page.js",
+  "/auth/login/page": "app/auth/login/page.js",
+  "/meal-planner/generate/page": "app/meal-planner/generate/page.js",
+  "/meal-planner/page": "app/meal-planner/page.js",
+  "/meal-planner/plans/[id]/page": "app/meal-planner/plans/[id]/page.js",
+  "/meal-planner/plans/page": "app/meal-planner/plans/page.js",
+  "/meal-planner/profile/page": "app/meal-planner/profile/page.js",
   "/medicines/page": "app/medicines/page.js"
 }

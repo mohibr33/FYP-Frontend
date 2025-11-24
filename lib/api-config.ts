@@ -7,7 +7,7 @@ export const apiClient = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  timeout: 30000, // 30 seconds
+  timeout: 180000, // 3 minutes - for AI meal plan generation
 });
 
 // Request interceptor for adding auth token if needed

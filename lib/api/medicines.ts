@@ -85,16 +85,6 @@ export async function getMedicinesByBrand(
 }
 
 /**
- * Get single medicine by ID
- */
-export async function getMedicineById(id: string): Promise<Medicine> {
-  const response = await apiClient.get<ApiResponse<Medicine>>(
-    `/api/medicines/${id}`
-  );
-  return response.data.data;
-}
-
-/**
  * Get single medicine by slug
  */
 export async function getMedicineBySlug(slug: string): Promise<Medicine> {

@@ -291,8 +291,6 @@ __turbopack_context__.s([
     ()=>getAllMedicines,
     "getMedicineBrands",
     ()=>getMedicineBrands,
-    "getMedicineById",
-    ()=>getMedicineById,
     "getMedicineBySlug",
     ()=>getMedicineBySlug,
     "getMedicinesByBrand",
@@ -343,10 +341,6 @@ async function getMedicinesByBrand(brand, page = 1, limit = 20) {
             limit
         }
     });
-    return response.data.data;
-}
-async function getMedicineById(id) {
-    const response = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$api$2d$config$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["apiClient"].get(`/api/medicines/${id}`);
     return response.data.data;
 }
 async function getMedicineBySlug(slug) {

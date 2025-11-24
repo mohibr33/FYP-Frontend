@@ -218,7 +218,7 @@ export default function MedicinePage({
             </div>
 
             {/* Product Image - Right Side */}
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <div className="relative w-64 h-64 bg-slate-50 rounded-xl border border-slate-200">
                 <Image
                   src={medicine.productImage || "/placeholder.svg"}
