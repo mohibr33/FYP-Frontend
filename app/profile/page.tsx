@@ -19,6 +19,11 @@ export default function ProfilePage() {
     if (token && !user) refreshProfile();
   }, [token, user, refreshProfile]);
 
+  // Debug logging
+  useEffect(() => {
+    console.log("Profile Page Debug:", { user, token: !!token, loading });
+  }, [user, token, loading]);
+
   if (!token) return null;
 
   return (
@@ -30,13 +35,18 @@ export default function ProfilePage() {
         ) : user ? (
           <div className="space-y-2 text-sm">
             <p>
-              <span className="font-medium">Name:</span> {user.name}
+              <span className="font-medium">Name:</span>{" "}
+              {user.name ||
+                `${(user as any).firstName || ""} ${
+                  (user as any).lastName || ""
+                }`.trim() ||
+                "N/A"}
             </p>
             <p>
-              <span className="font-medium">Email:</span> {user.email}
+              <span className="font-medium">Email:</span> {user.email || "N/A"}
             </p>
             <p>
-              <span className="font-medium">Role:</span> {user.role}
+              <span className="font-medium">Role:</span> {user.role || "N/A"}
             </p>
             <p>
               <span className="font-medium">Verified:</span>{" "}
@@ -44,7 +54,9 @@ export default function ProfilePage() {
             </p>
             <p>
               <span className="font-medium">Member Since:</span>{" "}
-              {new Date(user.createdAt).toLocaleDateString()}
+              {user.createdAt
+                ? new Date(user.createdAt).toLocaleDateString()
+                : "N/A"}
             </p>
           </div>
         ) : (

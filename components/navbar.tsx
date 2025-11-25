@@ -75,7 +75,7 @@ export default function Navbar() {
           {user ? (
             <>
               <Link
-                href="/profile"
+                href="/dashboard"
                 className="text-muted-foreground hover:text-foreground transition px-4 py-2"
               >
                 {user.name}

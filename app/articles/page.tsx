@@ -21,14 +21,14 @@ import type { Article } from "@/lib/types";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const CATEGORIES = [
-  { id: "Health Tips", name: "Health Tips", icon: "💡" },
+  { id: "Cancer", name: "Cancer", icon: "🎗️" },
+  { id: "Cardiology", name: "Cardiology", icon: "❤️" },
+  { id: "Clinical Trials", name: "Clinical Trials", icon: "🔬" },
+  { id: "Diabetes", name: "Diabetes", icon: "💉" },
+  { id: "Neurology", name: "Neurology", icon: "🧠" },
   { id: "Nutrition", name: "Nutrition", icon: "🥗" },
-  { id: "Mental Health", name: "Mental Health", icon: "🧠" },
-  { id: "Disease Prevention", name: "Disease Prevention", icon: "🛡️" },
-  { id: "Fitness", name: "Fitness", icon: "💪" },
-  { id: "Medical News", name: "Medical News", icon: "📰" },
-  { id: "Women Health", name: "Women Health", icon: "👩" },
-  { id: "Child Care", name: "Child Care", icon: "👶" },
+  { id: "Physiology", name: "Physiology", icon: "🫀" },
+  { id: "Psychology", name: "Psychology", icon: "🧘" },
 ];
 
 export default function ArticlesPage() {
@@ -51,17 +51,27 @@ export default function ArticlesPage() {
       setLoading(true);
       setError(null);
 
-      let response;
       if (selectedCategory) {
-        response = await getArticlesByCategory(selectedCategory, page, limit);
+        const response = await getArticlesByCategory(
+          selectedCategory,
+          page,
+          limit
+        );
+        // Category endpoint returns different structure
+        setArticles(response.articles);
+        setTotal(response.total || response.articles.length);
+        // Calculate pages from total
+        setTotalPages(
+          Math.ceil((response.total || response.articles.length) / limit)
+        );
       } else {
-        response = await getAllArticles(page, limit);
+        const response = await getAllArticles(page, limit);
+        setArticles(response.articles);
+        setTotalPages(response.pagination.totalPages);
+        setTotal(response.pagination.total);
       }
-
-      setArticles(response.articles);
-      setTotalPages(response.pagination.totalPages);
-      setTotal(response.pagination.total);
     } catch (err: any) {
+      console.error("Articles fetch error:", err);
       setError(
         err.response?.data?.message ||
           "Failed to fetch articles. Please try again later."
@@ -198,55 +208,76 @@ export default function ArticlesPage() {
             <div className="space-y-4">
               {articles.map((article) => (
                 <Card key={article.id} className="hover:shadow-lg transition">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
+                  <div className="flex flex-col md:flex-row">
+                    {/* Article Image */}
+                    {article.imageUrl && (
+                      <div className="md:w-64 md:flex-shrink-0">
                         <Link href={`/articles/${article.slug}`}>
-                          <CardTitle className="text-blue-600 hover:text-blue-700 cursor-pointer">
-                            {article.title}
-                          </CardTitle>
+                          <img
+                            src={article.imageUrl}
+                            alt={article.title}
+                            className="w-full h-48 md:h-full object-cover cursor-pointer hover:opacity-90 transition"
+                          />
                         </Link>
-                        <div className="flex items-center gap-2 mt-2">
-                          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
-                            {article.category}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            By {article.author}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            • {article.readTime} min read
-                          </span>
-                        </div>
-                        <CardDescription className="mt-2">
-                          {article.excerpt}
-                        </CardDescription>
                       </div>
-                      <span className="text-xs text-muted-foreground ml-4 whitespace-nowrap">
-                        {new Date(article.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center justify-between">
-                      <Link href={`/articles/${article.slug}`}>
-                        <Button variant="link" className="p-0 text-blue-600">
-                          Read Article →
-                        </Button>
-                      </Link>
-                      {article.tags && article.tags.length > 0 && (
-                        <div className="flex gap-1">
-                          {article.tags.slice(0, 3).map((tag) => (
-                            <span
-                              key={tag}
-                              className="text-xs text-muted-foreground"
-                            >
-                              #{tag}
-                            </span>
-                          ))}
+                    )}
+
+                    {/* Article Content */}
+                    <div className="flex-1">
+                      <CardHeader>
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <Link href={`/articles/${article.slug}`}>
+                              <CardTitle className="text-blue-600 hover:text-blue-700 cursor-pointer">
+                                {article.title}
+                              </CardTitle>
+                            </Link>
+                            <div className="flex items-center gap-2 mt-2">
+                              <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                                {article.category}
+                              </span>
+                              <span className="text-xs text-muted-foreground">
+                                By {article.author}
+                              </span>
+                              <span className="text-xs text-muted-foreground">
+                                • {article.readTime} min read
+                              </span>
+                            </div>
+                            <CardDescription className="mt-2">
+                              {article.excerpt}
+                            </CardDescription>
+                          </div>
+                          <span className="text-xs text-muted-foreground ml-4 whitespace-nowrap">
+                            {new Date(article.createdAt).toLocaleDateString()}
+                          </span>
                         </div>
-                      )}
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex items-center justify-between">
+                          <Link href={`/articles/${article.slug}`}>
+                            <Button
+                              variant="link"
+                              className="p-0 text-blue-600"
+                            >
+                              Read Article →
+                            </Button>
+                          </Link>
+                          {article.tags && article.tags.length > 0 && (
+                            <div className="flex gap-1">
+                              {article.tags.slice(0, 3).map((tag) => (
+                                <span
+                                  key={tag}
+                                  className="text-xs text-muted-foreground"
+                                >
+                                  #{tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </CardContent>
                     </div>
-                  </CardContent>
+                  </div>
                 </Card>
               ))}
             </div>

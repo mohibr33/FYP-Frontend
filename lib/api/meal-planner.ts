@@ -153,7 +153,49 @@ export interface MealPlan {
   duration: string;
   status: "active" | "completed" | "archived";
   mealPlanData: {
-    mealPlan: {
+    overview?: string;
+    healthConsiderations?: string[];
+    days?: Array<{
+      day: number;
+      date: string;
+      dailyCalories: number;
+      dailyCost: number;
+      meals: Array<{
+        mealTime: string;
+        dishName: string;
+        ingredients: string[];
+        recipe: string;
+        calories: number;
+        protein: number;
+        carbs: number;
+        fats: number;
+        fiber?: number;
+        estimatedCost: number;
+        healthBenefits?: string;
+      }>;
+    }>;
+    summary?: {
+      totalCaloriesPerDay?: number;
+      proteinPerDay?: string;
+      carbsPerDay?: string;
+      fatsPerDay?: string;
+      estimatedCost?: string;
+      expectedWeightLoss?: string;
+      keyRecommendations?: string[];
+      totalCalories?: number;
+      macroDistribution?: {
+        protein: string;
+        carbs: string;
+        fats: string;
+      };
+    };
+    shoppingList?: {
+      [category: string]: string[] | { [item: string]: string };
+    };
+    weeklyTips?: string[];
+    healthWarnings?: string[];
+    // Legacy support for old structure
+    mealPlan?: {
       summary: {
         totalCalories: number;
         macroDistribution: {

@@ -1,5 +1,11 @@
 import { apiClient } from "../api-config";
-import type { ApiResponse, Article, ArticlesResponse } from "../types";
+import type {
+  ApiResponse,
+  Article,
+  ArticlesResponse,
+  ArticlesCategoryResponse,
+  ArticleDetailResponse,
+} from "../types";
 
 /**
  * Get all articles with pagination
@@ -41,9 +47,9 @@ export async function getArticlesByCategory(
   category: string,
   page = 1,
   limit = 10
-): Promise<ArticlesResponse> {
-  const response = await apiClient.get<ApiResponse<ArticlesResponse>>(
-    `/api/articles/category/${category}`,
+): Promise<ArticlesCategoryResponse> {
+  const response = await apiClient.get<ApiResponse<ArticlesCategoryResponse>>(
+    `/api/articles/category/${encodeURIComponent(category)}`,
     {
       params: { page, limit },
     }
@@ -55,10 +61,10 @@ export async function getArticlesByCategory(
  * Get single article by slug
  */
 export async function getArticleBySlug(slug: string): Promise<Article> {
-  const response = await apiClient.get<ApiResponse<Article>>(
+  const response = await apiClient.get<ApiResponse<ArticleDetailResponse>>(
     `/api/articles/${slug}`
   );
-  return response.data.data;
+  return response.data.data.article;
 }
 
 /**

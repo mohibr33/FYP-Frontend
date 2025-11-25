@@ -32,7 +32,7 @@ import { ChevronLeft, ChevronRight, Save, Loader2 } from "lucide-react";
 
 export default function HealthProfilePage() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -60,6 +60,9 @@ export default function HealthProfilePage() {
   const [dislikedFoodInput, setDislikedFoodInput] = useState("");
 
   useEffect(() => {
+    // Wait for auth to finish loading before checking user
+    if (authLoading) return;
+
     if (!user) {
       router.push("/auth/login");
       return;
@@ -107,7 +110,7 @@ export default function HealthProfilePage() {
     };
 
     loadProfile();
-  }, [user, router]);
+  }, [user, router, authLoading]);
 
   const addArrayItem = (
     field: keyof HealthProfile,
@@ -149,7 +152,21 @@ export default function HealthProfilePage() {
         throw new Error("Meals per day must be between 2 and 6");
       }
 
-      const response = await createOrUpdateHealthProfile(formData);
+      // Clean up data - remove undefined/null optional fields
+      const cleanedData: any = { ...formData };
+
+      // Remove undefined/null/empty optional fields
+      Object.keys(cleanedData).forEach((key) => {
+        if (
+          cleanedData[key] === undefined ||
+          cleanedData[key] === null ||
+          cleanedData[key] === ""
+        ) {
+          delete cleanedData[key];
+        }
+      });
+
+      const response = await createOrUpdateHealthProfile(cleanedData);
       if (response.success) {
         setSuccess("Health profile saved successfully!");
         setTimeout(() => {
@@ -175,7 +192,7 @@ export default function HealthProfilePage() {
 
   if (!user) return null;
 
-  if (loadingProfile) {
+  if (authLoading || loadingProfile) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
@@ -197,11 +214,14 @@ export default function HealthProfilePage() {
 
         {/* Progress Indicator */}
         <div className="mb-8">
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             {[1, 2, 3, 4, 5].map((step) => (
-              <div key={step} className="flex items-center">
+              <div
+                key={step}
+                className="flex items-center flex-1 last:flex-none"
+              >
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold shrink-0 ${
                     step <= currentStep
                       ? "bg-blue-600 text-white"
                       : "bg-gray-200 text-gray-500"
@@ -211,7 +231,7 @@ export default function HealthProfilePage() {
                 </div>
                 {step < 5 && (
                   <div
-                    className={`w-12 md:w-24 h-1 ${
+                    className={`flex-1 h-1 mx-2 ${
                       step < currentStep ? "bg-blue-600" : "bg-gray-200"
                     }`}
                   />
@@ -220,11 +240,11 @@ export default function HealthProfilePage() {
             ))}
           </div>
           <div className="flex justify-between mt-2 text-xs text-gray-600">
-            <span>Personal</span>
-            <span>Health</span>
-            <span>Dietary</span>
-            <span>Lifestyle</span>
-            <span>Cooking</span>
+            <span className="w-10 text-center">Personal</span>
+            <span className="w-10 text-center">Health</span>
+            <span className="w-10 text-center">Dietary</span>
+            <span className="w-10 text-center">Lifestyle</span>
+            <span className="w-10 text-center">Cooking</span>
           </div>
         </div>
 

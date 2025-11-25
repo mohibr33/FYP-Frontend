@@ -15,25 +15,27 @@ import {
 import { getArticleBySlug } from "@/lib/api/articles";
 import type { Article } from "@/lib/types";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { use } from "react";
 
 export default function ArticleDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = use(params);
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchArticle();
-  }, [params.slug]);
+  }, [slug]);
 
   const fetchArticle = async () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await getArticleBySlug(params.slug);
+      const data = await getArticleBySlug(slug);
       setArticle(data);
     } catch (err: any) {
       setError(
@@ -101,9 +103,9 @@ export default function ArticleDetailPage({
                 {article.title}
               </CardTitle>
 
-              {article.excerpt && (
+              {(article.excerpt || article.shortDescription) && (
                 <p className="text-lg text-muted-foreground leading-relaxed">
-                  {article.excerpt}
+                  {article.excerpt || article.shortDescription}
                 </p>
               )}
 
@@ -122,10 +124,12 @@ export default function ArticleDetailPage({
                     })}
                   </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  <span>{article.readTime} min read</span>
-                </div>
+                {article.readTime && (
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4" />
+                    <span>{article.readTime} min read</span>
+                  </div>
+                )}
               </div>
             </CardHeader>
           </Card>
@@ -171,6 +175,25 @@ export default function ArticleDetailPage({
                     </span>
                   ))}
                 </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Source Link */}
+          {article.sourceLink && (
+            <Card className="mb-8 border-blue-100">
+              <CardHeader>
+                <CardTitle className="text-lg">Original Source</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <a
+                  href={article.sourceLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-700 hover:underline break-all"
+                >
+                  {article.sourceLink}
+                </a>
               </CardContent>
             </Card>
           )}

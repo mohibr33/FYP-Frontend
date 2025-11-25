@@ -26,51 +26,42 @@ import {
   CheckCircle2,
   XCircle,
   Clock,
+  Edit,
+  Trash2,
 } from "lucide-react";
 import { getMedicineBySlug } from "@/lib/api/medicines";
+import {
+  getMedicineReviews,
+  createReview,
+  updateReview,
+  deleteReview,
+} from "@/lib/api/reviews";
 import type { Medicine } from "@/lib/types";
+import type { Review } from "@/lib/api/reviews";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-
-const SAMPLE_REVIEWS = [
-  {
-    id: 1,
-    author: "John Patient",
-    rating: 5,
-    date: "2025-11-20",
-    title: "Excellent Results",
-    comment:
-      "This medicine has significantly improved my condition. No major side effects.",
-  },
-  {
-    id: 2,
-    author: "Sarah User",
-    rating: 4,
-    date: "2025-11-18",
-    title: "Good but expensive",
-    comment:
-      "Works well but I wish it was more affordable. Worth the cost for the results.",
-  },
-  {
-    id: 3,
-    author: "Mike Johnson",
-    rating: 4,
-    date: "2025-11-15",
-    title: "Consistent Performance",
-    comment:
-      "Been using this for 6 months. Consistent results and manageable side effects.",
-  },
-];
+import { useAuth } from "@/components/auth/auth-context";
+import { useRouter } from "next/navigation";
 
 export default function MedicinePage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  const router = useRouter();
+  const { user } = useAuth();
   const [medicine, setMedicine] = useState<Medicine | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [averageRating, setAverageRating] = useState<number>(0);
+  const [totalReviews, setTotalReviews] = useState<number>(0);
   const [loading, setLoading] = useState(true);
+  const [reviewsLoading, setReviewsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState("");
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const [reviewError, setReviewError] = useState<string | null>(null);
+  const [reviewSuccess, setReviewSuccess] = useState<string | null>(null);
+  const [editingReview, setEditingReview] = useState<Review | null>(null);
   const [medicineSlug, setMedicineSlug] = useState<string | null>(null);
 
   useEffect(() => {
@@ -90,6 +81,10 @@ export default function MedicinePage({
       setError(null);
       const data = await getMedicineBySlug(medicineSlug);
       setMedicine(data);
+      // Fetch reviews after getting medicine data
+      if (data.id) {
+        fetchReviews(data.id);
+      }
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
@@ -97,6 +92,123 @@ export default function MedicinePage({
       );
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchReviews = async (medicineId: string) => {
+    try {
+      setReviewsLoading(true);
+      const response = await getMedicineReviews(medicineId, {
+        page: 1,
+        limit: 50,
+      });
+      if (response.success && response.data) {
+        setReviews(response.data.reviews);
+        setAverageRating(response.data.averageRating || 0);
+        setTotalReviews(response.data.pagination.total);
+      }
+    } catch (err: any) {
+      console.error("Failed to load reviews:", err);
+    } finally {
+      setReviewsLoading(false);
+    }
+  };
+
+  // Check if current user has already reviewed this medicine
+  const userHasReviewed =
+    user && reviews.some((review) => review.userId === user.id);
+
+  const handleSubmitReview = async () => {
+    if (!user) {
+      setReviewError("Please login to submit a review");
+      router.push("/auth/login");
+      return;
+    }
+
+    if (!medicine?.id) {
+      setReviewError("Medicine information not available");
+      return;
+    }
+
+    if (reviewComment.length < 10 || reviewComment.length > 1000) {
+      setReviewError("Review must be between 10 and 1000 characters");
+      return;
+    }
+
+    setSubmittingReview(true);
+    setReviewError(null);
+    setReviewSuccess(null);
+
+    try {
+      if (editingReview) {
+        // Update existing review
+        const response = await updateReview(editingReview.id, {
+          rating: reviewRating,
+          message: reviewComment,
+        });
+        if (response.success) {
+          setReviewSuccess("Review updated successfully and pending approval");
+          setEditingReview(null);
+        }
+      } else {
+        // Create new review
+        const response = await createReview({
+          medicineId: medicine.id,
+          rating: reviewRating,
+          message: reviewComment,
+        });
+        if (response.success) {
+          setReviewSuccess(
+            "Review submitted successfully and pending approval"
+          );
+        }
+      }
+
+      // Reset form
+      setReviewRating(5);
+      setReviewComment("");
+
+      // Refresh reviews
+      fetchReviews(medicine.id);
+    } catch (err: any) {
+      setReviewError(
+        err.response?.data?.message ||
+          "Failed to submit review. Please try again."
+      );
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
+
+  const handleEditReview = (review: Review) => {
+    setEditingReview(review);
+    setReviewRating(review.rating);
+    setReviewComment(review.message);
+    setReviewError(null);
+    setReviewSuccess(null);
+    // Scroll to form
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingReview(null);
+    setReviewRating(5);
+    setReviewComment("");
+    setReviewError(null);
+    setReviewSuccess(null);
+  };
+
+  const handleDeleteReview = async (reviewId: string) => {
+    if (!confirm("Are you sure you want to delete this review?")) return;
+
+    try {
+      const response = await deleteReview(reviewId);
+      if (response.success && medicine?.id) {
+        setReviewSuccess("Review deleted successfully");
+        fetchReviews(medicine.id);
+      }
+    } catch (err: any) {
+      setReviewError(err.response?.data?.message || "Failed to delete review");
     }
   };
 
@@ -131,10 +243,6 @@ export default function MedicinePage({
       </main>
     );
   }
-
-  const avgRating = (
-    SAMPLE_REVIEWS.reduce((sum, r) => sum + r.rating, 0) / SAMPLE_REVIEWS.length
-  ).toFixed(1);
 
   return (
     <main className="min-h-screen bg-slate-50 py-8 px-4">
@@ -209,10 +317,10 @@ export default function MedicinePage({
               <div className="flex items-center gap-2 text-amber-500">
                 <Star className="w-5 h-5 fill-amber-400" />
                 <span className="font-semibold text-lg text-slate-700">
-                  {avgRating}
+                  {averageRating.toFixed(1)}
                 </span>
                 <span className="text-sm text-slate-500">
-                  ({SAMPLE_REVIEWS.length} reviews)
+                  ({totalReviews} {totalReviews === 1 ? "review" : "reviews"})
                 </span>
               </div>
             </div>
@@ -440,88 +548,217 @@ export default function MedicinePage({
               </h2>
               <div className="text-right">
                 <div className="text-3xl font-bold text-slate-900">
-                  {avgRating}
+                  {averageRating.toFixed(1)}
                 </div>
-                <div className="text-amber-400 text-sm">★★★★★</div>
+                <div className="text-amber-400 text-sm">
+                  {averageRating > 0 ? (
+                    <>
+                      {"★".repeat(Math.round(averageRating))}
+                      {"☆".repeat(5 - Math.round(averageRating))}
+                    </>
+                  ) : (
+                    "☆☆☆☆☆"
+                  )}
+                </div>
                 <div className="text-xs text-slate-500">
-                  {SAMPLE_REVIEWS.length} reviews
+                  {totalReviews} {totalReviews === 1 ? "review" : "reviews"}
                 </div>
               </div>
             </div>
 
-            {/* Review Form */}
-            <div className="border-t border-slate-200 pt-6">
-              <h3 className="font-medium text-slate-900 mb-4">
-                Leave a Review
-              </h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm text-slate-600 mb-2 block">
-                    Rating
-                  </label>
-                  <div className="flex gap-1">
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <button
-                        key={i}
-                        onClick={() => setReviewRating(i)}
-                        className={`text-2xl transition-colors ${
-                          reviewRating >= i
-                            ? "text-amber-400"
-                            : "text-slate-300"
-                        }`}
+            {/* Review Form - Only show if user hasn't reviewed yet or is editing their review */}
+            {(!userHasReviewed || editingReview) && (
+              <div className="border-t border-slate-200 pt-6">
+                <h3 className="font-medium text-slate-900 mb-4">
+                  {editingReview ? "Edit Your Review" : "Leave a Review"}
+                </h3>
+
+                {reviewError && (
+                  <Alert variant="destructive" className="mb-4">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>{reviewError}</AlertDescription>
+                  </Alert>
+                )}
+
+                {reviewSuccess && (
+                  <Alert className="mb-4 bg-green-50 border-green-200">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <AlertDescription className="text-green-800">
+                      {reviewSuccess}
+                    </AlertDescription>
+                  </Alert>
+                )}
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm text-slate-600 mb-2 block">
+                      Rating
+                    </label>
+                    <div className="flex gap-1">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <button
+                          key={i}
+                          onClick={() => setReviewRating(i)}
+                          disabled={submittingReview}
+                          className={`text-2xl transition-colors disabled:opacity-50 ${
+                            reviewRating >= i
+                              ? "text-amber-400"
+                              : "text-slate-300"
+                          }`}
+                        >
+                          ★
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm text-slate-600 mb-2 block">
+                      Your Review (10-1000 characters)
+                    </label>
+                    <textarea
+                      value={reviewComment}
+                      onChange={(e) => setReviewComment(e.target.value)}
+                      placeholder="Share your experience with this medicine..."
+                      disabled={submittingReview}
+                      className="w-full p-3 border border-slate-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none min-h-24 text-slate-700 disabled:opacity-50 disabled:bg-slate-50"
+                      maxLength={1000}
+                    />
+                    <p className="text-xs text-slate-500 mt-1">
+                      {reviewComment.length}/1000 characters
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={handleSubmitReview}
+                      disabled={submittingReview || reviewComment.length < 10}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg transition-colors disabled:opacity-50"
+                    >
+                      {submittingReview ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          {editingReview ? "Updating..." : "Submitting..."}
+                        </>
+                      ) : editingReview ? (
+                        "Update Review"
+                      ) : (
+                        "Submit Review"
+                      )}
+                    </Button>
+                    {editingReview && (
+                      <Button
+                        onClick={handleCancelEdit}
+                        disabled={submittingReview}
+                        variant="outline"
+                        className="px-4"
                       >
-                        ★
-                      </button>
-                    ))}
+                        Cancel
+                      </Button>
+                    )}
                   </div>
                 </div>
-                <div>
-                  <label className="text-sm text-slate-600 mb-2 block">
-                    Your Review
-                  </label>
-                  <textarea
-                    value={reviewComment}
-                    onChange={(e) => setReviewComment(e.target.value)}
-                    placeholder="Share your experience with this medicine..."
-                    className="w-full p-3 border border-slate-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none min-h-24 text-slate-700"
-                  />
-                </div>
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg transition-colors">
-                  Submit Review
-                </Button>
               </div>
-            </div>
+            )}
+
+            {/* Message when user has already reviewed */}
+            {userHasReviewed && !editingReview && (
+              <div className="border-t border-slate-200 pt-6">
+                <Alert className="bg-blue-50 border-blue-200">
+                  <Info className="h-4 w-4 text-blue-600" />
+                  <AlertDescription className="text-blue-800">
+                    You have already reviewed this medicine. You can edit or
+                    delete your review below.
+                  </AlertDescription>
+                </Alert>
+              </div>
+            )}
           </div>
 
           {/* Review List */}
           <div className="space-y-3">
-            {SAMPLE_REVIEWS.map((review) => (
-              <div
-                key={review.id}
-                className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 hover:border-slate-300 transition-colors"
-              >
-                <div className="flex items-start justify-between mb-2">
-                  <div>
-                    <h4 className="font-medium text-slate-900">
-                      {review.title}
-                    </h4>
-                    <div className="flex items-center gap-2 text-sm text-slate-500 mt-1">
-                      <span className="font-medium text-slate-700">
-                        {review.author}
-                      </span>
-                      <span>•</span>
-                      <span>{new Date(review.date).toLocaleDateString()}</span>
-                    </div>
-                  </div>
-                  <div className="text-amber-400 text-sm">
-                    {"★".repeat(review.rating)}
-                  </div>
-                </div>
-                <p className="text-slate-600 text-sm leading-relaxed">
-                  {review.comment}
+            {reviewsLoading ? (
+              <div className="flex justify-center py-8">
+                <Loader2 className="w-6 h-6 animate-spin text-slate-400" />
+              </div>
+            ) : reviews.length === 0 ? (
+              <div className="bg-slate-50 rounded-xl p-8 text-center">
+                <p className="text-slate-500">
+                  No reviews yet. Be the first to review this medicine!
                 </p>
               </div>
-            ))}
+            ) : (
+              reviews.map((review) => {
+                const isOwnReview = user && review.userId === user.id;
+                const isPending = !review.isApproved;
+
+                return (
+                  <div
+                    key={review.id}
+                    className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 hover:border-slate-300 transition-colors"
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-medium text-slate-700">
+                            {review.user?.firstName} {review.user?.lastName}
+                          </span>
+                          {isPending && (
+                            <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-700 px-2 py-0.5 rounded text-xs font-medium border border-amber-200">
+                              <Clock className="w-3 h-3" />
+                              Pending Approval
+                            </span>
+                          )}
+                          {isOwnReview && (
+                            <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs font-medium border border-blue-200">
+                              Your Review
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-slate-500 mt-1">
+                          <span>
+                            {new Date(review.createdAt).toLocaleDateString()}
+                          </span>
+                          {review.createdAt !== review.updatedAt && (
+                            <>
+                              <span>•</span>
+                              <span className="text-xs">Edited</span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="text-amber-400 text-sm">
+                          {"★".repeat(review.rating)}
+                          {"☆".repeat(5 - review.rating)}
+                        </div>
+                        {isOwnReview && (
+                          <div className="flex gap-1">
+                            <Button
+                              onClick={() => handleEditReview(review)}
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0"
+                            >
+                              <Edit className="w-4 h-4 text-blue-600" />
+                            </Button>
+                            <Button
+                              onClick={() => handleDeleteReview(review.id)}
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0"
+                            >
+                              <Trash2 className="w-4 h-4 text-red-600" />
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      {review.message}
+                    </p>
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
       </div>

@@ -18,13 +18,15 @@ export interface Article {
   id: string;
   title: string;
   slug: string;
-  excerpt: string;
+  excerpt?: string;
+  shortDescription?: string;
   content: string;
   category: string;
   imageUrl?: string;
   author: string;
-  readTime: number;
-  tags: string[];
+  readTime?: number;
+  tags?: string[];
+  sourceLink?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -32,6 +34,16 @@ export interface Article {
 export interface ArticlesResponse {
   articles: Article[];
   pagination: Pagination;
+}
+
+export interface ArticlesCategoryResponse {
+  category: string;
+  articles: Article[];
+  total: number;
+}
+
+export interface ArticleDetailResponse {
+  article: Article;
 }
 
 // Medicine Types

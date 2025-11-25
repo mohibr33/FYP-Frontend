@@ -30,12 +30,14 @@ import {
 
 export default function MealPlannerDashboard() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [activePlan, setActivePlan] = useState<MealPlan | null>(null);
   const [hasProfile, setHasProfile] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (authLoading) return;
+
     if (!user) {
       router.push("/auth/login");
       return;
@@ -66,11 +68,11 @@ export default function MealPlannerDashboard() {
     };
 
     loadData();
-  }, [user, router]);
+  }, [user, router, authLoading]);
 
   if (!user) return null;
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
@@ -303,18 +305,6 @@ export default function MealPlannerDashboard() {
               </div>
             </CardContent>
           </Card>
-
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-center">
-                <TrendingUp className="h-8 w-8 mx-auto text-orange-600 mb-2" />
-                <p className="text-2xl font-bold text-gray-900">
-                  PKR {estimatedCost.toFixed(0)}
-                </p>
-                <p className="text-sm text-gray-600">Total Cost</p>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Today's Meals */}
@@ -331,33 +321,84 @@ export default function MealPlannerDashboard() {
             </div>
           </CardHeader>
           <CardContent>
-            {activePlan.mealPlanData?.mealPlan?.dailyMeals?.[currentDay - 1] ? (
+            {activePlan.mealPlanData?.days?.[currentDay - 1] ||
+            activePlan.mealPlanData?.mealPlan?.dailyMeals?.[currentDay - 1] ? (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {activePlan.mealPlanData.mealPlan.dailyMeals[
-                  currentDay - 1
-                ]?.meals?.map((meal: any, idx: number) => (
-                  <Card key={idx} className="border">
-                    <CardHeader className="pb-3">
-                      <Badge variant="outline" className="w-fit mb-2">
-                        {meal.mealType}
-                      </Badge>
-                      <CardTitle className="text-lg">{meal.mealName}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                        {meal.ingredients.slice(0, 2).join(", ")}
+                {(() => {
+                  // Support both new (days) and old (mealPlan.dailyMeals) structure
+                  const dayData =
+                    activePlan.mealPlanData.days?.[currentDay - 1] ||
+                    activePlan.mealPlanData.mealPlan?.dailyMeals?.[
+                      currentDay - 1
+                    ];
+                  const mealsData = dayData?.meals;
+                  let mealsArray: any[] = [];
+
+                  // Handle meals as object (breakfast, lunch, dinner keys)
+                  if (
+                    typeof mealsData === "object" &&
+                    mealsData !== null &&
+                    !Array.isArray(mealsData)
+                  ) {
+                    mealsArray = Object.entries(mealsData).map(
+                      ([mealType, meal]: [string, any]) => ({
+                        ...meal,
+                        mealType:
+                          mealType.charAt(0).toUpperCase() + mealType.slice(1),
+                        mealTime:
+                          meal.mealTime ||
+                          mealType.charAt(0).toUpperCase() + mealType.slice(1),
+                      })
+                    );
+                  } else if (Array.isArray(mealsData)) {
+                    mealsArray = mealsData;
+                  }
+
+                  if (mealsArray.length === 0) {
+                    return (
+                      <p className="text-gray-600 text-center py-8 col-span-full">
+                        No meals available for this day
                       </p>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">
-                          {meal.calories} cal
-                        </span>
-                        <span className="text-gray-600">
-                          {meal.ingredients.length} items
-                        </span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                    );
+                  }
+
+                  return mealsArray.map((meal: any, idx: number) => (
+                    <Card key={idx} className="border">
+                      <CardHeader className="pb-3">
+                        <Badge variant="outline" className="w-fit mb-2">
+                          {meal.dishName ||
+                            meal.mealName ||
+                            meal.name ||
+                            "Meal"}
+                        </Badge>
+                        <CardTitle className="text-lg">
+                          {meal.dishName ||
+                            meal.mealName ||
+                            meal.name ||
+                            "Meal"}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                          {Array.isArray(meal.ingredients)
+                            ? meal.ingredients.slice(0, 2).join(", ")
+                            : ""}
+                        </p>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">
+                            {meal.calories || 0} cal
+                          </span>
+                          <span className="text-gray-600">
+                            {Array.isArray(meal.ingredients)
+                              ? meal.ingredients.length
+                              : 0}{" "}
+                            items
+                          </span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ));
+                })()}
               </div>
             ) : (
               <p className="text-gray-600 text-center py-8">

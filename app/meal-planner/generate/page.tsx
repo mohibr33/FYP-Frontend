@@ -19,7 +19,7 @@ import { Loader2, ChefHat, Calendar, Sparkles } from "lucide-react";
 
 export default function GenerateMealPlanPage() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [duration, setDuration] = useState<"7" | "30">("7");
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState("");
@@ -28,6 +28,8 @@ export default function GenerateMealPlanPage() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    if (authLoading) return;
+
     if (!user) {
       router.push("/auth/login");
       return;
@@ -45,7 +47,7 @@ export default function GenerateMealPlanPage() {
     };
 
     checkProfile();
-  }, [user, router]);
+  }, [user, router, authLoading]);
 
   useEffect(() => {
     if (generating) {
@@ -88,7 +90,7 @@ export default function GenerateMealPlanPage() {
 
   if (!user) return null;
 
-  if (checkingProfile) {
+  if (authLoading || checkingProfile) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
@@ -123,8 +125,8 @@ export default function GenerateMealPlanPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-12 px-4">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-12 px-2">
+      <div className="max-w-5xl mx-auto">
         <div className="text-center mb-8">
           <Sparkles className="h-16 w-16 mx-auto text-blue-600 mb-4" />
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
@@ -142,7 +144,7 @@ export default function GenerateMealPlanPage() {
           </Alert>
         )}
 
-        <Card>
+        <Card className="">
           <CardHeader>
             <CardTitle>Select Plan Duration</CardTitle>
             <CardDescription>
@@ -271,7 +273,7 @@ export default function GenerateMealPlanPage() {
                     "Almost done! Finalizing your meal plan..."}
                 </p>
                 <p className="text-center text-xs text-gray-500 mt-2">
-                  ⏱️ This typically takes 1-3 minutes. Please don't close this
+                  ⏱️ This typically takes 1-6 minutes. Please don't close this
                   page.
                 </p>
               </div>

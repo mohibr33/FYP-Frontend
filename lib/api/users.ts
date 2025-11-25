@@ -61,10 +61,22 @@ export async function loginUser(data: {
 }
 
 export async function getProfile(): Promise<AuthUser> {
-  const response = await apiClient.get<ApiResponse<AuthUser>>(
-    "/api/users/profile"
-  );
-  return response.data.data;
+  const response = await apiClient.get<ApiResponse<any>>("/api/users/profile");
+  console.log("getProfile raw response:", response.data);
+
+  // The API returns the user nested in response.data.data.user
+  const userData = response.data.data?.user || response.data.data;
+  console.log("getProfile userData:", userData);
+
+  // Map the API response to AuthUser format
+  return {
+    id: userData.id,
+    name: `${userData.firstName} ${userData.lastName}`,
+    email: userData.email,
+    role: userData.role,
+    isVerified: userData.isVerified,
+    createdAt: userData.createdAt,
+  };
 }
 
 export async function requestPasswordReset(data: {

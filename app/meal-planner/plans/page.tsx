@@ -19,7 +19,7 @@ import { Loader2, Calendar, ChefHat, Plus, TrendingUp } from "lucide-react";
 
 export default function MealPlansLibraryPage() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [plans, setPlans] = useState<MealPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -28,6 +28,8 @@ export default function MealPlansLibraryPage() {
   >("all");
 
   useEffect(() => {
+    if (authLoading) return;
+
     if (!user) {
       router.push("/auth/login");
       return;
@@ -48,11 +50,11 @@ export default function MealPlansLibraryPage() {
     };
 
     loadPlans();
-  }, [user, router]);
+  }, [user, router, authLoading]);
 
   if (!user) return null;
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
@@ -211,12 +213,6 @@ export default function MealPlansLibraryPage() {
                     </div>
 
                     <div className="pt-3 border-t">
-                      <div className="flex justify-between items-center text-sm">
-                        <span className="text-gray-600">Total Cost</span>
-                        <span className="font-semibold text-gray-900">
-                          PKR {(plan.estimatedCost || 0).toFixed(2)}
-                        </span>
-                      </div>
                       <div className="flex justify-between items-center text-sm mt-1">
                         <span className="text-gray-600">Shopping Items</span>
                         <span className="font-semibold text-gray-900">
@@ -230,33 +226,6 @@ export default function MealPlansLibraryPage() {
                               )
                             : 0}
                         </span>
-                      </div>
-                    </div>
-
-                    <div className="pt-3 border-t">
-                      <p className="text-xs text-gray-600 mb-2">Weekly Tips:</p>
-                      <div className="flex flex-wrap gap-1">
-                        {(plan.mealPlanData?.mealPlan?.weeklyTips || [])
-                          .slice(0, 2)
-                          .map((tip: string, idx: number) => (
-                            <Badge
-                              key={idx}
-                              variant="secondary"
-                              className="text-xs"
-                            >
-                              {tip.length > 20
-                                ? tip.substring(0, 20) + "..."
-                                : tip}
-                            </Badge>
-                          ))}
-                        {(plan.mealPlanData?.mealPlan?.weeklyTips?.length ||
-                          0) > 2 && (
-                          <Badge variant="secondary" className="text-xs">
-                            +
-                            {(plan.mealPlanData?.mealPlan?.weeklyTips?.length ||
-                              0) - 2}
-                          </Badge>
-                        )}
                       </div>
                     </div>
 

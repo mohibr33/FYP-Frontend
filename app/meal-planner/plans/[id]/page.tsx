@@ -56,7 +56,7 @@ export default function MealPlanDetailPage() {
   const router = useRouter();
   const params = useParams();
   const searchParams = useSearchParams();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [plan, setPlan] = useState<MealPlan | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -67,6 +67,8 @@ export default function MealPlanDetailPage() {
   const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
+    if (authLoading) return;
+
     if (!user) {
       router.push("/auth/login");
       return;
@@ -76,6 +78,8 @@ export default function MealPlanDetailPage() {
       try {
         const response = await getMealPlanById(params.id as string);
         if (response.success && response.data) {
+          console.log("Meal Plan Data:", response.data);
+          console.log("MealPlanData structure:", response.data.mealPlanData);
           setPlan(response.data);
         }
       } catch (err: any) {
@@ -86,7 +90,7 @@ export default function MealPlanDetailPage() {
     };
 
     loadPlan();
-  }, [user, router, params.id]);
+  }, [user, router, params.id, authLoading]);
 
   const handleStatusChange = async (
     newStatus: "active" | "completed" | "archived"
@@ -95,11 +99,14 @@ export default function MealPlanDetailPage() {
     setUpdating(true);
 
     try {
-      const response = await updateMealPlanStatus(plan._id, {
+      const planId = plan._id || plan.id || (params.id as string);
+      const response = await updateMealPlanStatus(planId, {
         status: newStatus,
       });
       if (response.success && response.data) {
         setPlan(response.data);
+        // Redirect to all meal plans page after status change
+        router.push("/meal-planner/plans");
       }
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to update status");
@@ -112,7 +119,8 @@ export default function MealPlanDetailPage() {
     if (!plan) return;
 
     try {
-      await deleteMealPlan(plan._id);
+      const planId = plan._id || plan.id || (params.id as string);
+      await deleteMealPlan(planId);
       router.push("/meal-planner/plans");
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to delete plan");
@@ -121,7 +129,7 @@ export default function MealPlanDetailPage() {
 
   if (!user) return null;
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
@@ -148,12 +156,39 @@ export default function MealPlanDetailPage() {
     );
   }
 
-  const shoppingList = plan.mealPlanData.mealPlan.shoppingList;
-  const totalDays = plan.mealPlanData.mealPlan.dailyMeals.length;
+  // Support both new API structure (days) and old structure (mealPlan.dailyMeals)
+  const days =
+    plan.mealPlanData?.days || plan.mealPlanData?.mealPlan?.dailyMeals || [];
+  const shoppingList =
+    plan.mealPlanData?.shoppingList?.items ||
+    plan.mealPlanData?.mealPlan?.shoppingList?.items ||
+    plan.mealPlanData?.shoppingList ||
+    plan.mealPlanData?.mealPlan?.shoppingList ||
+    {};
+  const summary =
+    plan.mealPlanData?.summary || plan.mealPlanData?.mealPlan?.summary;
+  const weeklyTips =
+    plan.mealPlanData?.weeklyTips ||
+    plan.mealPlanData?.mealPlan?.weeklyTips ||
+    [];
+  const healthWarnings =
+    plan.mealPlanData?.healthWarnings ||
+    plan.mealPlanData?.mealPlan?.healthWarnings ||
+    [];
+  const totalDays = days.length;
   const shoppingItemsCount = Object.values(shoppingList).reduce(
-    (acc, category) => acc + Object.keys(category).length,
+    (acc, category) => {
+      if (Array.isArray(category)) return acc + category.length;
+      if (typeof category === "object" && category !== null)
+        return acc + Object.keys(category).length;
+      return acc;
+    },
     0
   );
+
+  console.log("Days:", days);
+  console.log("Shopping List:", shoppingList);
+  console.log("Summary:", summary);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-12 px-4">
@@ -229,7 +264,7 @@ export default function MealPlanDetailPage() {
           </div>
 
           {/* Overview Stats */}
-          <div className="grid md:grid-cols-5 gap-4">
+          <div className="grid md:grid-cols-4 gap-4">
             <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center gap-3">
@@ -264,11 +299,9 @@ export default function MealPlanDetailPage() {
                   <TrendingUp className="h-8 w-8 text-green-600" />
                   <div>
                     <p className="text-2xl font-bold text-gray-900">
-                      {
-                        plan.mealPlanData.mealPlan.summary.macroDistribution
-                          .protein
-                      }
-                      %
+                      {summary?.macronutrients?.protein ||
+                        summary?.macroDistribution?.protein ||
+                        0}
                     </p>
                     <p className="text-xs text-gray-600">Protein</p>
                   </div>
@@ -285,20 +318,6 @@ export default function MealPlanDetailPage() {
                       {shoppingItemsCount}
                     </p>
                     <p className="text-xs text-gray-600">Items</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center gap-3">
-                  <DollarSign className="h-8 w-8 text-yellow-600" />
-                  <div>
-                    <p className="text-2xl font-bold text-gray-900">
-                      PKR {plan.estimatedCost.toFixed(0)}
-                    </p>
-                    <p className="text-xs text-gray-600">Total Cost</p>
                   </div>
                 </div>
               </CardContent>
@@ -322,158 +341,264 @@ export default function MealPlanDetailPage() {
                 onValueChange={(val) => setSelectedDay(parseInt(val))}
               >
                 <SelectTrigger className="w-48">
-                  <SelectValue />
+                  <SelectValue placeholder="Select a day" />
                 </SelectTrigger>
                 <SelectContent>
-                  {plan.mealPlanData.mealPlan.dailyMeals.map((dayData) => (
-                    <SelectItem
-                      key={dayData.day}
-                      value={dayData.day.toString()}
-                    >
-                      Day {dayData.day}
+                  {days.map((dayData: any, index: number) => (
+                    <SelectItem key={index} value={(index + 1).toString()}>
+                      Day {index + 1}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
 
-            {plan.mealPlanData.mealPlan.dailyMeals[selectedDay - 1] && (
-              <div className="space-y-4">
-                <Card className="bg-blue-50 border-blue-200">
-                  <CardContent className="pt-6">
-                    <div className="grid md:grid-cols-2 gap-4 text-center">
-                      <div>
-                        <p className="text-2xl font-bold text-blue-900">
-                          {
-                            plan.mealPlanData.mealPlan.dailyMeals[
-                              selectedDay - 1
-                            ].totalCalories
-                          }
-                        </p>
-                        <p className="text-sm text-blue-700">Total Calories</p>
-                      </div>
-                      <div>
-                        <p className="text-2xl font-bold text-blue-900">
-                          {
-                            plan.mealPlanData.mealPlan.dailyMeals[
-                              selectedDay - 1
-                            ].meals.length
-                          }
-                        </p>
-                        <p className="text-sm text-blue-700">Meals</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+            {days[selectedDay - 1] &&
+              (() => {
+                const currentDayData = days[selectedDay - 1];
+                console.log(`Selected Day ${selectedDay}:`, currentDayData);
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  {plan.mealPlanData.mealPlan.dailyMeals[
-                    selectedDay - 1
-                  ].meals.map((meal, idx) => (
-                    <Card key={idx}>
-                      <CardHeader>
-                        <div className="flex justify-between items-start">
+                // Calculate total calories for the day
+                const calculateDayCalories = () => {
+                  const mealsData = currentDayData.meals;
+                  let totalCalories = 0;
+
+                  if (
+                    typeof mealsData === "object" &&
+                    mealsData !== null &&
+                    !Array.isArray(mealsData)
+                  ) {
+                    // Handle meals as object (breakfast, lunch, dinner keys)
+                    Object.values(mealsData).forEach((meal: any) => {
+                      totalCalories += meal.calories || 0;
+                    });
+                  } else if (Array.isArray(mealsData)) {
+                    // Handle meals as array
+                    mealsData.forEach((meal: any) => {
+                      totalCalories += meal.calories || 0;
+                    });
+                  }
+
+                  return (
+                    totalCalories ||
+                    currentDayData.dailyTotal?.calories ||
+                    currentDayData.dailyCalories ||
+                    currentDayData.totalCalories ||
+                    0
+                  );
+                };
+
+                return (
+                  <div className="space-y-4">
+                    <Card className="bg-blue-50 border-blue-200">
+                      <CardContent className="pt-6">
+                        <div className="grid md:grid-cols-2 gap-4 text-center">
                           <div>
-                            <Badge variant="outline" className="mb-2">
-                              {meal.mealType}
-                            </Badge>
-                            <CardTitle className="text-xl">
-                              {meal.mealName}
-                            </CardTitle>
+                            <p className="text-2xl font-bold text-blue-900">
+                              {calculateDayCalories()}
+                            </p>
+                            <p className="text-sm text-blue-700">
+                              Total Calories
+                            </p>
                           </div>
-                          <Badge variant="secondary">
-                            <Flame className="h-3 w-3 mr-1" />
-                            {meal.calories} cal
-                          </Badge>
+                          <div>
+                            <p className="text-2xl font-bold text-blue-900">
+                              {(() => {
+                                const mealsData = currentDayData.meals;
+                                if (Array.isArray(mealsData))
+                                  return mealsData.length;
+                                if (
+                                  typeof mealsData === "object" &&
+                                  mealsData !== null
+                                )
+                                  return Object.keys(mealsData).length;
+                                return 0;
+                              })()}
+                            </p>
+                            <p className="text-sm text-blue-700">Meals</p>
+                          </div>
                         </div>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div>
-                          <h4 className="font-semibold mb-2 text-sm">
-                            Ingredients:
-                          </h4>
-                          <ul className="text-sm text-gray-600 space-y-1">
-                            {meal.ingredients.slice(0, 5).map((ing, i) => (
-                              <li key={i}>• {ing}</li>
-                            ))}
-                            {meal.ingredients.length > 5 && (
-                              <li className="text-blue-600">
-                                + {meal.ingredients.length - 5} more...
-                              </li>
-                            )}
-                          </ul>
-                        </div>
-
-                        <details className="text-sm">
-                          <summary className="cursor-pointer font-semibold text-blue-600 hover:text-blue-700">
-                            View Instructions
-                          </summary>
-                          <p className="mt-2 text-gray-700 whitespace-pre-line">
-                            {meal.instructions}
-                          </p>
-                        </details>
                       </CardContent>
                     </Card>
-                  ))}
-                </div>
-              </div>
-            )}
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {(() => {
+                        const mealsData = currentDayData.meals;
+                        let mealsArray: any[] = [];
+
+                        // Handle meals as object (breakfast, lunch, dinner keys)
+                        if (
+                          typeof mealsData === "object" &&
+                          mealsData !== null &&
+                          !Array.isArray(mealsData)
+                        ) {
+                          mealsArray = Object.entries(mealsData).map(
+                            ([mealType, meal]: [string, any]) => ({
+                              ...meal,
+                              mealType:
+                                mealType.charAt(0).toUpperCase() +
+                                mealType.slice(1),
+                              mealTime:
+                                meal.mealTime ||
+                                mealType.charAt(0).toUpperCase() +
+                                  mealType.slice(1),
+                              // Preserve the actual dish name from the meal object
+                              dishName:
+                                meal.dishName ||
+                                meal.mealName ||
+                                meal.name ||
+                                "Meal",
+                            })
+                          );
+                        } else if (Array.isArray(mealsData)) {
+                          mealsArray = mealsData;
+                        }
+
+                        return mealsArray.map((meal: any, idx: number) => (
+                          <Card key={idx}>
+                            <CardHeader>
+                              <div className="flex justify-between items-start">
+                                <div>
+                                  <Badge variant="outline" className="mb-2">
+                                    {meal.mealTime || meal.mealType || "Meal"}
+                                  </Badge>
+                                  <CardTitle className="text-xl">
+                                    {meal.dishName ||
+                                      meal.mealName ||
+                                      meal.name ||
+                                      `${
+                                        meal.mealType || meal.mealTime || "Meal"
+                                      }`}
+                                  </CardTitle>
+                                </div>
+                                <Badge variant="secondary">
+                                  <Flame className="h-3 w-3 mr-1" />
+                                  {meal.calories || 0} cal
+                                </Badge>
+                              </div>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                              <div>
+                                <h4 className="font-semibold mb-2 text-sm">
+                                  Ingredients:
+                                </h4>
+                                <ul className="text-sm text-gray-600 space-y-1">
+                                  {Array.isArray(meal.ingredients) &&
+                                    meal.ingredients
+                                      .slice(0, 5)
+                                      .map((ing: string, i: number) => (
+                                        <li key={i}>• {ing}</li>
+                                      ))}
+                                  {Array.isArray(meal.ingredients) &&
+                                    meal.ingredients.length > 5 && (
+                                      <li className="text-blue-600">
+                                        + {meal.ingredients.length - 5} more...
+                                      </li>
+                                    )}
+                                </ul>
+                              </div>
+
+                              <details className="text-sm">
+                                <summary className="cursor-pointer font-semibold text-blue-600 hover:text-blue-700">
+                                  View Instructions
+                                </summary>
+                                <p className="mt-2 text-gray-700 whitespace-pre-line">
+                                  {meal.recipe ||
+                                    meal.instructions ||
+                                    "No instructions available"}
+                                </p>
+                              </details>
+                            </CardContent>
+                          </Card>
+                        ));
+                      })()}
+                    </div>
+                  </div>
+                );
+              })()}
           </TabsContent>
 
           {/* Shopping List Tab */}
           <TabsContent value="shopping">
             <div className="grid md:grid-cols-2 gap-6">
-              {Object.entries(shoppingList).map(([category, items]) => (
-                <Card key={category}>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <ShoppingCart className="h-5 w-5 text-blue-600" />
-                      {category.charAt(0).toUpperCase() + category.slice(1)}
-                    </CardTitle>
-                    <CardDescription>
-                      {Object.keys(items).length} items
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-3">
-                      {Object.entries(items).map(
-                        ([itemName, quantity], idx) => (
-                          <li
-                            key={idx}
-                            className="flex justify-between items-center py-2 border-b last:border-0"
-                          >
-                            <div className="flex-1">
-                              <p className="font-medium">{itemName}</p>
-                              <p className="text-sm text-gray-600">
-                                {quantity}
-                              </p>
-                            </div>
-                          </li>
-                        )
-                      )}
-                    </ul>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+              {Object.entries(shoppingList)
+                .filter(
+                  ([category]) =>
+                    category !== "totalCost" &&
+                    category !== "totalEstimatedCost"
+                )
+                .map(([category, items]) => {
+                  // Handle both array of objects and object with key-value pairs
+                  let itemsList: any[] = [];
 
-            <Card className="mt-6 bg-green-50 border-green-200">
-              <CardContent className="pt-6">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <p className="text-lg font-semibold text-green-900">
-                      Total Estimated Cost
-                    </p>
-                    <p className="text-sm text-green-700">
-                      For entire {totalDays}-day plan
-                    </p>
-                  </div>
-                  <p className="text-3xl font-bold text-green-900">
-                    PKR {plan.estimatedCost.toFixed(2)}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+                  if (Array.isArray(items)) {
+                    itemsList = items;
+                  } else if (typeof items === "object" && items !== null) {
+                    itemsList = Object.entries(items).map(
+                      ([name, quantity]) => ({
+                        name,
+                        quantity,
+                      })
+                    );
+                  }
+
+                  if (itemsList.length === 0) return null;
+
+                  return (
+                    <Card key={category}>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <ShoppingCart className="h-5 w-5 text-blue-600" />
+                          {category.charAt(0).toUpperCase() + category.slice(1)}
+                        </CardTitle>
+                        <CardDescription>
+                          {itemsList.length} items
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <ul className="space-y-3">
+                          {itemsList.map((item, idx) => {
+                            // Skip if this is a cost-related item
+                            if (
+                              typeof item === "object" &&
+                              item !== null &&
+                              (item.name?.toLowerCase().includes("cost") ||
+                                item.cost !== undefined)
+                            ) {
+                              return null;
+                            }
+
+                            const itemName = item.name || item;
+                            const itemQuantity = item.quantity || "";
+
+                            return (
+                              <li
+                                key={idx}
+                                className="flex justify-between items-center py-2 border-b last:border-0"
+                              >
+                                <div className="flex-1">
+                                  <p className="font-medium">
+                                    {typeof itemName === "string"
+                                      ? itemName
+                                      : JSON.stringify(itemName)}
+                                  </p>
+                                  {itemQuantity &&
+                                    typeof itemQuantity === "string" &&
+                                    !itemQuantity.includes("PKR") && (
+                                      <p className="text-sm text-gray-600">
+                                        {itemQuantity}
+                                      </p>
+                                    )}
+                                </div>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </CardContent>
+                    </Card>
+                  );
+                })}{" "}
+            </div>
           </TabsContent>
 
           {/* Summary Tab */}
@@ -485,7 +610,7 @@ export default function MealPlanDetailPage() {
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2">
-                    {plan.mealPlanData.mealPlan.weeklyTips.map((tip, idx) => (
+                    {weeklyTips.map((tip: string, idx: number) => (
                       <li key={idx} className="flex items-start gap-2">
                         <ChevronRight className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
                         <span className="text-gray-700">{tip}</span>
@@ -503,31 +628,26 @@ export default function MealPlanDetailPage() {
                   <div className="grid md:grid-cols-3 gap-4">
                     <div className="text-center p-4 bg-blue-50 rounded-lg">
                       <p className="text-3xl font-bold text-blue-900">
-                        {
-                          plan.mealPlanData.mealPlan.summary.macroDistribution
-                            .protein
-                        }
-                        %
+                        {summary?.macronutrients?.protein ||
+                          summary?.macroDistribution?.protein ||
+                          0}
                       </p>
                       <p className="text-sm text-blue-700 mt-1">Protein</p>
                     </div>
                     <div className="text-center p-4 bg-green-50 rounded-lg">
                       <p className="text-3xl font-bold text-green-900">
-                        {
-                          plan.mealPlanData.mealPlan.summary.macroDistribution
-                            .carbs
-                        }
+                        {summary?.macronutrients?.carbs ||
+                          summary?.macroDistribution?.carbs ||
+                          0}
                         %
                       </p>
                       <p className="text-sm text-green-700 mt-1">Carbs</p>
                     </div>
                     <div className="text-center p-4 bg-purple-50 rounded-lg">
                       <p className="text-3xl font-bold text-purple-900">
-                        {
-                          plan.mealPlanData.mealPlan.summary.macroDistribution
-                            .fats
-                        }
-                        %
+                        {summary?.macronutrients?.fats ||
+                          summary?.macroDistribution?.fats ||
+                          0}
                       </p>
                       <p className="text-sm text-purple-700 mt-1">Fats</p>
                     </div>
@@ -540,54 +660,45 @@ export default function MealPlanDetailPage() {
                   <CardTitle>Total Nutrition</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="p-4 bg-orange-50 rounded-lg">
-                      <p className="text-2xl font-bold text-orange-900">
-                        {plan.totalCalories.toLocaleString()}
-                      </p>
-                      <p className="text-sm text-orange-700 mt-1">
-                        Total Calories ({totalDays} days)
-                      </p>
-                    </div>
-                    <div className="p-4 bg-yellow-50 rounded-lg">
-                      <p className="text-2xl font-bold text-yellow-900">
-                        PKR {plan.estimatedCost.toFixed(0)}
-                      </p>
-                      <p className="text-sm text-yellow-700 mt-1">
-                        Estimated Cost
-                      </p>
-                    </div>
+                  <div className="p-4 bg-orange-50 rounded-lg">
+                    <p className="text-2xl font-bold text-orange-900">
+                      {plan.totalCalories
+                        ? plan.totalCalories.toLocaleString()
+                        : 0}
+                    </p>
+                    <p className="text-sm text-orange-700 mt-1">
+                      Total Calories ({totalDays} days)
+                    </p>
                   </div>
                 </CardContent>
               </Card>
 
-              {plan.mealPlanData.mealPlan.healthWarnings &&
-                plan.mealPlanData.mealPlan.healthWarnings.length > 0 && (
-                  <Card className="border-yellow-200 bg-yellow-50">
-                    <CardHeader>
-                      <CardTitle className="text-yellow-900">
-                        Health Warnings
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <ul className="space-y-2">
-                        {plan.mealPlanData.mealPlan.healthWarnings.map(
-                          (warning, idx) => (
-                            <li key={idx} className="flex items-start gap-2">
-                              <ChevronRight className="h-5 w-5 text-yellow-600 mt-0.5 flex-shrink-0" />
-                              <span className="text-yellow-900">{warning}</span>
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    </CardContent>
-                  </Card>
-                )}
+              {healthWarnings.length > 0 && (
+                <Card className="border-yellow-200 bg-yellow-50">
+                  <CardHeader>
+                    <CardTitle className="text-yellow-900">
+                      Health Warnings
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2">
+                      {healthWarnings.map((warning: string, idx: number) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <ChevronRight className="h-5 w-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+                          <span className="text-yellow-900">{warning}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              )}
 
-              {plan.mealPlanData.disclaimer && (
+              {(plan.mealPlanData?.disclaimer ||
+                plan.mealPlanData?.mealPlan?.disclaimer) && (
                 <Alert>
                   <AlertDescription className="text-sm text-gray-600">
-                    {plan.mealPlanData.disclaimer}
+                    {plan.mealPlanData?.disclaimer ||
+                      plan.mealPlanData?.mealPlan?.disclaimer}
                   </AlertDescription>
                 </Alert>
               )}
