@@ -24,16 +24,18 @@ export interface AdminUsersResponse {
 }
 
 export async function getAllUsers(page = 1, limit = 10) {
-  const response = await apiClient.get<{ success: boolean; data: AdminUsersResponse }>(
-    `/api/admin/users?page=${page}&limit=${limit}`
-  );
+  const response = await apiClient.get<{
+    success: boolean;
+    data: AdminUsersResponse;
+  }>(`/api/admin/users?page=${page}&limit=${limit}`);
   return response.data.data;
 }
 
 export async function searchUsers(query: string) {
-  const response = await apiClient.get<{ success: boolean; data: AdminUsersResponse }>(
-    `/api/admin/users/search?q=${encodeURIComponent(query)}`
-  );
+  const response = await apiClient.get<{
+    success: boolean;
+    data: AdminUsersResponse;
+  }>(`/api/admin/users/search?q=${encodeURIComponent(query)}`);
   return response.data.data;
 }
 
@@ -44,7 +46,15 @@ export async function getUserById(id: string) {
   return response.data.data;
 }
 
-export async function updateUser(id: string, data: { firstName?: string; lastName?: string; role?: string; isVerified?: boolean }) {
+export async function updateUser(
+  id: string,
+  data: {
+    firstName?: string;
+    lastName?: string;
+    role?: string;
+    isVerified?: boolean;
+  }
+) {
   const response = await apiClient.put<{ success: boolean; data: AdminUser }>(
     `/api/admin/users/${id}`,
     data
@@ -53,9 +63,10 @@ export async function updateUser(id: string, data: { firstName?: string; lastNam
 }
 
 export async function deleteUser(id: string) {
-  const response = await apiClient.delete<{ success: boolean; message: string }>(
-    `/api/admin/users/${id}`
-  );
+  const response = await apiClient.delete<{
+    success: boolean;
+    message: string;
+  }>(`/api/admin/users/${id}`);
   return response.data;
 }
 
@@ -87,15 +98,21 @@ export interface AdminArticlesResponse {
 }
 
 export async function getAllArticles(page = 1, limit = 10) {
-  const response = await apiClient.get<{ success: boolean; data: AdminArticlesResponse }>(
-    `/api/articles?page=${page}&limit=${limit}`
-  );
+  const response = await apiClient.get<{
+    success: boolean;
+    data: AdminArticlesResponse;
+  }>(`/api/articles?page=${page}&limit=${limit}`);
   return response.data.data;
 }
 
 export async function searchArticles(query: string, page = 1, limit = 10) {
-  const response = await apiClient.get<{ success: boolean; data: AdminArticlesResponse }>(
-    `/api/articles/search?q=${encodeURIComponent(query)}&page=${page}&limit=${limit}`
+  const response = await apiClient.get<{
+    success: boolean;
+    data: AdminArticlesResponse;
+  }>(
+    `/api/articles/search?q=${encodeURIComponent(
+      query
+    )}&page=${page}&limit=${limit}`
   );
   return response.data.data;
 }
@@ -110,25 +127,26 @@ export async function createArticle(data: {
   readTime?: number;
   tags?: string[];
 }) {
-  const response = await apiClient.post<{ success: boolean; data: AdminArticle }>(
-    `/api/admin/articles`,
-    data
-  );
+  const response = await apiClient.post<{
+    success: boolean;
+    data: AdminArticle;
+  }>(`/api/admin/articles`, data);
   return response.data.data;
 }
 
 export async function updateArticle(id: string, data: Partial<AdminArticle>) {
-  const response = await apiClient.put<{ success: boolean; data: AdminArticle }>(
-    `/api/admin/articles/${id}`,
-    data
-  );
+  const response = await apiClient.put<{
+    success: boolean;
+    data: AdminArticle;
+  }>(`/api/admin/articles/${id}`, data);
   return response.data.data;
 }
 
 export async function deleteArticle(id: string) {
-  const response = await apiClient.delete<{ success: boolean; message: string }>(
-    `/api/admin/articles/${id}`
-  );
+  const response = await apiClient.delete<{
+    success: boolean;
+    message: string;
+  }>(`/api/admin/articles/${id}`);
   return response.data;
 }
 
@@ -161,12 +179,20 @@ export interface TicketStats {
   averageResponseTime: string;
 }
 
-export async function getAllTickets(page = 1, limit = 10, status?: string, priority?: string) {
+export async function getAllTickets(
+  page = 1,
+  limit = 10,
+  status?: string,
+  priority?: string
+) {
   let url = `/api/admin/tickets?page=${page}&limit=${limit}`;
   if (status) url += `&status=${status}`;
   if (priority) url += `&priority=${priority}`;
-  
-  const response = await apiClient.get<{ success: boolean; data: { tickets: AdminTicket[]; pagination: any } }>(url);
+
+  const response = await apiClient.get<{
+    success: boolean;
+    data: { tickets: AdminTicket[]; pagination: any };
+  }>(url);
   return response.data.data;
 }
 
@@ -177,7 +203,10 @@ export async function getTicketStats() {
   return response.data.data;
 }
 
-export async function resolveTicket(id: string, data: { resolutionNote: string }) {
+export async function resolveTicket(
+  id: string,
+  data: { resolutionNote: string }
+) {
   const response = await apiClient.put<{ success: boolean; data: AdminTicket }>(
     `/api/admin/tickets/${id}/resolve`,
     data
@@ -186,9 +215,10 @@ export async function resolveTicket(id: string, data: { resolutionNote: string }
 }
 
 export async function deleteTicket(id: string) {
-  const response = await apiClient.delete<{ success: boolean; message: string }>(
-    `/api/admin/tickets/${id}`
-  );
+  const response = await apiClient.delete<{
+    success: boolean;
+    message: string;
+  }>(`/api/admin/tickets/${id}`);
   return response.data;
 }
 
@@ -236,15 +266,21 @@ export interface AdminMedicinesResponse {
 }
 
 export async function getAllMedicines(page = 1, limit = 10) {
-  const response = await apiClient.get<{ success: boolean; data: AdminMedicinesResponse }>(
-    `/api/medicines?page=${page}&limit=${limit}`
-  );
+  const response = await apiClient.get<{
+    success: boolean;
+    data: AdminMedicinesResponse;
+  }>(`/api/medicines?page=${page}&limit=${limit}`);
   return response.data.data;
 }
 
 export async function searchMedicines(query: string, page = 1, limit = 10) {
-  const response = await apiClient.get<{ success: boolean; data: AdminMedicinesResponse }>(
-    `/api/medicines/search?q=${encodeURIComponent(query)}&page=${page}&limit=${limit}`
+  const response = await apiClient.get<{
+    success: boolean;
+    data: AdminMedicinesResponse;
+  }>(
+    `/api/medicines/search?q=${encodeURIComponent(
+      query
+    )}&page=${page}&limit=${limit}`
   );
   return response.data.data;
 }
@@ -266,25 +302,26 @@ export async function createMedicine(data: {
     warning1?: string;
   };
 }) {
-  const response = await apiClient.post<{ success: boolean; data: AdminMedicine }>(
-    `/api/admin/medicines`,
-    data
-  );
+  const response = await apiClient.post<{
+    success: boolean;
+    data: AdminMedicine;
+  }>(`/api/admin/medicines`, data);
   return response.data.data;
 }
 
 export async function updateMedicine(id: string, data: Partial<AdminMedicine>) {
-  const response = await apiClient.put<{ success: boolean; data: AdminMedicine }>(
-    `/api/admin/medicines/${id}`,
-    data
-  );
+  const response = await apiClient.put<{
+    success: boolean;
+    data: AdminMedicine;
+  }>(`/api/admin/medicines/${id}`, data);
   return response.data.data;
 }
 
 export async function deleteMedicine(id: string) {
-  const response = await apiClient.delete<{ success: boolean; message: string }>(
-    `/api/admin/medicines/${id}`
-  );
+  const response = await apiClient.delete<{
+    success: boolean;
+    message: string;
+  }>(`/api/admin/medicines/${id}`);
   return response.data;
 }
 
@@ -343,14 +380,17 @@ export async function getAllReviews(params?: {
   if (params?.limit) queryParams.append("limit", params.limit.toString());
   if (params?.medicineId) queryParams.append("medicineId", params.medicineId);
   if (params?.rating) queryParams.append("rating", params.rating.toString());
-  if (params?.isApproved !== undefined) queryParams.append("isApproved", params.isApproved.toString());
-  if (params?.isPublished !== undefined) queryParams.append("isPublished", params.isPublished.toString());
+  if (params?.isApproved !== undefined)
+    queryParams.append("isApproved", params.isApproved.toString());
+  if (params?.isPublished !== undefined)
+    queryParams.append("isPublished", params.isPublished.toString());
   if (params?.orderBy) queryParams.append("orderBy", params.orderBy);
   if (params?.order) queryParams.append("order", params.order);
 
-  const response = await apiClient.get<{ success: boolean; data: { reviews: AdminReview[]; pagination: any } }>(
-    `/api/reviews/admin/all?${queryParams.toString()}`
-  );
+  const response = await apiClient.get<{
+    success: boolean;
+    data: { reviews: AdminReview[]; pagination: any };
+  }>(`/api/reviews/admin/all?${queryParams.toString()}`);
   return response.data.data;
 }
 
@@ -362,24 +402,25 @@ export async function getReviewStats() {
 }
 
 export async function approveReview(id: string, isApproved: boolean) {
-  const response = await apiClient.patch<{ success: boolean; data: AdminReview }>(
-    `/api/reviews/admin/${id}/approve`,
-    { isApproved }
-  );
+  const response = await apiClient.patch<{
+    success: boolean;
+    data: AdminReview;
+  }>(`/api/reviews/admin/${id}/approve`, { isApproved });
   return response.data.data;
 }
 
 export async function publishReview(id: string, isPublished: boolean) {
-  const response = await apiClient.patch<{ success: boolean; data: AdminReview }>(
-    `/api/reviews/admin/${id}/publish`,
-    { isPublished }
-  );
+  const response = await apiClient.patch<{
+    success: boolean;
+    data: AdminReview;
+  }>(`/api/reviews/admin/${id}/publish`, { isPublished });
   return response.data.data;
 }
 
 export async function deleteReview(id: string) {
-  const response = await apiClient.delete<{ success: boolean; message: string }>(
-    `/api/reviews/admin/${id}`
-  );
+  const response = await apiClient.delete<{
+    success: boolean;
+    message: string;
+  }>(`/api/reviews/admin/${id}`);
   return response.data;
 }

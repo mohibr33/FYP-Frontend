@@ -16,7 +16,12 @@ export default function GoogleCallbackPage() {
     const token = searchParams.get("token");
     const userString = searchParams.get("user");
 
-    console.log("Callback received - Token:", !!token, "User string:", userString);
+    console.log(
+      "Callback received - Token:",
+      !!token,
+      "User string:",
+      userString
+    );
 
     if (!token || !userString) {
       setError("Invalid callback data. Please try logging in again.");
@@ -27,7 +32,7 @@ export default function GoogleCallbackPage() {
     try {
       // Decode user data - handle multiple encoding scenarios
       let decodedUserString = userString;
-      
+
       // Try decoding if it's URL encoded
       try {
         decodedUserString = decodeURIComponent(userString);
@@ -53,24 +58,26 @@ export default function GoogleCallbackPage() {
       // Small delay to ensure localStorage is set
       setTimeout(() => {
         // Refresh profile to sync auth context
-        refreshProfile().then(() => {
-          // Check user role and redirect accordingly
-          if (user.role === "admin") {
-            console.log("Admin user detected, redirecting to admin panel");
-            router.push("/admin");
-          } else {
-            console.log("Regular user, redirecting to dashboard");
-            router.push("/dashboard");
-          }
-        }).catch((profileErr) => {
-          console.error("Failed to refresh profile:", profileErr);
-          // Check user role even if profile refresh fails
-          if (user.role === "admin") {
-            router.push("/admin");
-          } else {
-            router.push("/dashboard");
-          }
-        });
+        refreshProfile()
+          .then(() => {
+            // Check user role and redirect accordingly
+            if (user.role === "admin") {
+              console.log("Admin user detected, redirecting to admin panel");
+              router.push("/admin");
+            } else {
+              console.log("Regular user, redirecting to dashboard");
+              router.push("/dashboard");
+            }
+          })
+          .catch((profileErr) => {
+            console.error("Failed to refresh profile:", profileErr);
+            // Check user role even if profile refresh fails
+            if (user.role === "admin") {
+              router.push("/admin");
+            } else {
+              router.push("/dashboard");
+            }
+          });
       }, 100);
     } catch (err) {
       console.error("Failed to process Google OAuth callback:", err);

@@ -29,7 +29,14 @@ import {
   deleteArticle,
   AdminArticle,
 } from "@/lib/api/admin";
-import { ChevronLeft, ChevronRight, Trash2, Edit, Plus, Search } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Trash2,
+  Edit,
+  Plus,
+  Search,
+} from "lucide-react";
 import { toast } from "sonner";
 
 export default function ArticlesManagement() {
@@ -44,7 +51,9 @@ export default function ArticlesManagement() {
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedArticle, setSelectedArticle] = useState<AdminArticle | null>(null);
+  const [selectedArticle, setSelectedArticle] = useState<AdminArticle | null>(
+    null
+  );
 
   // Form states
   const [formData, setFormData] = useState({
@@ -96,14 +105,22 @@ export default function ArticlesManagement() {
   }
 
   async function handleCreateArticle() {
-    if (!formData.title || !formData.content || !formData.category || !formData.author) {
+    if (
+      !formData.title ||
+      !formData.content ||
+      !formData.category ||
+      !formData.author
+    ) {
       toast.error("Please fill in all required fields");
       return;
     }
 
     try {
       const tagsArray = formData.tags
-        ? formData.tags.split(",").map((tag) => tag.trim()).filter(Boolean)
+        ? formData.tags
+            .split(",")
+            .map((tag) => tag.trim())
+            .filter(Boolean)
         : [];
 
       await createArticle({
@@ -129,14 +146,22 @@ export default function ArticlesManagement() {
   async function handleUpdateArticle() {
     if (!selectedArticle) return;
 
-    if (!formData.title || !formData.content || !formData.category || !formData.author) {
+    if (
+      !formData.title ||
+      !formData.content ||
+      !formData.category ||
+      !formData.author
+    ) {
       toast.error("Please fill in all required fields");
       return;
     }
 
     try {
       const tagsArray = formData.tags
-        ? formData.tags.split(",").map((tag) => tag.trim()).filter(Boolean)
+        ? formData.tags
+            .split(",")
+            .map((tag) => tag.trim())
+            .filter(Boolean)
         : [];
 
       await updateArticle(selectedArticle.id, {
@@ -263,7 +288,10 @@ export default function ArticlesManagement() {
                   <TableBody>
                     {articles.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={6} className="text-center text-gray-500">
+                        <TableCell
+                          colSpan={6}
+                          className="text-center text-gray-500"
+                        >
                           No articles found
                         </TableCell>
                       </TableRow>
@@ -271,7 +299,9 @@ export default function ArticlesManagement() {
                       articles.map((article) => (
                         <TableRow key={article.id}>
                           <TableCell className="max-w-xs">
-                            <div className="font-medium truncate">{article.title}</div>
+                            <div className="font-medium truncate">
+                              {article.title}
+                            </div>
                             {article.excerpt && (
                               <div className="text-xs text-gray-500 truncate mt-1">
                                 {article.excerpt}
@@ -329,7 +359,9 @@ export default function ArticlesManagement() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                      onClick={() =>
+                        setPage((p) => Math.min(totalPages, p + 1))
+                      }
                       disabled={page === totalPages}
                     >
                       <ChevronRight className="h-4 w-4" />
@@ -353,7 +385,9 @@ export default function ArticlesManagement() {
               <Label>Title *</Label>
               <Input
                 value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
                 placeholder="Article title"
               />
             </div>
@@ -362,7 +396,9 @@ export default function ArticlesManagement() {
                 <Label>Category *</Label>
                 <Input
                   value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, category: e.target.value })
+                  }
                   placeholder="e.g., Health Tips, Nutrition"
                 />
               </div>
@@ -370,7 +406,9 @@ export default function ArticlesManagement() {
                 <Label>Author *</Label>
                 <Input
                   value={formData.author}
-                  onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, author: e.target.value })
+                  }
                   placeholder="Author name"
                 />
               </div>
@@ -379,7 +417,9 @@ export default function ArticlesManagement() {
               <Label>Excerpt</Label>
               <Textarea
                 value={formData.excerpt}
-                onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, excerpt: e.target.value })
+                }
                 placeholder="Brief summary of the article"
                 rows={2}
               />
@@ -388,7 +428,9 @@ export default function ArticlesManagement() {
               <Label>Content *</Label>
               <Textarea
                 value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, content: e.target.value })
+                }
                 placeholder="Full article content"
                 rows={10}
               />
@@ -398,7 +440,9 @@ export default function ArticlesManagement() {
                 <Label>Image URL</Label>
                 <Input
                   value={formData.imageUrl}
-                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, imageUrl: e.target.value })
+                  }
                   placeholder="https://example.com/image.jpg"
                 />
               </div>
@@ -408,7 +452,10 @@ export default function ArticlesManagement() {
                   type="number"
                   value={formData.readTime}
                   onChange={(e) =>
-                    setFormData({ ...formData, readTime: parseInt(e.target.value) || 5 })
+                    setFormData({
+                      ...formData,
+                      readTime: parseInt(e.target.value) || 5,
+                    })
                   }
                   min={1}
                 />
@@ -418,7 +465,9 @@ export default function ArticlesManagement() {
               <Label>Tags (comma-separated)</Label>
               <Input
                 value={formData.tags}
-                onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, tags: e.target.value })
+                }
                 placeholder="health, wellness, lifestyle"
               />
             </div>
@@ -449,7 +498,9 @@ export default function ArticlesManagement() {
               <Label>Title *</Label>
               <Input
                 value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
                 placeholder="Article title"
               />
             </div>
@@ -458,7 +509,9 @@ export default function ArticlesManagement() {
                 <Label>Category *</Label>
                 <Input
                   value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, category: e.target.value })
+                  }
                   placeholder="e.g., Health Tips, Nutrition"
                 />
               </div>
@@ -466,7 +519,9 @@ export default function ArticlesManagement() {
                 <Label>Author *</Label>
                 <Input
                   value={formData.author}
-                  onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, author: e.target.value })
+                  }
                   placeholder="Author name"
                 />
               </div>
@@ -475,7 +530,9 @@ export default function ArticlesManagement() {
               <Label>Excerpt</Label>
               <Textarea
                 value={formData.excerpt}
-                onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, excerpt: e.target.value })
+                }
                 placeholder="Brief summary of the article"
                 rows={2}
               />
@@ -484,7 +541,9 @@ export default function ArticlesManagement() {
               <Label>Content *</Label>
               <Textarea
                 value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, content: e.target.value })
+                }
                 placeholder="Full article content"
                 rows={10}
               />
@@ -494,7 +553,9 @@ export default function ArticlesManagement() {
                 <Label>Image URL</Label>
                 <Input
                   value={formData.imageUrl}
-                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, imageUrl: e.target.value })
+                  }
                   placeholder="https://example.com/image.jpg"
                 />
               </div>
@@ -504,7 +565,10 @@ export default function ArticlesManagement() {
                   type="number"
                   value={formData.readTime}
                   onChange={(e) =>
-                    setFormData({ ...formData, readTime: parseInt(e.target.value) || 5 })
+                    setFormData({
+                      ...formData,
+                      readTime: parseInt(e.target.value) || 5,
+                    })
                   }
                   min={1}
                 />
@@ -514,7 +578,9 @@ export default function ArticlesManagement() {
               <Label>Tags (comma-separated)</Label>
               <Input
                 value={formData.tags}
-                onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, tags: e.target.value })
+                }
                 placeholder="health, wellness, lifestyle"
               />
             </div>
@@ -543,8 +609,8 @@ export default function ArticlesManagement() {
           </DialogHeader>
           <p>
             Are you sure you want to delete the article{" "}
-            <strong>&quot;{selectedArticle?.title}&quot;</strong>? This action cannot be
-            undone.
+            <strong>&quot;{selectedArticle?.title}&quot;</strong>? This action
+            cannot be undone.
           </p>
           <DialogFooter>
             <Button

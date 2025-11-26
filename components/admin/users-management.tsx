@@ -19,9 +19,21 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
-import { getAllUsers, searchUsers, updateUser, deleteUser, AdminUser } from "@/lib/api/admin";
+import {
+  getAllUsers,
+  searchUsers,
+  updateUser,
+  deleteUser,
+  AdminUser,
+} from "@/lib/api/admin";
 import { Search, Edit, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 
@@ -144,7 +156,10 @@ export default function UsersManagement() {
                 <TableBody>
                   {users.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={6} className="text-center text-gray-500">
+                      <TableCell
+                        colSpan={6}
+                        className="text-center text-gray-500"
+                      >
                         No users found
                       </TableCell>
                     </TableRow>
@@ -253,7 +268,10 @@ export default function UsersManagement() {
                 <Input
                   value={editingUser.firstName}
                   onChange={(e) =>
-                    setEditingUser({ ...editingUser, firstName: e.target.value })
+                    setEditingUser({
+                      ...editingUser,
+                      firstName: e.target.value,
+                    })
                   }
                 />
               </div>
@@ -289,7 +307,10 @@ export default function UsersManagement() {
                   id="isVerified"
                   checked={editingUser.isVerified}
                   onChange={(e) =>
-                    setEditingUser({ ...editingUser, isVerified: e.target.checked })
+                    setEditingUser({
+                      ...editingUser,
+                      isVerified: e.target.checked,
+                    })
                   }
                   className="h-4 w-4"
                 />
@@ -320,7 +341,10 @@ export default function UsersManagement() {
             ? This action cannot be undone.
           </p>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setDeleteDialogOpen(false)}
+            >
               Cancel
             </Button>
             <Button variant="destructive" onClick={handleDeleteUser}>

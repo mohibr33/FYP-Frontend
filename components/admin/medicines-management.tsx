@@ -29,7 +29,14 @@ import {
   deleteMedicine,
   AdminMedicine,
 } from "@/lib/api/admin";
-import { ChevronLeft, ChevronRight, Trash2, Edit, Plus, Search } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Trash2,
+  Edit,
+  Plus,
+  Search,
+} from "lucide-react";
 import { toast } from "sonner";
 
 export default function MedicinesManagement() {
@@ -44,7 +51,8 @@ export default function MedicinesManagement() {
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedMedicine, setSelectedMedicine] = useState<AdminMedicine | null>(null);
+  const [selectedMedicine, setSelectedMedicine] =
+    useState<AdminMedicine | null>(null);
 
   // Form states
   const [formData, setFormData] = useState({
@@ -195,7 +203,8 @@ export default function MedicinesManagement() {
       childCategory: medicine.childCategory || "",
       generics: medicine.productDetails?.generics || "",
       description: medicine.productDetails?.description || "",
-      requiresPrescriptionYesNo: medicine.productDetails?.requiresPrescriptionYesNo || "No",
+      requiresPrescriptionYesNo:
+        medicine.productDetails?.requiresPrescriptionYesNo || "No",
       indication: medicine.productDetails?.indication || "",
       sideEffects: medicine.productDetails?.sideEffects || "",
       dosage: medicine.productDetails?.dosage || "",
@@ -285,27 +294,38 @@ export default function MedicinesManagement() {
                   <TableBody>
                     {medicines.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={7} className="text-center text-gray-500">
+                        <TableCell
+                          colSpan={7}
+                          className="text-center text-gray-500"
+                        >
                           No medicines found
                         </TableCell>
                       </TableRow>
                     ) : (
                       medicines.map((medicine) => (
                         <TableRow key={medicine.id}>
-                          <TableCell className="font-mono text-xs">{medicine.productId}</TableCell>
-                          <TableCell className="font-medium max-w-xs truncate">{medicine.title}</TableCell>
+                          <TableCell className="font-mono text-xs">
+                            {medicine.productId}
+                          </TableCell>
+                          <TableCell className="font-medium max-w-xs truncate">
+                            {medicine.title}
+                          </TableCell>
                           <TableCell>{medicine.brand}</TableCell>
                           <TableCell>{medicine.childCategory || "-"}</TableCell>
-                          <TableCell className="text-sm">{medicine.productDetails?.generics || "-"}</TableCell>
+                          <TableCell className="text-sm">
+                            {medicine.productDetails?.generics || "-"}
+                          </TableCell>
                           <TableCell>
                             <span
                               className={`px-2 py-1 rounded text-xs ${
-                                medicine.productDetails?.requiresPrescriptionYesNo === "Yes"
+                                medicine.productDetails
+                                  ?.requiresPrescriptionYesNo === "Yes"
                                   ? "bg-orange-100 text-orange-800"
                                   : "bg-green-100 text-green-800"
                               }`}
                             >
-                              {medicine.productDetails?.requiresPrescriptionYesNo || "No"}
+                              {medicine.productDetails
+                                ?.requiresPrescriptionYesNo || "No"}
                             </span>
                           </TableCell>
                           <TableCell className="text-right">
@@ -353,7 +373,9 @@ export default function MedicinesManagement() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                      onClick={() =>
+                        setPage((p) => Math.min(totalPages, p + 1))
+                      }
                       disabled={page === totalPages}
                     >
                       <ChevronRight className="h-4 w-4" />
@@ -378,7 +400,9 @@ export default function MedicinesManagement() {
                 <Label>Medicine Title *</Label>
                 <Input
                   value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
                   placeholder="e.g., Panadol Tablets"
                 />
               </div>
@@ -386,7 +410,9 @@ export default function MedicinesManagement() {
                 <Label>Brand *</Label>
                 <Input
                   value={formData.brand}
-                  onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, brand: e.target.value })
+                  }
                   placeholder="e.g., GlaxoSmithKline"
                 />
               </div>
@@ -396,7 +422,9 @@ export default function MedicinesManagement() {
                 <Label>Generic Name</Label>
                 <Input
                   value={formData.generics}
-                  onChange={(e) => setFormData({ ...formData, generics: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, generics: e.target.value })
+                  }
                   placeholder="e.g., Paracetamol"
                 />
               </div>
@@ -404,7 +432,9 @@ export default function MedicinesManagement() {
                 <Label>Category</Label>
                 <Input
                   value={formData.childCategory}
-                  onChange={(e) => setFormData({ ...formData, childCategory: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, childCategory: e.target.value })
+                  }
                   placeholder="e.g., Pain Relief"
                 />
               </div>
@@ -413,7 +443,9 @@ export default function MedicinesManagement() {
               <Label>Product Image URL</Label>
               <Input
                 value={formData.productImage}
-                onChange={(e) => setFormData({ ...formData, productImage: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, productImage: e.target.value })
+                }
                 placeholder="https://example.com/image.jpg"
               />
             </div>
@@ -421,7 +453,9 @@ export default function MedicinesManagement() {
               <Label>Used For</Label>
               <Input
                 value={formData.usedFor}
-                onChange={(e) => setFormData({ ...formData, usedFor: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, usedFor: e.target.value })
+                }
                 placeholder="e.g., Headache, Fever, Pain"
               />
             </div>
@@ -429,7 +463,9 @@ export default function MedicinesManagement() {
               <Label>Description</Label>
               <Textarea
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
                 placeholder="Medicine description"
                 rows={3}
               />
@@ -439,7 +475,9 @@ export default function MedicinesManagement() {
                 <Label>Indication</Label>
                 <Textarea
                   value={formData.indication}
-                  onChange={(e) => setFormData({ ...formData, indication: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, indication: e.target.value })
+                  }
                   placeholder="Medical indications"
                   rows={2}
                 />
@@ -448,7 +486,9 @@ export default function MedicinesManagement() {
                 <Label>Dosage</Label>
                 <Textarea
                   value={formData.dosage}
-                  onChange={(e) => setFormData({ ...formData, dosage: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, dosage: e.target.value })
+                  }
                   placeholder="Recommended dosage"
                   rows={2}
                 />
@@ -459,7 +499,10 @@ export default function MedicinesManagement() {
               <select
                 value={formData.requiresPrescriptionYesNo}
                 onChange={(e) =>
-                  setFormData({ ...formData, requiresPrescriptionYesNo: e.target.value })
+                  setFormData({
+                    ...formData,
+                    requiresPrescriptionYesNo: e.target.value,
+                  })
                 }
                 className="w-full px-3 py-2 border rounded-md"
               >
@@ -471,7 +514,9 @@ export default function MedicinesManagement() {
               <Label>Side Effects</Label>
               <Textarea
                 value={formData.sideEffects}
-                onChange={(e) => setFormData({ ...formData, sideEffects: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, sideEffects: e.target.value })
+                }
                 placeholder="List of side effects"
                 rows={2}
               />
@@ -480,7 +525,9 @@ export default function MedicinesManagement() {
               <Label>Precautions</Label>
               <Textarea
                 value={formData.precautions}
-                onChange={(e) => setFormData({ ...formData, precautions: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, precautions: e.target.value })
+                }
                 placeholder="Precautions to take"
                 rows={2}
               />
@@ -489,7 +536,9 @@ export default function MedicinesManagement() {
               <Label>Warning</Label>
               <Textarea
                 value={formData.warning1}
-                onChange={(e) => setFormData({ ...formData, warning1: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, warning1: e.target.value })
+                }
                 placeholder="Important warnings"
                 rows={2}
               />
@@ -522,7 +571,9 @@ export default function MedicinesManagement() {
                 <Label>Medicine Title *</Label>
                 <Input
                   value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
                   placeholder="e.g., Panadol Tablets"
                 />
               </div>
@@ -530,7 +581,9 @@ export default function MedicinesManagement() {
                 <Label>Brand *</Label>
                 <Input
                   value={formData.brand}
-                  onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, brand: e.target.value })
+                  }
                   placeholder="e.g., GlaxoSmithKline"
                 />
               </div>
@@ -540,7 +593,9 @@ export default function MedicinesManagement() {
                 <Label>Generic Name</Label>
                 <Input
                   value={formData.generics}
-                  onChange={(e) => setFormData({ ...formData, generics: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, generics: e.target.value })
+                  }
                   placeholder="e.g., Paracetamol"
                 />
               </div>
@@ -548,7 +603,9 @@ export default function MedicinesManagement() {
                 <Label>Category</Label>
                 <Input
                   value={formData.childCategory}
-                  onChange={(e) => setFormData({ ...formData, childCategory: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, childCategory: e.target.value })
+                  }
                   placeholder="e.g., Pain Relief"
                 />
               </div>
@@ -557,7 +614,9 @@ export default function MedicinesManagement() {
               <Label>Product Image URL</Label>
               <Input
                 value={formData.productImage}
-                onChange={(e) => setFormData({ ...formData, productImage: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, productImage: e.target.value })
+                }
                 placeholder="https://example.com/image.jpg"
               />
             </div>
@@ -565,7 +624,9 @@ export default function MedicinesManagement() {
               <Label>Used For</Label>
               <Input
                 value={formData.usedFor}
-                onChange={(e) => setFormData({ ...formData, usedFor: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, usedFor: e.target.value })
+                }
                 placeholder="e.g., Headache, Fever, Pain"
               />
             </div>
@@ -573,7 +634,9 @@ export default function MedicinesManagement() {
               <Label>Description</Label>
               <Textarea
                 value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
                 placeholder="Medicine description"
                 rows={3}
               />
@@ -583,7 +646,9 @@ export default function MedicinesManagement() {
                 <Label>Indication</Label>
                 <Textarea
                   value={formData.indication}
-                  onChange={(e) => setFormData({ ...formData, indication: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, indication: e.target.value })
+                  }
                   placeholder="Medical indications"
                   rows={2}
                 />
@@ -592,7 +657,9 @@ export default function MedicinesManagement() {
                 <Label>Dosage</Label>
                 <Textarea
                   value={formData.dosage}
-                  onChange={(e) => setFormData({ ...formData, dosage: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, dosage: e.target.value })
+                  }
                   placeholder="Recommended dosage"
                   rows={2}
                 />
@@ -603,7 +670,10 @@ export default function MedicinesManagement() {
               <select
                 value={formData.requiresPrescriptionYesNo}
                 onChange={(e) =>
-                  setFormData({ ...formData, requiresPrescriptionYesNo: e.target.value })
+                  setFormData({
+                    ...formData,
+                    requiresPrescriptionYesNo: e.target.value,
+                  })
                 }
                 className="w-full px-3 py-2 border rounded-md"
               >
@@ -615,7 +685,9 @@ export default function MedicinesManagement() {
               <Label>Side Effects</Label>
               <Textarea
                 value={formData.sideEffects}
-                onChange={(e) => setFormData({ ...formData, sideEffects: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, sideEffects: e.target.value })
+                }
                 placeholder="List of side effects"
                 rows={2}
               />
@@ -624,7 +696,9 @@ export default function MedicinesManagement() {
               <Label>Precautions</Label>
               <Textarea
                 value={formData.precautions}
-                onChange={(e) => setFormData({ ...formData, precautions: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, precautions: e.target.value })
+                }
                 placeholder="Precautions to take"
                 rows={2}
               />
@@ -633,7 +707,9 @@ export default function MedicinesManagement() {
               <Label>Warning</Label>
               <Textarea
                 value={formData.warning1}
-                onChange={(e) => setFormData({ ...formData, warning1: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, warning1: e.target.value })
+                }
                 placeholder="Important warnings"
                 rows={2}
               />
@@ -663,8 +739,8 @@ export default function MedicinesManagement() {
           </DialogHeader>
           <p>
             Are you sure you want to delete{" "}
-            <strong>&quot;{selectedMedicine?.name}&quot;</strong>? This action cannot be
-            undone.
+            <strong>&quot;{selectedMedicine?.name}&quot;</strong>? This action
+            cannot be undone.
           </p>
           <DialogFooter>
             <Button

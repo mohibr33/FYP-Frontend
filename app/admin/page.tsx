@@ -11,7 +11,14 @@ import ArticlesManagement from "@/components/admin/articles-management";
 import TicketsManagement from "@/components/admin/tickets-management";
 import MedicinesManagement from "@/components/admin/medicines-management";
 import ReviewsManagement from "@/components/admin/reviews-management";
-import { Users, FileText, Headphones, Pill, Star, BarChart3 } from "lucide-react";
+import {
+  Users,
+  FileText,
+  Headphones,
+  Pill,
+  Star,
+  BarChart3,
+} from "lucide-react";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -20,7 +27,7 @@ export default function AdminPage() {
 
   useEffect(() => {
     console.log("Admin page - authLoading:", authLoading, "user:", user);
-    
+
     if (authLoading) return;
 
     if (!user) {

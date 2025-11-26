@@ -19,7 +19,7 @@ export default function Navbar() {
 
   return (
     <nav className="border-b border-blue-100 bg-background sticky top-0 z-40">
-      <div className="max-w-6xl mx-auto px-4 flex items-center justify-between h-16">
+      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
         <Link
           href="/"
           className="flex items-center gap-2 font-bold text-xl text-blue-600"
@@ -49,6 +49,12 @@ export default function Navbar() {
           </Link>
           {user && (
             <>
+              <Link
+                href="/medical-chat"
+                className="text-muted-foreground hover:text-foreground transition"
+              >
+                AI Chat
+              </Link>
               <Link
                 href="/meal-planner"
                 className="text-muted-foreground hover:text-foreground transition"
@@ -156,6 +162,13 @@ export default function Navbar() {
           </Link>
           {user && (
             <>
+              <Link
+                href="/medical-chat"
+                className="block text-muted-foreground hover:text-foreground"
+                onClick={() => setIsOpen(false)}
+              >
+                AI Chat
+              </Link>
               <Link
                 href="/meal-planner"
                 className="block text-muted-foreground hover:text-foreground"

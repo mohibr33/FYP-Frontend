@@ -95,3 +95,65 @@ export interface CategoryResponse {
   medicines: Medicine[];
   total: number;
 }
+
+// Medical Chat Types
+export interface ChatAttachment {
+  id: string;
+  messageId: string;
+  fileName: string;
+  fileUrl: string;
+  fileType: string;
+  fileSize: number;
+  uploadedAt: string;
+}
+
+export interface ChatMessage {
+  id: string;
+  chatId: string;
+  role: 'user' | 'assistant';
+  content: string;
+  messageType: 'text' | 'voice' | 'file';
+  audioUrl?: string | null;
+  audioDuration?: number | null;
+  transcription?: string | null;
+  tokens?: number | null;
+  createdAt: string;
+  attachments?: ChatAttachment[];
+}
+
+export interface MedicalChat {
+  id: string;
+  userId: string;
+  title: string;
+  status: 'active' | 'archived';
+  createdAt: string;
+  updatedAt: string;
+  messages: ChatMessage[];
+  _count?: {
+    messages: number;
+  };
+}
+
+export interface ChatsListResponse {
+  chats: MedicalChat[];
+  pagination: Pagination;
+}
+
+export interface ChatStatsResponse {
+  totalChats: number;
+  activeChats: number;
+  archivedChats: number;
+  totalMessages: number;
+  avgMessagesPerChat: number;
+}
+
+export interface SendMessageResponse {
+  userMessage: ChatMessage;
+  assistantMessage: ChatMessage;
+  tokensUsed: number;
+}
+
+export interface SendVoiceMessageResponse extends SendMessageResponse {
+  transcription: string;
+  audioUrl: string;
+}

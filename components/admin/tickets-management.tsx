@@ -19,9 +19,22 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
-import { getAllTickets, resolveTicket, deleteTicket, getTicketStats, AdminTicket, TicketStats } from "@/lib/api/admin";
+import {
+  getAllTickets,
+  resolveTicket,
+  deleteTicket,
+  getTicketStats,
+  AdminTicket,
+  TicketStats,
+} from "@/lib/api/admin";
 import { ChevronLeft, ChevronRight, Trash2, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
 
@@ -32,7 +45,9 @@ export default function TicketsManagement() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [selectedTicket, setSelectedTicket] = useState<AdminTicket | null>(null);
+  const [selectedTicket, setSelectedTicket] = useState<AdminTicket | null>(
+    null
+  );
   const [resolveDialogOpen, setResolveDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [resolutionNote, setResolutionNote] = useState("");
@@ -67,12 +82,12 @@ export default function TicketsManagement() {
 
   async function handleResolveTicket() {
     if (!selectedTicket) return;
-    
+
     if (resolutionNote.trim().length < 10) {
       toast.error("Resolution note must be at least 10 characters long");
       return;
     }
-    
+
     try {
       await resolveTicket(selectedTicket.id, {
         resolutionNote: resolutionNote.trim(),
@@ -145,7 +160,9 @@ export default function TicketsManagement() {
           </Card>
           <Card className="p-4">
             <p className="text-sm text-gray-600">Resolved</p>
-            <p className="text-2xl font-bold text-green-600">{stats.resolved}</p>
+            <p className="text-2xl font-bold text-green-600">
+              {stats.resolved}
+            </p>
           </Card>
         </div>
       )}
@@ -189,7 +206,10 @@ export default function TicketsManagement() {
                   <TableBody>
                     {tickets.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={8} className="text-center text-gray-500">
+                        <TableCell
+                          colSpan={8}
+                          className="text-center text-gray-500"
+                        >
                           No tickets found
                         </TableCell>
                       </TableRow>
@@ -205,7 +225,9 @@ export default function TicketsManagement() {
                           <TableCell>
                             <div className="text-sm">
                               <p className="font-medium">{ticket.user?.name}</p>
-                              <p className="text-gray-500">{ticket.user?.email}</p>
+                              <p className="text-gray-500">
+                                {ticket.user?.email}
+                              </p>
                             </div>
                           </TableCell>
                           <TableCell>{ticket.category}</TableCell>
@@ -280,7 +302,9 @@ export default function TicketsManagement() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                      onClick={() =>
+                        setPage((p) => Math.min(totalPages, p + 1))
+                      }
                       disabled={page === totalPages}
                     >
                       <ChevronRight className="h-4 w-4" />
@@ -316,19 +340,30 @@ export default function TicketsManagement() {
                   onChange={(e) => setResolutionNote(e.target.value)}
                   rows={4}
                   placeholder="Enter your resolution note (minimum 10 characters)..."
-                  className={resolutionNote.trim().length > 0 && resolutionNote.trim().length < 10 ? "border-red-500" : ""}
+                  className={
+                    resolutionNote.trim().length > 0 &&
+                    resolutionNote.trim().length < 10
+                      ? "border-red-500"
+                      : ""
+                  }
                 />
-                {resolutionNote.trim().length > 0 && resolutionNote.trim().length < 10 && (
-                  <p className="text-sm text-red-600">Please enter at least 10 characters</p>
-                )}
+                {resolutionNote.trim().length > 0 &&
+                  resolutionNote.trim().length < 10 && (
+                    <p className="text-sm text-red-600">
+                      Please enter at least 10 characters
+                    </p>
+                  )}
               </div>
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setResolveDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setResolveDialogOpen(false)}
+            >
               Cancel
             </Button>
-            <Button 
+            <Button
               onClick={handleResolveTicket}
               disabled={resolutionNote.trim().length < 10}
             >
@@ -346,11 +381,14 @@ export default function TicketsManagement() {
           </DialogHeader>
           <p>
             Are you sure you want to delete ticket{" "}
-            <strong>{selectedTicket?.ticketNumber}</strong>? This action cannot be
-            undone.
+            <strong>{selectedTicket?.ticketNumber}</strong>? This action cannot
+            be undone.
           </p>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setDeleteDialogOpen(false)}
+            >
               Cancel
             </Button>
             <Button variant="destructive" onClick={handleDeleteTicket}>

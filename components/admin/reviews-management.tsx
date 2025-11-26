@@ -18,7 +18,13 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
 import {
   getAllReviews,
@@ -29,7 +35,15 @@ import {
   AdminReview,
   ReviewStats,
 } from "@/lib/api/admin";
-import { ChevronLeft, ChevronRight, Trash2, Check, X, Eye, EyeOff } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Trash2,
+  Check,
+  X,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import { toast } from "sonner";
 
 export default function ReviewsManagement() {
@@ -39,7 +53,9 @@ export default function ReviewsManagement() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [approvalFilter, setApprovalFilter] = useState<string>("all");
-  const [selectedReview, setSelectedReview] = useState<AdminReview | null>(null);
+  const [selectedReview, setSelectedReview] = useState<AdminReview | null>(
+    null
+  );
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -125,11 +141,15 @@ export default function ReviewsManagement() {
           </Card>
           <Card className="p-4">
             <p className="text-sm text-gray-600">Approved</p>
-            <p className="text-2xl font-bold text-green-600">{stats.approved}</p>
+            <p className="text-2xl font-bold text-green-600">
+              {stats.approved}
+            </p>
           </Card>
           <Card className="p-4">
             <p className="text-sm text-gray-600">Pending</p>
-            <p className="text-2xl font-bold text-yellow-600">{stats.pending}</p>
+            <p className="text-2xl font-bold text-yellow-600">
+              {stats.pending}
+            </p>
           </Card>
           <Card className="p-4">
             <p className="text-sm text-gray-600">Average Rating</p>
@@ -179,7 +199,10 @@ export default function ReviewsManagement() {
                   <TableBody>
                     {reviews.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={8} className="text-center text-gray-500">
+                        <TableCell
+                          colSpan={8}
+                          className="text-center text-gray-500"
+                        >
                           No reviews found
                         </TableCell>
                       </TableRow>
@@ -198,7 +221,9 @@ export default function ReviewsManagement() {
                           </TableCell>
                           <TableCell>
                             <div className="text-sm">
-                              <p className="font-medium">{review.medicine?.title}</p>
+                              <p className="font-medium">
+                                {review.medicine?.title}
+                              </p>
                               <p className="text-gray-500 text-xs">
                                 {review.medicine?.brand}
                               </p>
@@ -245,9 +270,7 @@ export default function ReviewsManagement() {
                                 onClick={() =>
                                   handleApprove(review.id, !review.isApproved)
                                 }
-                                title={
-                                  review.isApproved ? "Reject" : "Approve"
-                                }
+                                title={review.isApproved ? "Reject" : "Approve"}
                               >
                                 {review.isApproved ? (
                                   <X className="h-4 w-4 text-red-600" />
@@ -261,9 +284,7 @@ export default function ReviewsManagement() {
                                 onClick={() =>
                                   handlePublish(review.id, !review.isPublished)
                                 }
-                                title={
-                                  review.isPublished ? "Hide" : "Publish"
-                                }
+                                title={review.isPublished ? "Hide" : "Publish"}
                               >
                                 {review.isPublished ? (
                                   <EyeOff className="h-4 w-4" />
@@ -307,7 +328,9 @@ export default function ReviewsManagement() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                      onClick={() =>
+                        setPage((p) => Math.min(totalPages, p + 1))
+                      }
                       disabled={page === totalPages}
                     >
                       <ChevronRight className="h-4 w-4" />
@@ -331,7 +354,10 @@ export default function ReviewsManagement() {
             undone.
           </p>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setDeleteDialogOpen(false)}
+            >
               Cancel
             </Button>
             <Button variant="destructive" onClick={handleDeleteReview}>

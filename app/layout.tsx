@@ -2,6 +2,7 @@ import type React from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { headers } from "next/headers";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { AuthProvider } from "@/components/auth/auth-context";
@@ -35,18 +36,22 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersList = await headers();
+  const pathname = headersList.get("x-pathname") || "";
+  const isMedicalChatPage = pathname.startsWith("/medical-chat");
+
   return (
     <html lang="en">
       <body className={`font-sans antialiased flex flex-col min-h-screen`}>
         <AuthProvider>
           <Navbar />
           <main className="flex-1">{children}</main>
-          <Footer />
+          {!isMedicalChatPage && <Footer />}
           <Analytics />
         </AuthProvider>
       </body>

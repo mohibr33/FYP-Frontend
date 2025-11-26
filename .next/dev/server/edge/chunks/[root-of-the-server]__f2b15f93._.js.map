@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 16, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/middleware.ts"],"sourcesContent":["import { NextResponse } from 'next/server';\nimport type { NextRequest } from 'next/server';\n\nexport function middleware(request: NextRequest) {\n  const requestHeaders = new Headers(request.headers);\n  requestHeaders.set('x-pathname', request.nextUrl.pathname);\n\n  return NextResponse.next({\n    request: {\n      headers: requestHeaders,\n    },\n  });\n}\n\nexport const config = {\n  matcher: [\n    /*\n     * Match all request paths except for the ones starting with:\n     * - api (API routes)\n     * - _next/static (static files)\n     * - _next/image (image optimization files)\n     * - favicon.ico (favicon file)\n     */\n    '/((?!api|_next/static|_next/image|favicon.ico).*)',\n  ],\n};\n"],"names":[],"mappings":";;;;;;AAAA;AAAA;;AAGO,SAAS,WAAW,OAAoB;IAC7C,MAAM,iBAAiB,IAAI,QAAQ,QAAQ,OAAO;IAClD,eAAe,GAAG,CAAC,cAAc,QAAQ,OAAO,CAAC,QAAQ;IAEzD,OAAO,+TAAY,CAAC,IAAI,CAAC;QACvB,SAAS;YACP,SAAS;QACX;IACF;AACF;AAEO,MAAM,SAAS;IACpB,SAAS;QACP;;;;;;KAMC,GACD;KACD;AACH"}}]
+}
