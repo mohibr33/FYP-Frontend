@@ -61,6 +61,14 @@ export default function Navbar() {
               >
                 Support
               </Link>
+              {user.role === "admin" && (
+                <Link
+                  href="/admin"
+                  className="text-purple-600 hover:text-purple-700 font-medium transition"
+                >
+                  Admin Panel
+                </Link>
+              )}
             </>
           )}
           <Link
@@ -162,6 +170,15 @@ export default function Navbar() {
               >
                 Support
               </Link>
+              {user.role === "admin" && (
+                <Link
+                  href="/admin"
+                  className="block text-purple-600 hover:text-purple-700 font-medium"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Admin Panel
+                </Link>
+              )}
             </>
           )}
           <Link

@@ -1,8 +1,9 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/about/page": "app/about/page.js",
+  "/admin/page": "app/admin/page.js",
   "/articles/[slug]/page": "app/articles/[slug]/page.js",
   "/articles/page": "app/articles/page.js",
+  "/auth/callback/page": "app/auth/callback/page.js",
   "/auth/login/page": "app/auth/login/page.js",
   "/dashboard/page": "app/dashboard/page.js",
   "/meal-planner/generate/page": "app/meal-planner/generate/page.js",
@@ -13,6 +14,5 @@
   "/medicines/[slug]/page": "app/medicines/[slug]/page.js",
   "/medicines/page": "app/medicines/page.js",
   "/page": "app/page.js",
-  "/profile/page": "app/profile/page.js",
-  "/support/page": "app/support/page.js"
+  "/profile/page": "app/profile/page.js"
 }

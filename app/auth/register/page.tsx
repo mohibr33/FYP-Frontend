@@ -7,6 +7,8 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { GoogleIcon } from "@/components/ui/google-icon";
+import { API_BASE_URL } from "@/lib/api-config";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -32,6 +34,11 @@ export default function RegisterPage() {
 
   function update<K extends keyof typeof form>(key: K, value: string) {
     setForm((f) => ({ ...f, [key]: value }));
+  }
+
+  function handleGoogleSignup() {
+    // Redirect to Google OAuth endpoint
+    window.location.href = `${API_BASE_URL}/api/auth/google`;
   }
 
   async function onSubmit(e: React.FormEvent) {
@@ -147,6 +154,29 @@ export default function RegisterPage() {
             {loading ? "Registering..." : "Register"}
           </Button>
         </form>
+        
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">
+              Or continue with
+            </span>
+          </div>
+        </div>
+
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full"
+          onClick={handleGoogleSignup}
+          disabled={loading}
+        >
+          <GoogleIcon className="mr-2 h-4 w-4" />
+          Sign up with Google
+        </Button>
+
         <div className="text-sm text-center">
           Already have an account?{" "}
           <button
