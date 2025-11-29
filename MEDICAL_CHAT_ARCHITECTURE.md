@@ -172,19 +172,22 @@ ChatContext {
 ## Message Types Flow
 
 ### Text Message
+
 ```
 User types → ChatWindow → sendMessage() → API → AI Response → Update UI
 ```
 
 ### Voice Message
+
 ```
-User records → VoiceRecorder → Blob → sendVoice() → API 
+User records → VoiceRecorder → Blob → sendVoice() → API
   → Transcription → AI Response → Update UI
 ```
 
 ### File Attachment
+
 ```
-User selects file → FileUpload → uploadFile() → API 
+User selects file → FileUpload → uploadFile() → API
   → Store file → Update message → Update UI
 ```
 
@@ -223,7 +226,7 @@ useEffect(() => {
 useEffect(() => {
   // Cleanup media stream on unmount
   return () => {
-    stream?.getTracks().forEach(track => track.stop());
+    stream?.getTracks().forEach((track) => track.stop());
   };
 }, []);
 ```
@@ -338,12 +341,14 @@ FileUpload
 ## Quick Reference
 
 ### Most Important Files
+
 1. `components/medical-chat/chat-context.tsx` - State management
 2. `components/medical-chat/chat-window.tsx` - Main UI
 3. `lib/api/medical-chat.ts` - API integration
 4. `app/medical-chat/page.tsx` - Route entry point
 
 ### Key Functions
+
 - `createNewChat()` - Start new conversation
 - `sendMessage()` - Send text
 - `sendVoice()` - Send audio
@@ -351,6 +356,7 @@ FileUpload
 - `selectChat()` - Switch conversations
 
 ### State Updates
+
 - New chat → `setChats([new, ...prev])`
 - New message → `messages: [...prev, user, ai]`
 - Archive → `filter(chat.id !== archived)`

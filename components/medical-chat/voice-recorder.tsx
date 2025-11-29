@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useState, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Mic, Square } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import React, { useState, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Mic, Square } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface VoiceRecorderProps {
   onRecordingComplete: (audioBlob: Blob) => void;
@@ -24,7 +24,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: 'audio/webm',
+        mimeType: "audio/webm",
       });
 
       mediaRecorderRef.current = mediaRecorder;
@@ -38,7 +38,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
 
       mediaRecorder.onstop = () => {
         const audioBlob = new Blob(audioChunksRef.current, {
-          type: 'audio/webm',
+          type: "audio/webm",
         });
         onRecordingComplete(audioBlob);
         stream.getTracks().forEach((track) => track.stop());
@@ -53,8 +53,8 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
         setRecordingTime((prev) => prev + 1);
       }, 1000);
     } catch (error) {
-      console.error('Error accessing microphone:', error);
-      alert('Could not access microphone. Please check permissions.');
+      console.error("Error accessing microphone:", error);
+      alert("Could not access microphone. Please check permissions.");
     }
   };
 
@@ -71,7 +71,7 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   return (

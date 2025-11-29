@@ -3,6 +3,7 @@
 ## Overview
 
 The AI Medical Chat module is a complete implementation of the Medical Chat API with support for:
+
 - ✅ Text messaging with AI assistant
 - ✅ Voice messages with automatic transcription
 - ✅ File attachments (images, PDFs, documents)
@@ -36,12 +37,14 @@ app/
 ## Features
 
 ### 1. **Text Chat**
+
 - Send and receive text messages up to 2000 characters
 - Real-time AI responses powered by GPT-4
 - Message history with timestamps
 - Token usage tracking
 
 ### 2. **Voice Messages**
+
 - Record audio using Web Audio API
 - Automatic transcription on server
 - Audio playback controls
@@ -49,6 +52,7 @@ app/
 - Supports: WebM, MP3, WAV, OGG, M4A
 
 ### 3. **File Attachments**
+
 - Upload images, PDFs, documents
 - Max file size: 10MB
 - Supported formats: JPEG, PNG, PDF, DOC, DOCX, TXT
@@ -56,6 +60,7 @@ app/
 - File preview in messages
 
 ### 4. **Chat Management**
+
 - Create new chat sessions
 - View all active chats
 - Archive chats
@@ -65,6 +70,7 @@ app/
 - Relative timestamps
 
 ### 5. **UI/UX Features**
+
 - Responsive design (mobile + desktop)
 - Split-screen layout on desktop
 - Auto-scroll to latest message
@@ -79,20 +85,21 @@ app/
 All API endpoints are integrated in `lib/api/medical-chat.ts`:
 
 ```typescript
-- createChat()              // Create new chat
-- getAllChats()             // Get all chats
-- getChatById()             // Get specific chat
-- sendTextMessage()         // Send text message
-- sendVoiceMessage()        // Send voice recording
-- uploadAttachment()        // Upload file to message
-- updateChatStatus()        // Archive/unarchive
-- deleteChat()              // Delete permanently
-- getChatStats()            // Get usage statistics
+-createChat() - // Create new chat
+  getAllChats() - // Get all chats
+  getChatById() - // Get specific chat
+  sendTextMessage() - // Send text message
+  sendVoiceMessage() - // Send voice recording
+  uploadAttachment() - // Upload file to message
+  updateChatStatus() - // Archive/unarchive
+  deleteChat() - // Delete permanently
+  getChatStats(); // Get usage statistics
 ```
 
 ## Context Provider
 
 The `ChatProvider` component wraps the entire chat module and provides:
+
 - Global state management
 - API call handlers
 - Error handling
@@ -104,7 +111,7 @@ The `ChatProvider` component wraps the entire chat module and provides:
 ### Basic Implementation
 
 ```tsx
-import { ChatProvider } from '@/components/medical-chat';
+import { ChatProvider } from "@/components/medical-chat";
 
 export default function MedicalChatPage() {
   return (
@@ -118,7 +125,7 @@ export default function MedicalChatPage() {
 ### Using Context
 
 ```tsx
-import { useChatContext } from '@/components/medical-chat';
+import { useChatContext } from "@/components/medical-chat";
 
 function YourComponent() {
   const {
@@ -128,7 +135,7 @@ function YourComponent() {
     sending,
     sendMessage,
     sendVoice,
-    uploadFile
+    uploadFile,
   } = useChatContext();
 
   // Use the context...
@@ -140,6 +147,7 @@ function YourComponent() {
 ### API Base URL
 
 Update in `lib/api-config.ts`:
+
 ```typescript
 export const API_BASE_URL = "https://digitalhealth.apiv1.wyvt.com";
 ```
@@ -147,6 +155,7 @@ export const API_BASE_URL = "https://digitalhealth.apiv1.wyvt.com";
 ### Authentication
 
 The API client automatically includes JWT tokens from `localStorage`:
+
 ```typescript
 const token = localStorage.getItem("authToken");
 ```
@@ -154,6 +163,7 @@ const token = localStorage.getItem("authToken");
 ## Key Components
 
 ### ChatList
+
 - Displays all active chats
 - Shows last message preview
 - Archive/delete options
@@ -161,6 +171,7 @@ const token = localStorage.getItem("authToken");
 - Responsive sidebar
 
 ### ChatWindow
+
 - Message display area
 - Text input with character limit
 - Voice recorder button
@@ -169,6 +180,7 @@ const token = localStorage.getItem("authToken");
 - Loading states
 
 ### MessageBubble
+
 - User vs Assistant styling
 - Voice message playback
 - File attachment display
@@ -176,6 +188,7 @@ const token = localStorage.getItem("authToken");
 - Token usage display
 
 ### VoiceRecorder
+
 - Start/stop recording
 - Recording timer
 - Browser permission handling
@@ -183,6 +196,7 @@ const token = localStorage.getItem("authToken");
 - Visual recording indicator
 
 ### FileUpload
+
 - File size validation (10MB max)
 - File type validation
 - Hidden file input
@@ -191,12 +205,14 @@ const token = localStorage.getItem("authToken");
 ## Permissions Required
 
 ### Browser Permissions
+
 - **Microphone**: Required for voice messages
 - **File System**: Required for file uploads
 
 ## Error Handling
 
 All errors are handled gracefully with:
+
 - Toast notifications (using Sonner)
 - Console error logging
 - User-friendly error messages
@@ -205,6 +221,7 @@ All errors are handled gracefully with:
 ## Styling
 
 Built with:
+
 - Tailwind CSS
 - Radix UI components
 - Custom animations
@@ -238,6 +255,7 @@ Built with:
 ## Future Enhancements
 
 Potential additions:
+
 - [ ] Real-time chat with WebSockets
 - [ ] Message reactions
 - [ ] Export chat history
@@ -252,16 +270,19 @@ Potential additions:
 ## Troubleshooting
 
 ### Voice Recording Not Working
+
 - Check browser permissions
 - Ensure HTTPS (required for getUserMedia)
 - Check browser compatibility
 
 ### File Upload Fails
+
 - Verify file size < 10MB
 - Check file type is supported
 - Ensure network connection
 
 ### Messages Not Sending
+
 - Check authentication token
 - Verify API connection
 - Check network tab for errors
@@ -277,16 +298,17 @@ Potential additions:
 
 ```json
 {
-  "date-fns": "4.1.0",        // Date formatting
-  "axios": "^1.13.2",         // HTTP client
-  "sonner": "^1.7.4",         // Toast notifications
-  "lucide-react": "^0.454.0"  // Icons
+  "date-fns": "4.1.0", // Date formatting
+  "axios": "^1.13.2", // HTTP client
+  "sonner": "^1.7.4", // Toast notifications
+  "lucide-react": "^0.454.0" // Icons
 }
 ```
 
 ## Navigation
 
 The AI Chat link is added to the navbar for authenticated users:
+
 - Desktop: Top navigation bar
 - Mobile: Hamburger menu
 

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import type { MedicalChat, ChatMessage } from '@/lib/types';
-import * as medicalChatApi from '@/lib/api/medical-chat';
-import { toast } from 'sonner';
+import React, { createContext, useContext, useState, useCallback } from "react";
+import type { MedicalChat, ChatMessage } from "@/lib/types";
+import * as medicalChatApi from "@/lib/api/medical-chat";
+import { toast } from "sonner";
 
 interface ChatContextType {
   chats: MedicalChat[];
@@ -13,7 +13,11 @@ interface ChatContextType {
   loadChats: () => Promise<void>;
   createNewChat: (firstMessage?: string) => Promise<MedicalChat | null>;
   selectChat: (chatId: string) => Promise<void>;
-  sendMessage: (chatId: string, message: string, files?: File[]) => Promise<void>;
+  sendMessage: (
+    chatId: string,
+    message: string,
+    files?: File[]
+  ) => Promise<void>;
   sendVoice: (chatId: string, audioBlob: Blob) => Promise<void>;
   archiveChat: (chatId: string) => Promise<void>;
   deleteChat: (chatId: string) => Promise<void>;
@@ -25,7 +29,7 @@ const ChatContext = createContext<ChatContextType | undefined>(undefined);
 export const useChatContext = () => {
   const context = useContext(ChatContext);
   if (!context) {
-    throw new Error('useChatContext must be used within ChatProvider');
+    throw new Error("useChatContext must be used within ChatProvider");
   }
   return context;
 };
@@ -42,13 +46,13 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       setLoading(true);
       const response = await medicalChatApi.getAllChats({
-        status: 'active',
+        status: "active",
         limit: 50,
       });
       setChats(response.data.chats);
     } catch (error: any) {
-      console.error('Error loading chats:', error);
-      toast.error(error.response?.data?.message || 'Failed to load chats');
+      console.error("Error loading chats:", error);
+      toast.error(error.response?.data?.message || "Failed to load chats");
     } finally {
       setLoading(false);
     }
@@ -67,11 +71,11 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
         const newChat = response.data;
         setChats((prev) => [newChat, ...prev]);
         setCurrentChat(newChat);
-        toast.success('New chat created');
+        toast.success("New chat created");
         return newChat;
       } catch (error: any) {
-        toast.error(error.response?.data?.message || 'Failed to create chat');
-        console.error('Error creating chat:', error);
+        toast.error(error.response?.data?.message || "Failed to create chat");
+        console.error("Error creating chat:", error);
         return null;
       } finally {
         setLoading(false);
@@ -86,8 +90,8 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
       const response = await medicalChatApi.getChatById(chatId);
       setCurrentChat(response.data);
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Failed to load chat');
-      console.error('Error loading chat:', error);
+      toast.error(error.response?.data?.message || "Failed to load chat");
+      console.error("Error loading chat:", error);
     } finally {
       setLoading(false);
     }
@@ -99,7 +103,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
       const response = await medicalChatApi.getChatById(currentChat.id);
       setCurrentChat(response.data);
     } catch (error) {
-      console.error('Error refreshing chat:', error);
+      console.error("Error refreshing chat:", error);
     }
   }, [currentChat]);
 
@@ -107,28 +111,30 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     async (chatId: string, message: string, files?: File[]) => {
       try {
         setSending(true);
-        
+
         // Optimistically add user message immediately
         const optimisticUserMessage: ChatMessage = {
           id: `temp-${Date.now()}`,
           chatId,
-          role: 'user',
+          role: "user",
           content: message,
-          messageType: files && files.length > 0 ? 'file' : 'text',
+          messageType: files && files.length > 0 ? "file" : "text",
           audioUrl: null,
           audioDuration: null,
           transcription: null,
           tokens: null,
           createdAt: new Date().toISOString(),
-          attachments: files ? files.map((file, idx) => ({
-            id: `temp-att-${idx}`,
-            messageId: `temp-${Date.now()}`,
-            fileName: file.name,
-            fileUrl: '',
-            fileType: file.type,
-            fileSize: file.size,
-            uploadedAt: new Date().toISOString(),
-          })) : [],
+          attachments: files
+            ? files.map((file, idx) => ({
+                id: `temp-att-${idx}`,
+                messageId: `temp-${Date.now()}`,
+                fileName: file.name,
+                fileUrl: "",
+                fileType: file.type,
+                fileSize: file.size,
+                uploadedAt: new Date().toISOString(),
+              }))
+            : [],
         };
 
         // Add optimistic user message to chat
@@ -142,7 +148,11 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
           });
         }
 
-        const response = await medicalChatApi.sendTextMessage(chatId, message, files);
+        const response = await medicalChatApi.sendTextMessage(
+          chatId,
+          message,
+          files
+        );
 
         // Replace optimistic message with real messages from server
         if (currentChat?.id === chatId) {
@@ -150,7 +160,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
             if (!prev) return prev;
             // Remove the optimistic message and add real ones
             const messagesWithoutOptimistic = prev.messages.filter(
-              (msg) => !msg.id.startsWith('temp-')
+              (msg) => !msg.id.startsWith("temp-")
             );
             return {
               ...prev,
@@ -177,11 +187,13 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
             if (!prev) return prev;
             return {
               ...prev,
-              messages: prev.messages.filter((msg) => !msg.id.startsWith('temp-')),
+              messages: prev.messages.filter(
+                (msg) => !msg.id.startsWith("temp-")
+              ),
             };
           });
         }
-        toast.error(error.response?.data?.message || 'Failed to send message');
+        toast.error(error.response?.data?.message || "Failed to send message");
         throw error;
       } finally {
         setSending(false);
@@ -194,14 +206,14 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     async (chatId: string, audioBlob: Blob) => {
       try {
         setSending(true);
-        
+
         // Optimistically add voice message placeholder
         const optimisticVoiceMessage: ChatMessage = {
           id: `temp-voice-${Date.now()}`,
           chatId,
-          role: 'user',
-          content: 'Recording...',
-          messageType: 'voice',
+          role: "user",
+          content: "Recording...",
+          messageType: "voice",
           audioUrl: null,
           audioDuration: null,
           transcription: null,
@@ -232,7 +244,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
             if (!prev) return prev;
             // Remove the optimistic message and add real ones
             const messagesWithoutOptimistic = prev.messages.filter(
-              (msg) => !msg.id.startsWith('temp-')
+              (msg) => !msg.id.startsWith("temp-")
             );
             return {
               ...prev,
@@ -246,7 +258,10 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
         }
 
         toast.success(
-          `Voice message sent: "${response.data.transcription.substring(0, 30)}..."`
+          `Voice message sent: "${response.data.transcription.substring(
+            0,
+            30
+          )}..."`
         );
         await loadChats();
       } catch (error: any) {
@@ -256,12 +271,14 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
             if (!prev) return prev;
             return {
               ...prev,
-              messages: prev.messages.filter((msg) => !msg.id.startsWith('temp-')),
+              messages: prev.messages.filter(
+                (msg) => !msg.id.startsWith("temp-")
+              ),
             };
           });
         }
         toast.error(
-          error.response?.data?.message || 'Failed to send voice message'
+          error.response?.data?.message || "Failed to send voice message"
         );
         throw error;
       } finally {
@@ -274,14 +291,14 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   const archiveChat = useCallback(
     async (chatId: string) => {
       try {
-        await medicalChatApi.updateChatStatus(chatId, 'archived');
+        await medicalChatApi.updateChatStatus(chatId, "archived");
         setChats((prev) => prev.filter((chat) => chat.id !== chatId));
         if (currentChat?.id === chatId) {
           setCurrentChat(null);
         }
-        toast.success('Chat archived');
+        toast.success("Chat archived");
       } catch (error: any) {
-        toast.error(error.response?.data?.message || 'Failed to archive chat');
+        toast.error(error.response?.data?.message || "Failed to archive chat");
       }
     },
     [currentChat]
@@ -295,9 +312,9 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
         if (currentChat?.id === chatId) {
           setCurrentChat(null);
         }
-        toast.success('Chat deleted');
+        toast.success("Chat deleted");
       } catch (error: any) {
-        toast.error(error.response?.data?.message || 'Failed to delete chat');
+        toast.error(error.response?.data?.message || "Failed to delete chat");
       }
     },
     [currentChat]

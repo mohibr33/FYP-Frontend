@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { ChatProvider } from '@/components/medical-chat/chat-context';
-import { ChatList } from '@/components/medical-chat/chat-list';
-import { ChatWindow } from '@/components/medical-chat/chat-window';
+import React from "react";
+import { ChatProvider } from "@/components/medical-chat/chat-context";
+import { ChatList } from "@/components/medical-chat/chat-list";
+import { ChatWindow } from "@/components/medical-chat/chat-window";
 
 const MedicalChatContent: React.FC = () => {
   return (

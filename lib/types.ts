@@ -110,9 +110,9 @@ export interface ChatAttachment {
 export interface ChatMessage {
   id: string;
   chatId: string;
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
-  messageType: 'text' | 'voice' | 'file';
+  messageType: "text" | "voice" | "file";
   audioUrl?: string | null;
   audioDuration?: number | null;
   transcription?: string | null;
@@ -125,7 +125,7 @@ export interface MedicalChat {
   id: string;
   userId: string;
   title: string;
-  status: 'active' | 'archived';
+  status: "active" | "archived";
   createdAt: string;
   updatedAt: string;
   messages: ChatMessage[];

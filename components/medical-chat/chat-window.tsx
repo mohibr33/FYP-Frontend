@@ -1,22 +1,29 @@
-'use client';
+"use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import { useChatContext } from './chat-context';
-import { MessageBubble } from './message-bubble';
-import { VoiceRecorder } from './voice-recorder';
-import { FileUpload } from './file-upload';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Badge } from '@/components/ui/badge';
-import { Send, Bot, AlertCircle, X, FileText, Image as ImageIcon } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { toast } from 'sonner';
+import React, { useState, useRef, useEffect } from "react";
+import { useChatContext } from "./chat-context";
+import { MessageBubble } from "./message-bubble";
+import { VoiceRecorder } from "./voice-recorder";
+import { FileUpload } from "./file-upload";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
+import {
+  Send,
+  Bot,
+  AlertCircle,
+  X,
+  FileText,
+  Image as ImageIcon,
+} from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { toast } from "sonner";
 
 export const ChatWindow: React.FC = () => {
   const { currentChat, loading, sending, sendMessage, sendVoice } =
     useChatContext();
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [waitingForResponse, setWaitingForResponse] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -31,15 +38,17 @@ export const ChatWindow: React.FC = () => {
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!message.trim() || !currentChat || sending || waitingForResponse) return;
+    if (!message.trim() || !currentChat || sending || waitingForResponse)
+      return;
 
     const messageText = message.trim();
-    const filesToSend = selectedFiles.length > 0 ? [...selectedFiles] : undefined;
-    
-    setMessage('');
+    const filesToSend =
+      selectedFiles.length > 0 ? [...selectedFiles] : undefined;
+
+    setMessage("");
     setSelectedFiles([]);
     setWaitingForResponse(true);
-    
+
     try {
       await sendMessage(currentChat.id, messageText, filesToSend);
     } catch (error) {
@@ -53,7 +62,7 @@ export const ChatWindow: React.FC = () => {
 
   const handleVoiceRecording = async (audioBlob: Blob) => {
     if (!currentChat || sending || waitingForResponse) return;
-    
+
     setWaitingForResponse(true);
     try {
       await sendVoice(currentChat.id, audioBlob);
@@ -66,13 +75,13 @@ export const ChatWindow: React.FC = () => {
 
   const handleFileSelect = (file: File) => {
     if (!currentChat) return;
-    
+
     // Check if we already have 5 files
     if (selectedFiles.length >= 5) {
-      toast.error('Maximum 5 files allowed per message');
+      toast.error("Maximum 5 files allowed per message");
       return;
     }
-    
+
     // Add file to selected files
     setSelectedFiles((prev) => [...prev, file]);
   };
@@ -82,7 +91,7 @@ export const ChatWindow: React.FC = () => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage(e);
     }
@@ -96,13 +105,15 @@ export const ChatWindow: React.FC = () => {
           <div>
             <h3 className="text-lg font-semibold mb-2">AI Medical Assistant</h3>
             <p className="text-sm text-muted-foreground max-w-md">
-              Select a chat or start a new conversation to get medical guidance and support.
+              Select a chat or start a new conversation to get medical guidance
+              and support.
             </p>
           </div>
           <Alert className="max-w-md mx-auto">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription className="text-xs">
-              This AI assistant provides general health information only and is not a replacement for professional medical care.
+              This AI assistant provides general health information only and is
+              not a replacement for professional medical care.
             </AlertDescription>
           </Alert>
         </div>
@@ -135,9 +146,12 @@ export const ChatWindow: React.FC = () => {
                   <Bot className="h-8 w-8 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold mb-1">How can I help you today?</h3>
+                  <h3 className="text-lg font-semibold mb-1">
+                    How can I help you today?
+                  </h3>
                   <p className="text-sm text-muted-foreground max-w-sm">
-                    Ask me anything about your health. I'm here to provide medical guidance and support.
+                    Ask me anything about your health. I'm here to provide
+                    medical guidance and support.
                   </p>
                 </div>
               </div>
@@ -178,14 +192,12 @@ export const ChatWindow: React.FC = () => {
                   variant="secondary"
                   className="pl-2 pr-1 py-1 gap-1.5"
                 >
-                  {file.type.startsWith('image/') ? (
+                  {file.type.startsWith("image/") ? (
                     <ImageIcon className="h-3 w-3" />
                   ) : (
                     <FileText className="h-3 w-3" />
                   )}
-                  <span className="text-xs max-w-40 truncate">
-                    {file.name}
-                  </span>
+                  <span className="text-xs max-w-40 truncate">{file.name}</span>
                   <button
                     type="button"
                     onClick={() => removeFile(index)}
@@ -228,7 +240,8 @@ export const ChatWindow: React.FC = () => {
             </div>
           </form>
           <p className="text-xs text-muted-foreground/60 text-center mt-2">
-            AI can make mistakes. This is not a replacement for professional medical care.
+            AI can make mistakes. This is not a replacement for professional
+            medical care.
           </p>
         </div>
       </div>

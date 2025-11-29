@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Paperclip } from 'lucide-react';
-import { toast } from 'sonner';
+import React, { useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Paperclip } from "lucide-react";
+import { toast } from "sonner";
 
 interface FileUploadProps {
   onFileSelect: (file: File) => void;
@@ -15,7 +15,7 @@ interface FileUploadProps {
 export const FileUpload: React.FC<FileUploadProps> = ({
   onFileSelect,
   disabled,
-  accept = 'image/jpeg,image/jpg,image/png,application/pdf,.doc,.docx,.txt',
+  accept = "image/jpeg,image/jpg,image/png,application/pdf,.doc,.docx,.txt",
   maxSizeMB = 10,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -36,10 +36,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     }
 
     onFileSelect(file);
-    
+
     // Reset input
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 

@@ -1,4 +1,4 @@
-import { apiClient } from '../api-config';
+import { apiClient } from "../api-config";
 import type {
   ApiResponse,
   MedicalChat,
@@ -8,9 +8,9 @@ import type {
   SendVoiceMessageResponse,
   ChatAttachment,
   ChatStatsResponse,
-} from '../types';
+} from "../types";
 
-const MEDICAL_CHAT_BASE = '/api/medical-chat';
+const MEDICAL_CHAT_BASE = "/api/medical-chat";
 
 /**
  * Create a new medical chat session
@@ -30,7 +30,7 @@ export const createChat = async (
 export const getAllChats = async (params?: {
   page?: number;
   limit?: number;
-  status?: 'active' | 'archived';
+  status?: "active" | "archived";
 }): Promise<ApiResponse<ChatsListResponse>> => {
   const response = await apiClient.get(MEDICAL_CHAT_BASE, { params });
   return response.data;
@@ -57,9 +57,9 @@ export const sendTextMessage = async (
   // If files are provided, use FormData
   if (files && files.length > 0) {
     const formData = new FormData();
-    formData.append('message', message);
+    formData.append("message", message);
     files.forEach((file) => {
-      formData.append('files', file);
+      formData.append("files", file);
     });
 
     const response = await apiClient.post(
@@ -67,7 +67,7 @@ export const sendTextMessage = async (
       formData,
       {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       }
     );
@@ -90,14 +90,14 @@ export const sendVoiceMessage = async (
   audioBlob: Blob
 ): Promise<ApiResponse<SendVoiceMessageResponse>> => {
   const formData = new FormData();
-  formData.append('audio', audioBlob, 'recording.webm');
+  formData.append("audio", audioBlob, "recording.webm");
 
   const response = await apiClient.post(
     `${MEDICAL_CHAT_BASE}/${chatId}/voice`,
     formData,
     {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
     }
   );
@@ -109,7 +109,7 @@ export const sendVoiceMessage = async (
  */
 export const updateChatStatus = async (
   chatId: string,
-  status: 'active' | 'archived'
+  status: "active" | "archived"
 ): Promise<ApiResponse<{ message: string }>> => {
   const response = await apiClient.patch(
     `${MEDICAL_CHAT_BASE}/${chatId}/status`,
