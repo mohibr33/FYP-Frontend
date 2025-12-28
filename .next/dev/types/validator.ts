@@ -266,3 +266,12 @@ type LayoutConfig<Route extends LayoutRoutes = LayoutRoutes> = {
   // @ts-ignore
   type __Unused = __Check
 }
+
+// Validate ../../../app/medical-chat/layout.tsx
+{
+  type __IsExpected<Specific extends LayoutConfig<"/medical-chat">> = Specific
+  const handler = {} as typeof import("../../../app/medical-chat/layout.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}

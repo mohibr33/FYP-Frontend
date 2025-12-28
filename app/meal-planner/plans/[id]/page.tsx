@@ -285,7 +285,9 @@ export default function MealPlanDetailPage() {
                   <Flame className="h-8 w-8 text-orange-600" />
                   <div>
                     <p className="text-2xl font-bold text-gray-900">
-                      {Math.round(plan.totalCalories / totalDays)}
+                      {plan.totalCalories > 0 
+                        ? Math.round(plan.totalCalories / totalDays)
+                        : summary?.totalCaloriesPerDay || 0}
                     </p>
                     <p className="text-xs text-gray-600">Avg Calories</p>
                   </div>
@@ -299,9 +301,10 @@ export default function MealPlanDetailPage() {
                   <TrendingUp className="h-8 w-8 text-green-600" />
                   <div>
                     <p className="text-2xl font-bold text-gray-900">
-                      {summary?.macronutrients?.protein ||
+                      {summary?.macroBreakdown?.proteinPercent ||
+                        summary?.macronutrients?.protein ||
                         summary?.macroDistribution?.protein ||
-                        0}
+                        0}%
                     </p>
                     <p className="text-xs text-gray-600">Protein</p>
                   </div>
@@ -370,12 +373,12 @@ export default function MealPlanDetailPage() {
                   ) {
                     // Handle meals as object (breakfast, lunch, dinner keys)
                     Object.values(mealsData).forEach((meal: any) => {
-                      totalCalories += meal.calories || 0;
+                      totalCalories += meal.nutrition?.calories || meal.calories || 0;
                     });
                   } else if (Array.isArray(mealsData)) {
                     // Handle meals as array
                     mealsData.forEach((meal: any) => {
-                      totalCalories += meal.calories || 0;
+                      totalCalories += meal.nutrition?.calories || meal.calories || 0;
                     });
                   }
 
@@ -473,7 +476,7 @@ export default function MealPlanDetailPage() {
                                 </div>
                                 <Badge variant="secondary">
                                   <Flame className="h-3 w-3 mr-1" />
-                                  {meal.calories || 0} cal
+                                  {meal.nutrition?.calories || meal.calories || 0} cal
                                 </Badge>
                               </div>
                             </CardHeader>
@@ -486,8 +489,8 @@ export default function MealPlanDetailPage() {
                                   {Array.isArray(meal.ingredients) &&
                                     meal.ingredients
                                       .slice(0, 5)
-                                      .map((ing: string, i: number) => (
-                                        <li key={i}>• {ing}</li>
+                                      .map((ing: any, i: number) => (
+                                        <li key={i}>• {typeof ing === 'string' ? ing : (ing?.name || ing?.item || JSON.stringify(ing))}</li>
                                       ))}
                                   {Array.isArray(meal.ingredients) &&
                                     meal.ingredients.length > 5 && (
@@ -502,11 +505,58 @@ export default function MealPlanDetailPage() {
                                 <summary className="cursor-pointer font-semibold text-blue-600 hover:text-blue-700">
                                   View Instructions
                                 </summary>
-                                <p className="mt-2 text-gray-700 whitespace-pre-line">
-                                  {meal.recipe ||
-                                    meal.instructions ||
-                                    "No instructions available"}
-                                </p>
+                                <div className="mt-2 text-gray-700">
+                                  {(() => {
+                                    const recipeData = meal.recipe || meal.instructions;
+                                    
+                                    // Handle string instructions
+                                    if (typeof recipeData === "string") {
+                                      return <p className="whitespace-pre-line">{recipeData}</p>;
+                                    }
+                                    
+                                    // Handle object with steps, tips, cookTime, prepTime
+                                    if (typeof recipeData === "object" && recipeData !== null) {
+                                      return (
+                                        <div className="space-y-3">
+                                          {recipeData.prepTime && (
+                                            <p><span className="font-medium">Prep Time:</span> {recipeData.prepTime}</p>
+                                          )}
+                                          {recipeData.cookTime && (
+                                            <p><span className="font-medium">Cook Time:</span> {recipeData.cookTime}</p>
+                                          )}
+                                          {recipeData.steps && (
+                                            <div>
+                                              <p className="font-medium mb-1">Steps:</p>
+                                              <ol className="list-decimal list-inside space-y-1">
+                                                {Array.isArray(recipeData.steps) 
+                                                  ? recipeData.steps.map((step: string, i: number) => (
+                                                      <li key={i}>{step}</li>
+                                                    ))
+                                                  : <li>{String(recipeData.steps)}</li>
+                                                }
+                                              </ol>
+                                            </div>
+                                          )}
+                                          {recipeData.tips && (
+                                            <div>
+                                              <p className="font-medium mb-1">Tips:</p>
+                                              <ul className="list-disc list-inside space-y-1">
+                                                {Array.isArray(recipeData.tips)
+                                                  ? recipeData.tips.map((tip: string, i: number) => (
+                                                      <li key={i}>{tip}</li>
+                                                    ))
+                                                  : <li>{String(recipeData.tips)}</li>
+                                                }
+                                              </ul>
+                                            </div>
+                                          )}
+                                        </div>
+                                      );
+                                    }
+                                    
+                                    return <p>No instructions available</p>;
+                                  })()}
+                                </div>
                               </details>
                             </CardContent>
                           </Card>
@@ -534,11 +584,19 @@ export default function MealPlanDetailPage() {
                   if (Array.isArray(items)) {
                     itemsList = items;
                   } else if (typeof items === "object" && items !== null) {
+                    // Convert object to array, handling nested objects
                     itemsList = Object.entries(items).map(
-                      ([name, quantity]) => ({
-                        name,
-                        quantity,
-                      })
+                      ([key, value]: [string, any]) => {
+                        // If value is an object with name/quantity properties, use it directly
+                        if (typeof value === "object" && value !== null && (value.name || value.quantity)) {
+                          return value;
+                        }
+                        // Otherwise, treat key as name and value as quantity
+                        return {
+                          name: key,
+                          quantity: typeof value === "string" ? value : "",
+                        };
+                      }
                     );
                   }
 
@@ -558,18 +616,49 @@ export default function MealPlanDetailPage() {
                       <CardContent>
                         <ul className="space-y-3">
                           {itemsList.map((item, idx) => {
-                            // Skip if this is a cost-related item
+                            // Handle different item structures
+                            let itemName = "";
+                            let itemQuantity = "";
+
+                            if (typeof item === "string") {
+                              itemName = item;
+                            } else if (typeof item === "object" && item !== null) {
+                              // Skip if this is a cost-related item
+                              if (
+                                item.name?.toLowerCase?.().includes("cost") ||
+                                item.cost !== undefined
+                              ) {
+                                return null;
+                              }
+
+                              // Extract name - handle nested structures
+                              if (typeof item.name === "string") {
+                                itemName = item.name;
+                              } else if (typeof item.name === "object" && item.name !== null) {
+                                itemName = item.name.name || item.name.nameUrdu || JSON.stringify(item.name);
+                              } else {
+                                itemName = item.nameUrdu || item.item || "Unknown item";
+                              }
+
+                              // Extract quantity - handle nested structures
+                              if (typeof item.quantity === "string") {
+                                itemQuantity = item.quantity;
+                              } else if (typeof item.quantity === "object" && item.quantity !== null) {
+                                itemQuantity = item.quantity.quantity || item.quantity.amount || "";
+                              } else if (typeof item.quantity === "number") {
+                                itemQuantity = String(item.quantity);
+                              } else if (item.amount) {
+                                itemQuantity = String(item.amount);
+                              }
+                            }
+
+                            // Skip items with PKR in name or quantity (cost items)
                             if (
-                              typeof item === "object" &&
-                              item !== null &&
-                              (item.name?.toLowerCase().includes("cost") ||
-                                item.cost !== undefined)
+                              itemName.includes("PKR") ||
+                              itemQuantity.includes("PKR")
                             ) {
                               return null;
                             }
-
-                            const itemName = item.name || item;
-                            const itemQuantity = item.quantity || "";
 
                             return (
                               <li
@@ -577,18 +666,12 @@ export default function MealPlanDetailPage() {
                                 className="flex justify-between items-center py-2 border-b last:border-0"
                               >
                                 <div className="flex-1">
-                                  <p className="font-medium">
-                                    {typeof itemName === "string"
-                                      ? itemName
-                                      : JSON.stringify(itemName)}
-                                  </p>
-                                  {itemQuantity &&
-                                    typeof itemQuantity === "string" &&
-                                    !itemQuantity.includes("PKR") && (
-                                      <p className="text-sm text-gray-600">
-                                        {itemQuantity}
-                                      </p>
-                                    )}
+                                  <p className="font-medium">{itemName}</p>
+                                  {itemQuantity && (
+                                    <p className="text-sm text-gray-600">
+                                      {itemQuantity}
+                                    </p>
+                                  )}
                                 </div>
                               </li>
                             );
@@ -610,10 +693,12 @@ export default function MealPlanDetailPage() {
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2">
-                    {weeklyTips.map((tip: string, idx: number) => (
+                    {weeklyTips.map((tip: any, idx: number) => (
                       <li key={idx} className="flex items-start gap-2">
                         <ChevronRight className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700">{tip}</span>
+                        <span className="text-gray-700">
+                          {typeof tip === "string" ? tip : (tip?.text || tip?.tip || tip?.message || JSON.stringify(tip))}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -628,26 +713,28 @@ export default function MealPlanDetailPage() {
                   <div className="grid md:grid-cols-3 gap-4">
                     <div className="text-center p-4 bg-blue-50 rounded-lg">
                       <p className="text-3xl font-bold text-blue-900">
-                        {summary?.macronutrients?.protein ||
+                        {summary?.macroBreakdown?.proteinPercent ||
+                          summary?.macronutrients?.protein ||
                           summary?.macroDistribution?.protein ||
-                          0}
+                          0}%
                       </p>
                       <p className="text-sm text-blue-700 mt-1">Protein</p>
                     </div>
                     <div className="text-center p-4 bg-green-50 rounded-lg">
                       <p className="text-3xl font-bold text-green-900">
-                        {summary?.macronutrients?.carbs ||
+                        {summary?.macroBreakdown?.carbsPercent ||
+                          summary?.macronutrients?.carbs ||
                           summary?.macroDistribution?.carbs ||
-                          0}
-                        %
+                          0}%
                       </p>
                       <p className="text-sm text-green-700 mt-1">Carbs</p>
                     </div>
                     <div className="text-center p-4 bg-purple-50 rounded-lg">
                       <p className="text-3xl font-bold text-purple-900">
-                        {summary?.macronutrients?.fats ||
+                        {summary?.macroBreakdown?.fatsPercent ||
+                          summary?.macronutrients?.fats ||
                           summary?.macroDistribution?.fats ||
-                          0}
+                          0}%
                       </p>
                       <p className="text-sm text-purple-700 mt-1">Fats</p>
                     </div>
@@ -682,10 +769,12 @@ export default function MealPlanDetailPage() {
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-2">
-                      {healthWarnings.map((warning: string, idx: number) => (
+                      {healthWarnings.map((warning: any, idx: number) => (
                         <li key={idx} className="flex items-start gap-2">
                           <ChevronRight className="h-5 w-5 text-yellow-600 mt-0.5 flex-shrink-0" />
-                          <span className="text-yellow-900">{warning}</span>
+                          <span className="text-yellow-900">
+                            {typeof warning === "string" ? warning : (warning?.text || warning?.warning || warning?.message || JSON.stringify(warning))}
+                          </span>
                         </li>
                       ))}
                     </ul>

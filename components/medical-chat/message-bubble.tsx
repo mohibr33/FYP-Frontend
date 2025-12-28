@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-import { useChatContext } from "./chat-context";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import type { ChatMessage as ChatMessageType } from "@/lib/types";
-import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -45,10 +44,6 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
   const getFileIcon = (fileType: string) => {
     if (fileType.startsWith("image/")) return <ImageIcon className="h-4 w-4" />;
     return <FileText className="h-4 w-4" />;
-  };
-
-  const getFileName = (url: string) => {
-    return url.split("/").pop() || "file";
   };
 
   return (
@@ -112,11 +107,19 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
             )}
 
             {/* Message content */}
-            <div className="prose prose-sm dark:prose-invert max-w-none">
-              <p className="whitespace-pre-wrap wrap-break-word leading-7">
-                {message.content}
-              </p>
-            </div>
+            {isUser ? (
+              <div className="prose prose-sm dark:prose-invert max-w-none">
+                <p className="whitespace-pre-wrap break-words leading-7">
+                  {message.content}
+                </p>
+              </div>
+            ) : (
+              <div className="prose prose-sm dark:prose-invert max-w-none prose-p:leading-7 prose-pre:bg-muted prose-pre:border prose-code:before:content-none prose-code:after:content-none prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-headings:mt-4 prose-headings:mb-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-0">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {message.content}
+                </ReactMarkdown>
+              </div>
+            )}
 
             {/* Attachments */}
             {message.attachments && message.attachments.length > 0 && (

@@ -42,10 +42,10 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(form.email, form.password);
-      router.push("/dashboard");
+      // Use window.location for full page reload to ensure navbar updates
+      window.location.href = "/dashboard";
     } catch (err: any) {
       setError(err.response?.data?.message || "Login failed");
-    } finally {
       setLoading(false);
     }
   }

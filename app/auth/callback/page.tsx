@@ -57,25 +57,25 @@ export default function GoogleCallbackPage() {
 
       // Small delay to ensure localStorage is set
       setTimeout(() => {
-        // Refresh profile to sync auth context
+        // Refresh profile to sync auth context, then redirect with full page load
         refreshProfile()
           .then(() => {
-            // Check user role and redirect accordingly
+            // Check user role and redirect accordingly using window.location for full reload
             if (user.role === "admin") {
               console.log("Admin user detected, redirecting to admin panel");
-              router.push("/admin");
+              window.location.href = "/admin";
             } else {
               console.log("Regular user, redirecting to dashboard");
-              router.push("/dashboard");
+              window.location.href = "/dashboard";
             }
           })
           .catch((profileErr) => {
             console.error("Failed to refresh profile:", profileErr);
             // Check user role even if profile refresh fails
             if (user.role === "admin") {
-              router.push("/admin");
+              window.location.href = "/admin";
             } else {
-              router.push("/dashboard");
+              window.location.href = "/dashboard";
             }
           });
       }, 100);

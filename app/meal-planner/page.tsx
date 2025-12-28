@@ -381,12 +381,20 @@ export default function MealPlannerDashboard() {
                       <CardContent>
                         <p className="text-sm text-gray-600 mb-3 line-clamp-2">
                           {Array.isArray(meal.ingredients)
-                            ? meal.ingredients.slice(0, 2).join(", ")
+                            ? meal.ingredients
+                                .slice(0, 2)
+                                .map((ing: any) =>
+                                  typeof ing === "string"
+                                    ? ing
+                                    : ing?.name || ing?.item || ""
+                                )
+                                .filter(Boolean)
+                                .join(", ")
                             : ""}
                         </p>
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-600">
-                            {meal.calories || 0} cal
+                            {meal.nutrition?.calories || meal.calories || 0} cal
                           </span>
                           <span className="text-gray-600">
                             {Array.isArray(meal.ingredients)

@@ -20,7 +20,7 @@ const MedicalChatContent: React.FC = () => {
 
 export default function MedicalChatPage() {
   return (
-    <div className="fixed inset-0 top-16 bottom-0">
+    <div className="h-[calc(100vh-4rem)] overflow-hidden">
       <ChatProvider>
         <MedicalChatContent />
       </ChatProvider>
