@@ -21,6 +21,7 @@
   "/medicines/[slug]/page": "/medicines/[slug]",
   "/medicines/page": "/medicines",
   "/page": "/",
+  "/privacy-policy/page": "/privacy-policy",
   "/profile/page": "/profile",
   "/signup/page": "/signup",
   "/support/[id]/page": "/support/[id]",

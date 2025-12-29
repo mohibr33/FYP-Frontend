@@ -214,10 +214,20 @@ export default function MedicinePage({
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-background py-12 px-4">
-        <div className="max-w-4xl mx-auto">
+      <main className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-teal-50">
+        {/* Dark header skeleton */}
+        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 py-8 px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="animate-pulse">
+              <div className="h-4 w-32 bg-slate-700 rounded mb-6"></div>
+              <div className="h-10 w-2/3 bg-slate-700 rounded mb-4"></div>
+              <div className="h-6 w-1/3 bg-slate-700 rounded"></div>
+            </div>
+          </div>
+        </div>
+        <div className="max-w-6xl mx-auto py-8 px-4">
           <div className="flex justify-center items-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+            <Loader2 className="w-8 h-8 animate-spin text-slate-600" />
           </div>
         </div>
       </main>
@@ -226,15 +236,21 @@ export default function MedicinePage({
 
   if (error || !medicine) {
     return (
-      <main className="min-h-screen bg-background py-12 px-4">
-        <div className="max-w-4xl mx-auto">
-          <Link
-            href="/medicines"
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 mb-8"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Medicines
-          </Link>
+      <main className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-teal-50">
+        {/* Dark header for error state */}
+        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 py-8 px-4">
+          <div className="max-w-6xl mx-auto">
+            <Link
+              href="/medicines"
+              className="inline-flex items-center gap-2 text-slate-300 hover:text-white transition-colors mb-4"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Medicines
+            </Link>
+            <h1 className="text-3xl font-bold text-white">Medicine Not Found</h1>
+          </div>
+        </div>
+        <div className="max-w-6xl mx-auto py-8 px-4">
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>{error || "Medicine not found"}</AlertDescription>
@@ -245,67 +261,36 @@ export default function MedicinePage({
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 py-8 px-4">
-      <div className="max-w-6xl mx-auto">
-        <Link
-          href="/medicines"
-          className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-8 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Medicines
-        </Link>
+    <main className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-teal-50">
+      {/* Dark Hero Header */}
+      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 py-8 px-4">
+        <div className="max-w-6xl mx-auto">
+          <Link
+            href="/medicines"
+            className="inline-flex items-center gap-2 text-slate-300 hover:text-white transition-colors mb-6"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Medicines
+          </Link>
 
-        {/* Hero Section */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 mb-6 overflow-hidden p-8">
-          <div className="flex flex-col md:flex-row gap-8 items-start">
-            {/* Main Info - Left Side */}
-            <div className="flex-1 space-y-6">
-              {/* Title, Brand, Generic */}
-              <div className="space-y-3">
-                <h1 className="text-4xl font-bold text-slate-900">
-                  {medicine.title}
-                </h1>
-                <div className="space-y-1">
-                  <p className="text-lg text-slate-600">
-                    Brand:{" "}
-                    <span className="font-semibold text-slate-800">
-                      {medicine.brand}
-                    </span>
-                  </p>
-                  {medicine.productDetails.generics && (
-                    <p className="text-lg text-slate-600">
-                      Generic:{" "}
-                      <span className="font-semibold text-slate-800">
-                        {medicine.productDetails.generics}
-                      </span>
-                    </p>
-                  )}
-                  {medicine.productDetails.dosage && (
-                    <p className="text-lg text-slate-600">
-                      Dosage:{" "}
-                      <span className="font-semibold text-slate-800">
-                        {medicine.productDetails.dosage}
-                      </span>
-                    </p>
-                  )}
-                </div>
-              </div>
-
+          <div className="flex flex-col lg:flex-row gap-8 items-start">
+            {/* Main Info */}
+            <div className="flex-1 space-y-4">
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                <span className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 px-3 py-1.5 rounded-lg text-sm font-medium border border-blue-200">
+                <span className="inline-flex items-center gap-1.5 bg-teal-500/20 text-teal-300 px-3 py-1.5 rounded-lg text-sm font-medium border border-teal-500/30">
                   <Pill className="w-4 h-4" />
                   {medicine.usedFor}
                 </span>
-                <span className="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 px-3 py-1.5 rounded-lg text-sm font-medium border border-purple-200">
+                <span className="inline-flex items-center gap-1.5 bg-blue-500/20 text-blue-300 px-3 py-1.5 rounded-lg text-sm font-medium border border-blue-500/30">
                   <Info className="w-4 h-4" />
                   {medicine.childCategory}
                 </span>
                 <span
                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium border ${
                     medicine.productDetails.requiresPrescriptionYesNo === "Yes"
-                      ? "bg-rose-50 text-rose-700 border-rose-200"
-                      : "bg-emerald-50 text-emerald-700 border-emerald-200"
+                      ? "bg-rose-500/20 text-rose-300 border-rose-500/30"
+                      : "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
                   }`}
                 >
                   <ShieldAlert className="w-4 h-4" />
@@ -313,39 +298,75 @@ export default function MedicinePage({
                 </span>
               </div>
 
+              {/* Title */}
+              <h1 className="text-3xl md:text-4xl font-bold text-white">
+                {medicine.title}
+              </h1>
+
+              {/* Brand, Generic, Dosage */}
+              <div className="space-y-1 text-slate-300">
+                <p>
+                  Brand:{" "}
+                  <span className="font-semibold text-white">
+                    {medicine.brand}
+                  </span>
+                </p>
+                {medicine.productDetails.generics && (
+                  <p>
+                    Generic:{" "}
+                    <span className="font-semibold text-white">
+                      {medicine.productDetails.generics}
+                    </span>
+                  </p>
+                )}
+                {medicine.productDetails.dosage && (
+                  <p>
+                    Dosage:{" "}
+                    <span className="font-semibold text-white">
+                      {medicine.productDetails.dosage}
+                    </span>
+                  </p>
+                )}
+              </div>
+
               {/* Rating */}
-              <div className="flex items-center gap-2 text-amber-500">
-                <Star className="w-5 h-5 fill-amber-400" />
-                <span className="font-semibold text-lg text-slate-700">
-                  {averageRating.toFixed(1)}
-                </span>
-                <span className="text-sm text-slate-500">
+              <div className="flex items-center gap-2 pt-2">
+                <div className="flex items-center gap-1 text-amber-400">
+                  <Star className="w-5 h-5 fill-amber-400" />
+                  <span className="font-semibold text-lg text-white">
+                    {averageRating.toFixed(1)}
+                  </span>
+                </div>
+                <span className="text-sm text-slate-400">
                   ({totalReviews} {totalReviews === 1 ? "review" : "reviews"})
                 </span>
               </div>
             </div>
 
-            {/* Product Image - Right Side */}
+            {/* Product Image */}
             <div className="shrink-0">
-              <div className="relative w-64 h-64 bg-slate-50 rounded-xl border border-slate-200">
+              <div className="relative w-48 h-48 lg:w-56 lg:h-56 bg-white rounded-xl border border-slate-700 shadow-xl">
                 <Image
                   src={medicine.productImage || "/placeholder.svg"}
                   alt={medicine.title}
                   fill
-                  className="object-contain p-6"
+                  className="object-contain p-4"
                   priority
                 />
               </div>
             </div>
           </div>
         </div>
+      </div>
 
+      {/* Content */}
+      <div className="max-w-6xl mx-auto py-8 px-4">
         {/* Description & How It Works */}
         <div className="grid lg:grid-cols-2 gap-6 mb-6">
           {medicine.productDetails.description && (
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
               <h2 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
-                <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                   <Info className="w-5 h-5 text-blue-600" />
                 </div>
                 Description
@@ -359,8 +380,8 @@ export default function MedicinePage({
           {medicine.productDetails.howItWorks && (
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
               <h2 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
-                <div className="w-8 h-8 bg-teal-50 rounded-lg flex items-center justify-center">
-                  <FlaskConical className="w-5 h-5 text-teal-600" />
+                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <FlaskConical className="w-5 h-5 text-purple-600" />
                 </div>
                 How It Works
               </h2>
@@ -375,8 +396,8 @@ export default function MedicinePage({
         {medicine.productDetails.indication && (
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
             <h2 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
-              <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center">
-                <CheckCircle2 className="w-5 h-5 text-indigo-600" />
+              <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+                <CheckCircle2 className="w-5 h-5 text-emerald-600" />
               </div>
               Medical Indication
             </h2>
@@ -450,7 +471,7 @@ export default function MedicinePage({
                   {medicine.productDetails.warning1 && (
                     <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
                       <p className="text-xs font-medium text-orange-900 mb-1">
-                        ⚠️ Warning 1
+                        Warning 1
                       </p>
                       <p className="text-sm text-orange-800 leading-relaxed">
                         {medicine.productDetails.warning1}
@@ -460,7 +481,7 @@ export default function MedicinePage({
                   {medicine.productDetails.warning2 && (
                     <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
                       <p className="text-xs font-medium text-orange-900 mb-1">
-                        ⚠️ Warning 2
+                        Warning 2
                       </p>
                       <p className="text-sm text-orange-800 leading-relaxed">
                         {medicine.productDetails.warning2}
@@ -470,7 +491,7 @@ export default function MedicinePage({
                   {medicine.productDetails.warning3 && (
                     <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
                       <p className="text-xs font-medium text-orange-900 mb-1">
-                        ⚠️ Warning 3
+                        Warning 3
                       </p>
                       <p className="text-sm text-orange-800 leading-relaxed">
                         {medicine.productDetails.warning3}
@@ -490,12 +511,12 @@ export default function MedicinePage({
           <div className="grid lg:grid-cols-3 gap-6 mb-6">
             {medicine.productDetails.drugInteractions && (
               <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <h2 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
-                  <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center">
-                    <FlaskConical className="w-5 h-5 text-purple-600" />
-                  </div>
-                  Drug Interactions
-                </h2>
+              <h2 className="text-lg font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <FlaskConical className="w-5 h-5 text-purple-600" />
+                </div>
+                Drug Interactions
+              </h2>
                 <p className="text-slate-700 leading-relaxed">
                   {medicine.productDetails.drugInteractions}
                 </p>
@@ -504,32 +525,32 @@ export default function MedicinePage({
 
             <div className="space-y-4">
               {medicine.productDetails.storageYesOrNo && (
-                <div className="bg-cyan-50 rounded-xl shadow-sm border border-cyan-200 p-4">
+                <div className="bg-cyan-100 rounded-xl shadow-sm border border-cyan-200 p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-7 h-7 bg-white rounded-lg flex items-center justify-center">
                       <Thermometer className="w-4 h-4 text-cyan-600" />
                     </div>
-                    <h3 className="font-medium text-cyan-900 text-sm">
+                    <h3 className="font-medium text-slate-800 text-sm">
                       Storage
                     </h3>
                   </div>
-                  <p className="text-cyan-800 text-sm">
+                  <p className="text-slate-700 text-sm">
                     {medicine.productDetails.storageYesOrNo}
                   </p>
                 </div>
               )}
 
               {medicine.productDetails.pregnancyCategory && (
-                <div className="bg-violet-50 rounded-xl shadow-sm border border-violet-200 p-4">
+                <div className="bg-pink-100 rounded-xl shadow-sm border border-pink-200 p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-7 h-7 bg-white rounded-lg flex items-center justify-center">
-                      <Baby className="w-4 h-4 text-violet-600" />
+                      <Baby className="w-4 h-4 text-pink-600" />
                     </div>
-                    <h3 className="font-medium text-violet-900 text-sm">
+                    <h3 className="font-medium text-slate-800 text-sm">
                       Pregnancy
                     </h3>
                   </div>
-                  <p className="text-violet-800 text-sm font-medium">
+                  <p className="text-slate-700 text-sm font-medium">
                     {medicine.productDetails.pregnancyCategory}
                   </p>
                 </div>
@@ -581,9 +602,9 @@ export default function MedicinePage({
                 )}
 
                 {reviewSuccess && (
-                  <Alert className="mb-4 bg-green-50 border-green-200">
-                    <CheckCircle2 className="h-4 w-4 text-green-600" />
-                    <AlertDescription className="text-green-800">
+                  <Alert className="mb-4 bg-emerald-50 border-emerald-200">
+                    <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                    <AlertDescription className="text-emerald-800">
                       {reviewSuccess}
                     </AlertDescription>
                   </Alert>
@@ -620,7 +641,7 @@ export default function MedicinePage({
                       onChange={(e) => setReviewComment(e.target.value)}
                       placeholder="Share your experience with this medicine..."
                       disabled={submittingReview}
-                      className="w-full p-3 border border-slate-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none min-h-24 text-slate-700 disabled:opacity-50 disabled:bg-slate-50"
+                      className="w-full p-3 border border-slate-300 rounded-lg focus:border-slate-500 focus:ring-1 focus:ring-slate-500 focus:outline-none min-h-24 text-slate-700 disabled:opacity-50 disabled:bg-slate-50"
                       maxLength={1000}
                     />
                     <p className="text-xs text-slate-500 mt-1">
@@ -631,7 +652,7 @@ export default function MedicinePage({
                     <Button
                       onClick={handleSubmitReview}
                       disabled={submittingReview || reviewComment.length < 10}
-                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg transition-colors disabled:opacity-50"
+                      className="flex-1 bg-slate-800 hover:bg-slate-700 text-white py-2.5 rounded-lg transition-colors disabled:opacity-50"
                     >
                       {submittingReview ? (
                         <>
@@ -662,9 +683,9 @@ export default function MedicinePage({
             {/* Message when user has already reviewed */}
             {userHasReviewed && !editingReview && (
               <div className="border-t border-slate-200 pt-6">
-                <Alert className="bg-blue-50 border-blue-200">
-                  <Info className="h-4 w-4 text-blue-600" />
-                  <AlertDescription className="text-blue-800">
+                <Alert className="bg-slate-100 border-slate-200">
+                  <Info className="h-4 w-4 text-slate-600" />
+                  <AlertDescription className="text-slate-700">
                     You have already reviewed this medicine. You can edit or
                     delete your review below.
                   </AlertDescription>
@@ -708,7 +729,7 @@ export default function MedicinePage({
                             </span>
                           )}
                           {isOwnReview && (
-                            <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs font-medium border border-blue-200">
+                            <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-xs font-medium border border-slate-200">
                               Your Review
                             </span>
                           )}

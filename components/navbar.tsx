@@ -1,240 +1,366 @@
 "use client";
 
 import Link from "next/link";
-import { Pill, LogOut } from "lucide-react";
+import { 
+  Pill, 
+  LogOut, 
+  Menu, 
+  X, 
+  Home,
+  BookOpen,
+  MessageSquare,
+  ChefHat,
+  Headphones,
+  Info,
+  Shield,
+  User,
+  LayoutDashboard,
+  ChevronDown
+} from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "./auth/auth-context";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const { user, logout } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   function handleLogout() {
     logout();
     router.push("/");
     setIsOpen(false);
+    setShowUserMenu(false);
   }
 
+  const isActive = (path: string) => {
+    if (path === '/') return pathname === '/';
+    return pathname.startsWith(path);
+  };
+
+  const navLinkClass = (path: string) => `
+    relative px-3 py-2 text-sm font-medium transition-all duration-200
+    ${isActive(path) 
+      ? 'text-teal-600' 
+      : 'text-slate-600 hover:text-slate-900'
+    }
+  `;
+
+  const getUserInitials = () => {
+    if (!user?.name) return "U";
+    const names = user.name.split(" ");
+    if (names.length >= 2) {
+      return `${names[0][0]}${names[1][0]}`.toUpperCase();
+    }
+    return names[0][0].toUpperCase();
+  };
+
   return (
-    <nav className="border-b border-blue-100 bg-background sticky top-0 z-40">
-      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
-        <Link
-          href="/"
-          className="flex items-center gap-2 font-bold text-xl text-blue-600"
-        >
-          <Pill className="w-6 h-6" />
-          <span>Digital Health</span>
-        </Link>
-
-        <div className="hidden md:flex gap-8 items-center">
+    <nav className="bg-white/80 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
           <Link
             href="/"
-            className="text-muted-foreground hover:text-foreground transition"
+            className="flex items-center gap-2.5 group"
           >
-            Home
+            <div className="w-9 h-9 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-md shadow-teal-500/20 group-hover:shadow-lg group-hover:shadow-teal-500/30 transition-all duration-300">
+              <Pill className="w-5 h-5 text-white" />
+            </div>
+            <span className="font-bold text-xl bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+              Digital Health
+            </span>
           </Link>
-          <Link
-            href="/articles"
-            className="text-muted-foreground hover:text-foreground transition"
-          >
-            Articles
-          </Link>
-          <Link
-            href="/medicines"
-            className="text-muted-foreground hover:text-foreground transition"
-          >
-            Medicines
-          </Link>
-          {user && (
-            <>
-              <Link
-                href="/medical-chat"
-                className="text-muted-foreground hover:text-foreground transition"
-              >
-                AI Chat
-              </Link>
-              <Link
-                href="/meal-planner"
-                className="text-muted-foreground hover:text-foreground transition"
-              >
-                Meal Planner
-              </Link>
-              <Link
-                href="/support"
-                className="text-muted-foreground hover:text-foreground transition"
-              >
-                Support
-              </Link>
-              {user.role === "admin" && (
-                <Link
-                  href="/admin"
-                  className="text-purple-600 hover:text-purple-700 font-medium transition"
-                >
-                  Admin Panel
-                </Link>
-              )}
-            </>
-          )}
-          <Link
-            href="/about"
-            className="text-muted-foreground hover:text-foreground transition"
-          >
-            About Us
-          </Link>
-        </div>
 
-        <div className="hidden md:flex gap-3 items-center">
-          {user ? (
-            <>
-              <Link
-                href="/dashboard"
-                className="text-muted-foreground hover:text-foreground transition px-4 py-2"
-              >
-                {user.name}
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition px-4 py-2"
-              >
-                <LogOut className="w-4 h-4" />
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link
-                href="/auth/login"
-                className="text-muted-foreground hover:text-foreground transition px-4 py-2"
-              >
-                Login
-              </Link>
-              <Link
-                href="/auth/register"
-                className="bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 transition"
-              >
-                Sign Up
-              </Link>
-            </>
-          )}
-        </div>
-
-        <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
-      </div>
-
-      {isOpen && (
-        <div className="md:hidden border-t border-blue-100 p-4 space-y-3">
-          <Link
-            href="/"
-            className="block text-muted-foreground hover:text-foreground"
-            onClick={() => setIsOpen(false)}
-          >
-            Home
-          </Link>
-          <Link
-            href="/articles"
-            className="block text-muted-foreground hover:text-foreground"
-            onClick={() => setIsOpen(false)}
-          >
-            Articles
-          </Link>
-          <Link
-            href="/medicines"
-            className="block text-muted-foreground hover:text-foreground"
-            onClick={() => setIsOpen(false)}
-          >
-            Medicines
-          </Link>
-          {user && (
-            <>
-              <Link
-                href="/medical-chat"
-                className="block text-muted-foreground hover:text-foreground"
-                onClick={() => setIsOpen(false)}
-              >
-                AI Chat
-              </Link>
-              <Link
-                href="/meal-planner"
-                className="block text-muted-foreground hover:text-foreground"
-                onClick={() => setIsOpen(false)}
-              >
-                Meal Planner
-              </Link>
-              <Link
-                href="/support"
-                className="block text-muted-foreground hover:text-foreground"
-                onClick={() => setIsOpen(false)}
-              >
-                Support
-              </Link>
-              {user.role === "admin" && (
-                <Link
-                  href="/admin"
-                  className="block text-purple-600 hover:text-purple-700 font-medium"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Admin Panel
-                </Link>
-              )}
-            </>
-          )}
-          <Link
-            href="/about"
-            className="block text-muted-foreground hover:text-foreground"
-            onClick={() => setIsOpen(false)}
-          >
-            About Us
-          </Link>
-          <div className="pt-3 border-t border-blue-100 space-y-2">
-            {user ? (
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center gap-1">
+            <Link href="/" className={navLinkClass('/')}>
+              Home
+              {isActive('/') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
+            </Link>
+            <Link href="/articles" className={navLinkClass('/articles')}>
+              Articles
+              {isActive('/articles') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
+            </Link>
+            <Link href="/medicines" className={navLinkClass('/medicines')}>
+              Medicines
+              {isActive('/medicines') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
+            </Link>
+            {user && (
               <>
-                <Link
-                  href="/profile"
-                  className="block text-muted-foreground hover:text-foreground"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Profile ({user.name})
+                <Link href="/medical-chat" className={navLinkClass('/medical-chat')}>
+                  AI Chat
+                  {isActive('/medical-chat') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
                 </Link>
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-left text-muted-foreground hover:text-foreground"
-                >
-                  Logout
-                </button>
+                <Link href="/meal-planner" className={navLinkClass('/meal-planner')}>
+                  Meal Planner
+                  {isActive('/meal-planner') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
+                </Link>
+                <Link href="/support" className={navLinkClass('/support')}>
+                  Support
+                  {isActive('/support') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
+                </Link>
               </>
+            )}
+            <Link href="/about" className={navLinkClass('/about')}>
+              About
+              {isActive('/about') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
+            </Link>
+          </div>
+
+          {/* Desktop Auth Section */}
+          <div className="hidden lg:flex items-center gap-3">
+            {user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-slate-100 transition-colors"
+                >
+                  <div className="w-8 h-8 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center shadow-md shadow-teal-500/20">
+                    <User className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-sm font-medium text-slate-700 max-w-24 truncate">
+                    {user.name?.split(' ')[0]}
+                  </span>
+                  <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${showUserMenu ? 'rotate-180' : ''}`} />
+                </button>
+
+                {/* User Dropdown */}
+                {showUserMenu && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setShowUserMenu(false)} />
+                    <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                      {/* User Info Header */}
+                      <div className="bg-gradient-to-r from-slate-800 to-slate-700 px-4 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-11 h-11 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg shadow-teal-500/20">
+                            <User className="w-6 h-6 text-white" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-white truncate">{user.name}</p>
+                            <p className="text-xs text-slate-300 truncate">{user.email}</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Menu Items */}
+                      <div className="p-2">
+                        <Link
+                          href="/dashboard"
+                          onClick={() => setShowUserMenu(false)}
+                          className="flex items-center gap-3 px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
+                        >
+                          <div className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
+                            <LayoutDashboard className="w-4 h-4 text-slate-600" />
+                          </div>
+                          <span className="font-medium">Dashboard</span>
+                        </Link>
+                        <Link
+                          href="/profile"
+                          onClick={() => setShowUserMenu(false)}
+                          className="flex items-center gap-3 px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
+                        >
+                          <div className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
+                            <User className="w-4 h-4 text-slate-600" />
+                          </div>
+                          <span className="font-medium">My Profile</span>
+                        </Link>
+                        {user.role === "admin" && (
+                          <Link
+                            href="/admin"
+                            onClick={() => setShowUserMenu(false)}
+                            className="flex items-center gap-3 px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
+                          >
+                            <div className="w-8 h-8 bg-slate-800 rounded-lg flex items-center justify-center">
+                              <Shield className="w-4 h-4 text-white" />
+                            </div>
+                            <span className="font-medium">Admin Panel</span>
+                          </Link>
+                        )}
+                      </div>
+                      
+                      {/* Logout */}
+                      <div className="border-t border-slate-100 p-2">
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center gap-3 px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-xl transition-colors w-full"
+                        >
+                          <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                            <LogOut className="w-4 h-4 text-red-600" />
+                          </div>
+                          <span className="font-medium">Logout</span>
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
             ) : (
               <>
                 <Link
                   href="/auth/login"
-                  className="block text-muted-foreground hover:text-foreground"
+                  className="text-sm font-medium text-slate-600 hover:text-teal-600 px-4 py-2.5 rounded-xl border border-transparent hover:border-teal-200 hover:bg-teal-50 transition-all duration-300"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/auth/register"
+                  className="text-sm font-medium text-white bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 rounded-xl px-5 py-2.5 shadow-md shadow-teal-500/20 hover:shadow-lg hover:shadow-teal-500/30 transition-all duration-300"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button 
+            className="lg:hidden p-2 hover:bg-slate-100 rounded-xl transition-colors"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? (
+              <X className="w-6 h-6 text-slate-700" />
+            ) : (
+              <Menu className="w-6 h-6 text-slate-700" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="lg:hidden border-t border-slate-200 bg-white animate-in slide-in-from-top-2 duration-200">
+          <div className="px-4 py-4 space-y-1">
+            <Link
+              href="/"
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${isActive('/') ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-50'}`}
+              onClick={() => setIsOpen(false)}
+            >
+              <Home className="w-5 h-5" />
+              Home
+            </Link>
+            <Link
+              href="/articles"
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${isActive('/articles') ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-50'}`}
+              onClick={() => setIsOpen(false)}
+            >
+              <BookOpen className="w-5 h-5" />
+              Articles
+            </Link>
+            <Link
+              href="/medicines"
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${isActive('/medicines') ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-50'}`}
+              onClick={() => setIsOpen(false)}
+            >
+              <Pill className="w-5 h-5" />
+              Medicines
+            </Link>
+            {user && (
+              <>
+                <Link
+                  href="/medical-chat"
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${isActive('/medical-chat') ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-50'}`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <MessageSquare className="w-5 h-5" />
+                  AI Chat
+                </Link>
+                <Link
+                  href="/meal-planner"
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${isActive('/meal-planner') ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-50'}`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <ChefHat className="w-5 h-5" />
+                  Meal Planner
+                </Link>
+                <Link
+                  href="/support"
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${isActive('/support') ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-50'}`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Headphones className="w-5 h-5" />
+                  Support
+                </Link>
+              </>
+            )}
+            <Link
+              href="/about"
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${isActive('/about') ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-50'}`}
+              onClick={() => setIsOpen(false)}
+            >
+              <Info className="w-5 h-5" />
+              About Us
+            </Link>
+          </div>
+
+          {/* Mobile User Section */}
+          <div className="px-4 py-4 border-t border-slate-200">
+            {user ? (
+              <div className="space-y-2">
+                <div className="flex items-center gap-3 px-4 py-3 bg-slate-50 rounded-xl">
+                  <div className="w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-800 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                    {getUserInitials()}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-slate-800 truncate">{user.name}</p>
+                    <p className="text-xs text-slate-500 truncate">{user.email}</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <LayoutDashboard className="w-4 h-4" />
+                    Dashboard
+                  </Link>
+                  <Link
+                    href="/profile"
+                    className="flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <User className="w-4 h-4" />
+                    Profile
+                  </Link>
+                </div>
+                {user.role === "admin" && (
+                  <Link
+                    href="/admin"
+                    className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-sm font-medium transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <Shield className="w-4 h-4" />
+                    Admin Panel
+                  </Link>
+                )}
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl text-sm font-medium transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-3">
+                <Link
+                  href="/auth/login"
+                  className="flex items-center justify-center px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-medium transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
                   Login
                 </Link>
                 <Link
                   href="/auth/register"
-                  className="block bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 transition text-center"
+                  className="flex items-center justify-center px-4 py-3 bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 text-white rounded-xl text-sm font-medium transition-colors shadow-md"
                   onClick={() => setIsOpen(false)}
                 >
                   Sign Up
                 </Link>
-              </>
+              </div>
             )}
           </div>
         </div>

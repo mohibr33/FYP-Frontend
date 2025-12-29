@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { GoogleIcon } from "@/components/ui/google-icon";
 import { API_BASE_URL } from "@/lib/api-config";
+import { LogIn } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -51,76 +52,89 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto py-10">
-      <Card className="p-6 space-y-4">
-        <h1 className="text-xl font-semibold">Login</h1>
-        <form onSubmit={onSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              value={form.email}
-              onChange={(e) => update("email", e.target.value)}
-            />
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-teal-50 flex items-center justify-center py-10 px-4">
+      <div className="w-full max-w-md">
+        {/* Header Card */}
+        <div className="bg-gradient-to-r from-slate-800 to-slate-700 rounded-t-xl p-6 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 mb-4">
+            <LogIn className="h-8 w-8 text-teal-400" />
           </div>
-          <div>
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              value={form.password}
-              onChange={(e) => update("password", e.target.value)}
-            />
+          <h1 className="text-2xl font-bold text-white">Welcome Back</h1>
+          <p className="text-slate-300 mt-1">Sign in to your account</p>
+        </div>
+
+        {/* Form Card */}
+        <Card className="rounded-t-none border-t-0 p-6 space-y-4 border-slate-200">
+          <form onSubmit={onSubmit} className="space-y-4">
+            <div>
+              <Label htmlFor="email" className="text-slate-700">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                className="border-slate-200"
+                value={form.email}
+                onChange={(e) => update("email", e.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="password" className="text-slate-700">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                className="border-slate-200"
+                value={form.password}
+                onChange={(e) => update("password", e.target.value)}
+              />
+            </div>
+            {error && <p className="text-red-600 text-sm">{error}</p>}
+            <Button type="submit" disabled={loading} className="w-full bg-slate-800 hover:bg-slate-700 text-white">
+              {loading ? "Signing in..." : "Sign In"}
+            </Button>
+          </form>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-slate-200" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-white px-2 text-slate-500">
+                Or continue with
+              </span>
+            </div>
           </div>
-          {error && <p className="text-red-600 text-sm">{error}</p>}
-          <Button type="submit" disabled={loading} className="w-full">
-            {loading ? "Signing in..." : "Login"}
+
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800 transition-all duration-200"
+            onClick={handleGoogleLogin}
+            disabled={loading}
+          >
+            <GoogleIcon className="mr-2 h-4 w-4" />
+            Sign in with Google
           </Button>
-        </form>
 
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
+          <div className="text-sm text-center space-y-2">
+            <p className="text-slate-600">
+              New here?{" "}
+              <button
+                onClick={() => router.push("/auth/register")}
+                className="text-slate-800 font-medium underline hover:text-slate-600"
+              >
+                Create account
+              </button>
+            </p>
+            <p>
+              <button
+                onClick={() => router.push("/auth/forgot-password")}
+                className="text-slate-500 hover:text-slate-700 transition-colors"
+              >
+                Forgot password?
+              </button>
+            </p>
           </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              Or continue with
-            </span>
-          </div>
-        </div>
-
-        <Button
-          type="button"
-          variant="outline"
-          className="w-full"
-          onClick={handleGoogleLogin}
-          disabled={loading}
-        >
-          <GoogleIcon className="mr-2 h-4 w-4" />
-          Sign in with Google
-        </Button>
-
-        <div className="text-sm text-center space-y-1">
-          <p>
-            New here?{" "}
-            <button
-              onClick={() => router.push("/auth/register")}
-              className="text-blue-600 underline"
-            >
-              Create account
-            </button>
-          </p>
-          <p>
-            <button
-              onClick={() => router.push("/auth/forgot-password")}
-              className="text-blue-600 underline"
-            >
-              Forgot password?
-            </button>
-          </p>
-        </div>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 }

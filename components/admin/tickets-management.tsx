@@ -120,28 +120,28 @@ export default function TicketsManagement() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "open":
-        return "bg-blue-100 text-blue-800";
+        return "bg-slate-100 text-slate-700";
       case "in_progress":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-amber-50 text-amber-700";
       case "resolved":
-        return "bg-green-100 text-green-800";
+        return "bg-emerald-50 text-emerald-700";
       case "closed":
-        return "bg-gray-100 text-gray-800";
+        return "bg-slate-100 text-slate-500";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-slate-100 text-slate-600";
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "high":
-        return "bg-red-100 text-red-800";
+        return "bg-red-50 text-red-600";
       case "medium":
-        return "bg-orange-100 text-orange-800";
+        return "bg-amber-50 text-amber-600";
       case "low":
-        return "bg-green-100 text-green-800";
+        return "bg-slate-100 text-slate-600";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-slate-100 text-slate-600";
     }
   };
 
@@ -150,29 +150,29 @@ export default function TicketsManagement() {
       {/* Stats Cards */}
       {stats && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="p-4">
-            <p className="text-sm text-gray-600">Total Tickets</p>
-            <p className="text-2xl font-bold">{stats.total}</p>
+          <Card className="border-0 shadow-sm bg-white p-5">
+            <p className="text-sm text-slate-500">Total Tickets</p>
+            <p className="text-2xl font-semibold text-slate-800 mt-1">{stats.total}</p>
           </Card>
-          <Card className="p-4">
-            <p className="text-sm text-gray-600">Open</p>
-            <p className="text-2xl font-bold text-blue-600">{stats.open}</p>
+          <Card className="border-0 shadow-sm bg-white p-5">
+            <p className="text-sm text-slate-500">Open</p>
+            <p className="text-2xl font-semibold text-slate-800 mt-1">{stats.open}</p>
           </Card>
-          <Card className="p-4">
-            <p className="text-sm text-gray-600">Resolved</p>
-            <p className="text-2xl font-bold text-green-600">
+          <Card className="border-0 shadow-sm bg-white p-5">
+            <p className="text-sm text-slate-500">Resolved</p>
+            <p className="text-2xl font-semibold text-emerald-600 mt-1">
               {stats.resolved}
             </p>
           </Card>
         </div>
       )}
 
-      <Card className="p-6">
-        <div className="space-y-4">
+      <Card className="border-0 shadow-sm bg-white">
+        <div className="p-6 space-y-6">
           <div className="flex items-center gap-4">
-            <Label>Filter by Status:</Label>
+            <Label className="text-slate-600 text-sm">Filter by Status:</Label>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-48">
+              <SelectTrigger className="w-48 border-slate-200 focus:border-slate-400 focus:ring-slate-400">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -184,56 +184,60 @@ export default function TicketsManagement() {
           </div>
 
           {loading ? (
-            <div className="flex justify-center py-8">
+            <div className="flex justify-center py-12">
               <Spinner className="h-6 w-6" />
             </div>
           ) : (
             <>
-              <div className="rounded-md border overflow-x-auto">
+              <div className="rounded-lg border border-slate-200 overflow-hidden">
                 <Table>
                   <TableHeader>
-                    <TableRow>
-                      <TableHead>Ticket #</TableHead>
-                      <TableHead>Subject</TableHead>
-                      <TableHead>User</TableHead>
-                      <TableHead>Category</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Priority</TableHead>
-                      <TableHead>Created</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
+                    <TableRow className="bg-slate-50 hover:bg-slate-50">
+                      <TableHead className="text-slate-600 font-medium">Ticket #</TableHead>
+                      <TableHead className="text-slate-600 font-medium">Subject</TableHead>
+                      <TableHead className="text-slate-600 font-medium">User</TableHead>
+                      <TableHead className="text-slate-600 font-medium">Category</TableHead>
+                      <TableHead className="text-slate-600 font-medium">Status</TableHead>
+                      <TableHead className="text-slate-600 font-medium">Priority</TableHead>
+                      <TableHead className="text-slate-600 font-medium">Created</TableHead>
+                      <TableHead className="text-slate-600 font-medium text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {tickets.length === 0 ? (
-                      <TableRow>
-                        <TableCell
-                          colSpan={8}
-                          className="text-center text-gray-500"
-                        >
-                          No tickets found
-                        </TableCell>
-                      </TableRow>
+                    <TableRow>
+                      <TableCell
+                        colSpan={8}
+                        className="text-center text-slate-400 py-12"
+                      >
+                        No tickets found
+                      </TableCell>
+                    </TableRow>
                     ) : (
                       tickets.map((ticket) => (
-                        <TableRow key={ticket.id}>
-                          <TableCell className="font-mono text-sm">
+                        <TableRow key={ticket.id} className="border-slate-100 hover:bg-slate-50/50">
+                          <TableCell className="font-mono text-sm text-slate-600">
                             {ticket.ticketNumber}
                           </TableCell>
-                          <TableCell className="max-w-xs truncate">
+                          <TableCell className="max-w-xs truncate text-slate-800">
                             {ticket.subject}
                           </TableCell>
                           <TableCell>
                             <div className="text-sm">
-                              <p className="font-medium">{ticket.user?.name}</p>
-                              <p className="text-gray-500">
+                              <p className="font-medium text-slate-700">{ticket.user?.name}</p>
+                              <p className="text-slate-400 text-xs">
                                 {ticket.user?.email}
                               </p>
                             </div>
                           </TableCell>
-                          <TableCell>{ticket.category}</TableCell>
+                          <TableCell>
+                            <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">
+                              {ticket.category}
+                            </span>
+                          </TableCell>
                           <TableCell>
                             <span
-                              className={`px-2 py-1 rounded text-xs ${getStatusColor(
+                              className={`px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(
                                 ticket.status
                               )}`}
                             >
@@ -242,18 +246,18 @@ export default function TicketsManagement() {
                           </TableCell>
                           <TableCell>
                             <span
-                              className={`px-2 py-1 rounded text-xs ${getPriorityColor(
+                              className={`px-2.5 py-1 rounded-full text-xs font-medium ${getPriorityColor(
                                 ticket.priority
                               )}`}
                             >
                               {ticket.priority}
                             </span>
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="text-slate-500 text-sm">
                             {new Date(ticket.createdAt).toLocaleDateString()}
                           </TableCell>
                           <TableCell className="text-right">
-                            <div className="flex justify-end gap-2">
+                            <div className="flex justify-end gap-1">
                               <Button
                                 variant="ghost"
                                 size="sm"
@@ -263,8 +267,9 @@ export default function TicketsManagement() {
                                   setResolveDialogOpen(true);
                                 }}
                                 disabled={ticket.status === "resolved"}
+                                className="h-8 w-8 p-0 hover:bg-purple-50 disabled:opacity-40"
                               >
-                                <MessageSquare className="h-4 w-4" />
+                                <MessageSquare className="h-4 w-4 text-purple-500" />
                               </Button>
                               <Button
                                 variant="ghost"
@@ -273,8 +278,9 @@ export default function TicketsManagement() {
                                   setSelectedTicket(ticket);
                                   setDeleteDialogOpen(true);
                                 }}
+                                className="h-8 w-8 p-0 hover:bg-red-50"
                               >
-                                <Trash2 className="h-4 w-4 text-red-600" />
+                                <Trash2 className="h-4 w-4 text-red-500" />
                               </Button>
                             </div>
                           </TableCell>
@@ -286,16 +292,17 @@ export default function TicketsManagement() {
               </div>
 
               {totalPages > 1 && (
-                <div className="flex justify-between items-center">
-                  <p className="text-sm text-gray-600">
+              <div className="flex justify-between items-center pt-2">
+                  <p className="text-sm text-slate-500">
                     Page {page} of {totalPages}
                   </p>
-                  <div className="flex gap-2">
+                  <div className="flex gap-1">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => setPage((p) => Math.max(1, p - 1))}
                       disabled={page === 1}
+                      className="border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40"
                     >
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
@@ -306,6 +313,7 @@ export default function TicketsManagement() {
                         setPage((p) => Math.min(totalPages, p + 1))
                       }
                       disabled={page === totalPages}
+                      className="border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40"
                     >
                       <ChevronRight className="h-4 w-4" />
                     </Button>
@@ -326,11 +334,11 @@ export default function TicketsManagement() {
           {selectedTicket && (
             <div className="space-y-4">
               <div>
-                <p className="text-sm text-gray-600">Subject:</p>
+                <p className="text-sm text-slate-600">Subject:</p>
                 <p className="font-medium">{selectedTicket.subject}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Message:</p>
+                <p className="text-sm text-slate-600">Message:</p>
                 <p className="text-sm">{selectedTicket.message}</p>
               </div>
               <div className="space-y-2">

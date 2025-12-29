@@ -12,12 +12,17 @@ import type {
  */
 export async function getAllMedicines(
   page = 1,
-  limit = 20
+  limit = 20,
+  allergies: string[] = []
 ): Promise<MedicinesResponse> {
   const response = await apiClient.get<ApiResponse<MedicinesResponse>>(
     "/api/medicines",
     {
-      params: { page, limit },
+      params: { 
+        page, 
+        limit,
+        ...(allergies.length > 0 && { allergies: allergies.join(",") })
+      },
     }
   );
   return response.data.data;
@@ -29,12 +34,18 @@ export async function getAllMedicines(
 export async function searchMedicines(
   query: string,
   page = 1,
-  limit = 20
+  limit = 20,
+  allergies: string[] = []
 ): Promise<MedicinesResponse> {
   const response = await apiClient.get<ApiResponse<MedicinesResponse>>(
     "/api/medicines/search",
     {
-      params: { q: query, page, limit },
+      params: { 
+        q: query, 
+        page, 
+        limit,
+        ...(allergies.length > 0 && { allergies: allergies.join(",") })
+      },
     }
   );
   return response.data.data;

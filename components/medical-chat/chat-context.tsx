@@ -10,7 +10,11 @@ interface ChatContextType {
   currentChat: MedicalChat | null;
   loading: boolean;
   sending: boolean;
+  showArchived: boolean;
   loadChats: () => Promise<void>;
+  loadArchivedChats: () => Promise<void>;
+  toggleArchivedView: () => void;
+  unarchiveChat: (chatId: string) => Promise<void>;
   createNewChat: (firstMessage?: string) => Promise<MedicalChat | null>;
   selectChat: (chatId: string) => Promise<void>;
   sendMessage: (
@@ -41,6 +45,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
   const [currentChat, setCurrentChat] = useState<MedicalChat | null>(null);
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
+  const [showArchived, setShowArchived] = useState(false);
 
   const loadChats = useCallback(async () => {
     try {
@@ -57,6 +62,35 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
       setLoading(false);
     }
   }, []);
+
+  const loadArchivedChats = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await medicalChatApi.getAllChats({
+        status: "archived",
+        limit: 50,
+      });
+      setChats(response.data.chats);
+    } catch (error: any) {
+      console.error("Error loading archived chats:", error);
+      toast.error(error.response?.data?.message || "Failed to load archived chats");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const toggleArchivedView = useCallback(() => {
+    setShowArchived((prev) => {
+      const newValue = !prev;
+      if (newValue) {
+        loadArchivedChats();
+      } else {
+        loadChats();
+      }
+      setCurrentChat(null);
+      return newValue;
+    });
+  }, [loadArchivedChats, loadChats]);
 
   // Load chats on mount
   React.useEffect(() => {
@@ -320,12 +354,32 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({
     [currentChat]
   );
 
+  const unarchiveChat = useCallback(
+    async (chatId: string) => {
+      try {
+        await medicalChatApi.updateChatStatus(chatId, "active");
+        setChats((prev) => prev.filter((chat) => chat.id !== chatId));
+        if (currentChat?.id === chatId) {
+          setCurrentChat(null);
+        }
+        toast.success("Chat restored");
+      } catch (error: any) {
+        toast.error(error.response?.data?.message || "Failed to restore chat");
+      }
+    },
+    [currentChat]
+  );
+
   const value: ChatContextType = {
     chats,
     currentChat,
     loading,
     sending,
+    showArchived,
     loadChats,
+    loadArchivedChats,
+    toggleArchivedView,
+    unarchiveChat,
     createNewChat,
     selectChat,
     sendMessage,

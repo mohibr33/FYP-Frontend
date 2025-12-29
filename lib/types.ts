@@ -76,6 +76,7 @@ export interface Medicine {
   usedFor: string;
   childCategory: string;
   productDetails: ProductDetails;
+  allergyWarnings?: string[];
   createdAt: string;
   updatedAt: string;
 }

@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { Search, Loader2, AlertCircle } from "lucide-react";
+import { Search, AlertCircle, BookOpen, Clock, ArrowRight } from "lucide-react";
 import {
   getAllArticles,
   searchArticles,
@@ -119,66 +119,76 @@ export default function ArticlesPage() {
   };
 
   return (
-    <main className="min-h-screen bg-background py-12 px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Medical Articles
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            Browse thousands of peer-reviewed articles written by healthcare
-            professionals
-          </p>
-        </div>
+    <main className="min-h-screen bg-slate-50">
+      {/* Dark Header */}
+      <div className="bg-slate-800 py-8 px-4">
+        <div className="max-w-4xl mx-auto">
+          {/* Title + Search Combined Layout */}
+          <div className="flex items-center gap-4 mb-5">
+            <div className="w-12 h-12 bg-slate-700 rounded-xl flex items-center justify-center flex-shrink-0">
+              <BookOpen className="w-6 h-6 text-teal-400" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-white">Medical Articles</h1>
+              <p className="text-sm text-slate-400">Browse peer-reviewed articles written by healthcare professionals</p>
+            </div>
+          </div>
 
-        {/* Search Bar */}
-        <div className="mb-8">
+          {/* Search Bar - Full width within container */}
           <div className="relative">
-            <Search className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
             <Input
-              placeholder="Search articles..."
+              placeholder="Search articles by title, topic, or keyword..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              className="pl-10 h-12 border-blue-200 focus:border-blue-600"
+              className="pl-12 pr-28 h-12 bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500/20 rounded-xl"
             />
             <Button
               onClick={handleSearch}
-              className="absolute right-2 top-2 bg-blue-600 hover:bg-blue-700"
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-teal-600 hover:bg-teal-500 text-white rounded-lg px-5 h-9"
             >
               Search
             </Button>
           </div>
         </div>
+      </div>
+
+      <div className="py-8 px-4">
+        <div className="max-w-6xl mx-auto">
 
         {/* Categories */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-foreground mb-6">
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-slate-800 mb-4">
             Browse by Category
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2">
             <button
               onClick={() => handleCategoryChange(null)}
-              className={`p-4 rounded-lg border transition ${
+              className={`p-3 rounded-lg border transition text-center ${
                 selectedCategory === null
-                  ? "border-blue-600 bg-blue-50 text-blue-600"
-                  : "border-blue-100 hover:border-blue-300"
+                  ? "border-slate-800 bg-slate-800 text-white"
+                  : "border-slate-200 hover:border-slate-400 text-slate-700"
               }`}
             >
-              All Articles
+              <span className="text-sm font-medium">All</span>
             </button>
             {CATEGORIES.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => handleCategoryChange(cat.id)}
-                className={`p-4 rounded-lg border transition text-left ${
+                className={`p-3 rounded-lg border transition text-center ${
                   selectedCategory === cat.id
-                    ? "border-blue-600 bg-blue-50"
-                    : "border-blue-100 hover:border-blue-300"
+                    ? "border-slate-800 bg-slate-800 text-white"
+                    : "border-slate-200 hover:border-slate-400"
                 }`}
               >
-                <div className="text-2xl mb-2">{cat.icon}</div>
-                <div className="font-semibold text-sm">{cat.name}</div>
+                <div className="text-lg mb-1">{cat.icon}</div>
+                <div className={`text-xs font-medium  ${
+                  selectedCategory === cat.id
+                    ? "text-slate-200"
+                    : "text-slate-700"
+                }`}>{cat.name}</div>
               </button>
             ))}
           </div>
@@ -192,91 +202,117 @@ export default function ArticlesPage() {
           </Alert>
         )}
 
-        {/* Loading State */}
+        {/* Loading State - Skeleton Cards with Book Animation */}
         {loading ? (
-          <div className="flex justify-center items-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+          <div className="space-y-8">
+            {/* Book Animation */}
+            <div className="flex flex-col items-center justify-center py-8">
+              <div className="relative">
+                <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-teal-500/30 animate-bounce">
+                  <BookOpen className="w-8 h-8 text-white" />
+                </div>
+                {/* Pulse rings */}
+                <div className="absolute inset-0 rounded-2xl bg-teal-500/20 animate-ping" />
+              </div>
+              <p className="mt-4 text-slate-500 font-medium animate-pulse">Loading articles...</p>
+            </div>
+            
+            {/* Skeleton Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <div 
+                  key={i} 
+                  className="bg-white rounded-xl border border-slate-200 overflow-hidden"
+                >
+                  {/* Image skeleton */}
+                  <div className="w-full h-48 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] animate-[shimmer_1.5s_infinite]" />
+                  {/* Content skeleton */}
+                  <div className="p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="h-5 w-20 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] animate-[shimmer_1.5s_infinite] rounded-full" />
+                      <div className="h-4 w-16 bg-slate-100 rounded animate-pulse" />
+                    </div>
+                    <div className="h-5 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] animate-[shimmer_1.5s_infinite] rounded" />
+                    <div className="h-5 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] animate-[shimmer_1.5s_infinite] rounded w-3/4" />
+                    <div className="space-y-2 pt-2">
+                      <div className="h-3 bg-slate-100 rounded animate-pulse" />
+                      <div className="h-3 bg-slate-100 rounded w-5/6 animate-pulse" />
+                    </div>
+                    <div className="flex items-center justify-between pt-2">
+                      <div className="h-4 w-20 bg-slate-100 rounded animate-pulse" />
+                      <div className="h-4 w-12 bg-slate-100 rounded animate-pulse" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         ) : (
           <>
             {/* Results Count */}
-            <div className="mb-4 text-sm text-muted-foreground">
+            <div className="mb-4 text-sm text-slate-500">
               {total} article{total !== 1 ? "s" : ""} found
             </div>
 
-            {/* Articles List */}
-            <div className="space-y-4">
+            {/* Articles Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {articles.map((article) => (
-                <Card key={article.id} className="hover:shadow-lg transition">
-                  <div className="flex flex-col md:flex-row">
-                    {/* Article Image */}
-                    {article.imageUrl && (
-                      <div className="md:w-64 md:flex-shrink-0">
+                <Card key={article.id} className="group overflow-hidden hover:shadow-lg transition-all duration-300 border-slate-200 rounded-xl flex flex-col">
+                  {/* Article Image */}
+                  {article.imageUrl && (
+                    <div className="overflow-hidden h-48">
+                      <Link href={`/articles/${article.slug}`}>
+                        <img
+                          src={article.imageUrl}
+                          alt={article.title}
+                          className="w-full h-full object-cover cursor-pointer group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </Link>
+                    </div>
+                  )}
+
+                  {/* Article Content */}
+                  <div className="flex-1 flex flex-col">
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center justify-between gap-2 mb-2">
+                        <span className="inline-flex items-center text-xs font-medium bg-teal-50 text-teal-700 px-2.5 py-1 rounded-full border border-teal-200">
+                          {article.category}
+                        </span>
+                        <span className="text-xs text-slate-400">
+                          {new Date(article.createdAt).toLocaleDateString("en-US", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </span>
+                      </div>
+                      <Link href={`/articles/${article.slug}`}>
+                        <CardTitle className="text-base text-slate-800 hover:text-teal-600 cursor-pointer transition-colors line-clamp-2">
+                          {article.title}
+                        </CardTitle>
+                      </Link>
+                    </CardHeader>
+                    <CardContent className="flex-1 flex flex-col justify-between pt-0">
+                      <CardDescription className="text-slate-600 line-clamp-2 mb-4 text-sm">
+                        {article.excerpt}
+                      </CardDescription>
+                      <div className="flex items-center justify-between">
+                        <span className="inline-flex items-center gap-1 text-xs text-slate-500">
+                          <Clock className="w-3.5 h-3.5" />
+                          {article.readTime} min read
+                        </span>
                         <Link href={`/articles/${article.slug}`}>
-                          <img
-                            src={article.imageUrl}
-                            alt={article.title}
-                            className="w-full h-48 md:h-full object-cover cursor-pointer hover:opacity-90 transition"
-                          />
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="p-0 h-auto text-teal-600 hover:text-teal-700 hover:bg-transparent font-medium group/btn"
+                          >
+                            Read
+                            <ArrowRight className="w-4 h-4 ml-1 group-hover/btn:translate-x-1 transition-transform" />
+                          </Button>
                         </Link>
                       </div>
-                    )}
-
-                    {/* Article Content */}
-                    <div className="flex-1">
-                      <CardHeader>
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <Link href={`/articles/${article.slug}`}>
-                              <CardTitle className="text-blue-600 hover:text-blue-700 cursor-pointer">
-                                {article.title}
-                              </CardTitle>
-                            </Link>
-                            <div className="flex items-center gap-2 mt-2">
-                              <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
-                                {article.category}
-                              </span>
-                              <span className="text-xs text-muted-foreground">
-                                By {article.author}
-                              </span>
-                              <span className="text-xs text-muted-foreground">
-                                • {article.readTime} min read
-                              </span>
-                            </div>
-                            <CardDescription className="mt-2">
-                              {article.excerpt}
-                            </CardDescription>
-                          </div>
-                          <span className="text-xs text-muted-foreground ml-4 whitespace-nowrap">
-                            {new Date(article.createdAt).toLocaleDateString()}
-                          </span>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex items-center justify-between">
-                          <Link href={`/articles/${article.slug}`}>
-                            <Button
-                              variant="link"
-                              className="p-0 text-blue-600"
-                            >
-                              Read Article →
-                            </Button>
-                          </Link>
-                          {article.tags && article.tags.length > 0 && (
-                            <div className="flex gap-1">
-                              {article.tags.slice(0, 3).map((tag) => (
-                                <span
-                                  key={tag}
-                                  className="text-xs text-muted-foreground"
-                                >
-                                  #{tag}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </CardContent>
-                    </div>
+                    </CardContent>
                   </div>
                 </Card>
               ))}
@@ -285,7 +321,7 @@ export default function ArticlesPage() {
             {/* Empty State */}
             {articles.length === 0 && !loading && (
               <div className="text-center py-12">
-                <p className="text-muted-foreground text-lg">
+                <p className="text-slate-500 text-lg">
                   No articles found.
                 </p>
               </div>
@@ -298,16 +334,18 @@ export default function ArticlesPage() {
                   onClick={() => handlePageChange(page - 1)}
                   disabled={page === 1}
                   variant="outline"
+                  className="border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800"
                 >
                   Previous
                 </Button>
-                <span className="text-sm text-muted-foreground px-4">
+                <span className="text-sm text-slate-500 px-4">
                   Page {page} of {totalPages}
                 </span>
                 <Button
                   onClick={() => handlePageChange(page + 1)}
                   disabled={page === totalPages}
                   variant="outline"
+                  className="border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800"
                 >
                   Next
                 </Button>
@@ -315,6 +353,7 @@ export default function ArticlesPage() {
             )}
           </>
         )}
+        </div>
       </div>
     </main>
   );

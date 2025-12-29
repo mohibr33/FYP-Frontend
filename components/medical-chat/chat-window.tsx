@@ -16,6 +16,9 @@ import {
   X,
   FileText,
   Image as ImageIcon,
+  MessageSquare,
+  Shield,
+  Sparkles,
 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "sonner";
@@ -99,19 +102,50 @@ export const ChatWindow: React.FC = () => {
 
   if (!currentChat) {
     return (
-      <div className="flex items-center justify-center h-full bg-muted/20">
-        <div className="text-center space-y-4">
-          <Bot className="mx-auto h-16 w-16 text-muted-foreground" />
-          <div>
-            <h3 className="text-lg font-semibold mb-2">AI Medical Assistant</h3>
-            <p className="text-sm text-muted-foreground max-w-md">
-              Select a chat or start a new conversation to get medical guidance
-              and support.
+      <div className="flex items-center justify-center h-full bg-slate-50">
+        <div className="text-center space-y-6 max-w-lg px-6">
+          {/* Animated Icon */}
+          <div className="relative mx-auto w-24 h-24">
+            <div className="absolute inset-0 bg-teal-500/20 rounded-full animate-ping" />
+            <div className="relative w-24 h-24 bg-gradient-to-br from-teal-500 to-teal-600 rounded-full flex items-center justify-center shadow-lg">
+              <Bot className="h-12 w-12 text-white" />
+            </div>
+          </div>
+          
+          {/* Title & Description */}
+          <div className="space-y-2">
+            <h3 className="text-2xl font-bold text-slate-800">AI Medical Assistant</h3>
+            <p className="text-slate-600">
+              Select a chat or start a new conversation to get medical guidance and support.
             </p>
           </div>
-          <Alert className="max-w-md mx-auto">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription className="text-xs">
+
+          {/* Feature Cards */}
+          <div className="grid grid-cols-3 gap-3 pt-2">
+            <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                <MessageSquare className="h-5 w-5 text-blue-600" />
+              </div>
+              <p className="text-xs font-medium text-slate-700">Chat Anytime</p>
+            </div>
+            <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                <Shield className="h-5 w-5 text-purple-600" />
+              </div>
+              <p className="text-xs font-medium text-slate-700">Private & Secure</p>
+            </div>
+            <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center mx-auto mb-2">
+                <Sparkles className="h-5 w-5 text-emerald-600" />
+              </div>
+              <p className="text-xs font-medium text-slate-700">AI Powered</p>
+            </div>
+          </div>
+
+          {/* Disclaimer */}
+          <Alert className="bg-amber-50 border-amber-200 text-left">
+            <AlertCircle className="h-4 w-4 text-amber-600" />
+            <AlertDescription className="text-xs text-amber-800">
               This AI assistant provides general health information only and is
               not a replacement for professional medical care.
             </AlertDescription>
@@ -122,7 +156,7 @@ export const ChatWindow: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col h-full bg-background">
+    <div className="flex flex-col h-full bg-slate-50">
       {/* Messages */}
       <div ref={scrollAreaRef} className="flex-1 overflow-y-auto">
         <div className="max-w-3xl mx-auto w-full">
@@ -141,18 +175,40 @@ export const ChatWindow: React.FC = () => {
             </div>
           ) : currentChat.messages.length === 0 ? (
             <div className="flex items-center justify-center min-h-[60vh]">
-              <div className="text-center space-y-4">
-                <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
-                  <Bot className="h-8 w-8 text-primary" />
+              <div className="text-center space-y-6 max-w-md px-4">
+                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center mx-auto shadow-lg">
+                  <Bot className="h-10 w-10 text-white" />
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold mb-1">
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-slate-800">
                     How can I help you today?
                   </h3>
-                  <p className="text-sm text-muted-foreground max-w-sm">
+                  <p className="text-sm text-slate-500">
                     Ask me anything about your health. I'm here to provide
                     medical guidance and support.
                   </p>
+                </div>
+                
+                {/* Suggestion Chips */}
+                <div className="flex flex-wrap justify-center gap-2 pt-2">
+                  <button 
+                    onClick={() => setMessage("What are common cold symptoms?")}
+                    className="px-4 py-2 text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-full transition-colors"
+                  >
+                    Common cold symptoms
+                  </button>
+                  <button 
+                    onClick={() => setMessage("How to improve sleep quality?")}
+                    className="px-4 py-2 text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-full transition-colors"
+                  >
+                    Sleep tips
+                  </button>
+                  <button 
+                    onClick={() => setMessage("What foods boost immunity?")}
+                    className="px-4 py-2 text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-full transition-colors"
+                  >
+                    Immunity boosters
+                  </button>
                 </div>
               </div>
             </div>
@@ -163,8 +219,8 @@ export const ChatWindow: React.FC = () => {
               ))}
               {waitingForResponse && (
                 <div className="flex gap-4 px-6 py-8 bg-muted/20">
-                  <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center shrink-0">
-                    <Bot className="h-5 w-5 text-primary-foreground" />
+<div className="h-8 w-8 rounded-full bg-slate-800 flex items-center justify-center shrink-0">
+                    <Bot className="h-5 w-5 text-white" />
                   </div>
                   <div className="flex-1 space-y-2 pt-1">
                     <div className="flex gap-1">
@@ -181,7 +237,7 @@ export const ChatWindow: React.FC = () => {
       </div>
 
       {/* Input Area */}
-      <div className="border-t bg-background shrink-0">
+      <div className="border-t bg-white shrink-0">
         <div className="max-w-3xl mx-auto w-full p-4">
           {/* Selected Files Display */}
           {selectedFiles.length > 0 && (
@@ -193,9 +249,9 @@ export const ChatWindow: React.FC = () => {
                   className="pl-2 pr-1 py-1 gap-1.5"
                 >
                   {file.type.startsWith("image/") ? (
-                    <ImageIcon className="h-3 w-3" />
+                    <ImageIcon className="h-3 w-3 text-purple-500" />
                   ) : (
-                    <FileText className="h-3 w-3" />
+                    <FileText className="h-3 w-3 text-blue-500" />
                   )}
                   <span className="text-xs max-w-40 truncate">{file.name}</span>
                   <button
@@ -203,7 +259,7 @@ export const ChatWindow: React.FC = () => {
                     onClick={() => removeFile(index)}
                     className="ml-1 hover:bg-secondary-foreground/20 rounded-full p-0.5"
                   >
-                    <X className="h-3 w-3" />
+                    <X className="h-3 w-3 text-red-500" />
                   </button>
                 </Badge>
               ))}
@@ -229,11 +285,11 @@ export const ChatWindow: React.FC = () => {
                 className="flex-1 min-h-[44px] max-h-[200px] resize-none border-0 bg-transparent px-2 py-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-sm"
                 maxLength={2000}
               />
-              <Button
+<Button
                 type="submit"
                 size="icon"
                 disabled={!message.trim() || sending || waitingForResponse}
-                className="h-8 w-8 rounded-lg shrink-0 mb-1"
+                className="h-8 w-8 rounded-lg shrink-0 mb-1 bg-slate-800 hover:bg-slate-700"
               >
                 <Send className="h-4 w-4" />
               </Button>

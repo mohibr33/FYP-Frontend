@@ -52,15 +52,15 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         accept={accept}
         onChange={handleFileChange}
       />
-      <Button
+<Button
         type="button"
         variant="outline"
         size="icon"
         onClick={handleClick}
         disabled={disabled}
-        className="h-10 w-10 rounded-full"
+        className="h-10 w-10 rounded-full border-slate-200 hover:bg-slate-100 hover:text-slate-900"
       >
-        <Paperclip className="h-5 w-5" />
+        <Paperclip className="h-5 w-5 text-slate-500" />
       </Button>
     </>
   );

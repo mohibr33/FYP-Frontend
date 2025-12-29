@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, Loader2, AlertCircle } from "lucide-react";
+import { Search, AlertCircle, Pill, X, AlertTriangle, ShieldAlert, ChevronDown, Plus } from "lucide-react";
 import {
   getAllMedicines,
   searchMedicines,
@@ -33,6 +33,12 @@ export default function MedicinesPage() {
   const [total, setTotal] = useState(0);
   const limit = 20;
 
+  // Allergy/Intolerance state
+  const [allergies, setAllergies] = useState<string[]>([]);
+  const [appliedAllergies, setAppliedAllergies] = useState<string[]>([]); // Only used after clicking Apply
+  const [allergyInput, setAllergyInput] = useState("");
+  const [showAllergyPanel, setShowAllergyPanel] = useState(false);
+
   useEffect(() => {
     fetchBrands();
     fetchMedicines();
@@ -51,7 +57,7 @@ export default function MedicinesPage() {
     try {
       setLoading(true);
       setError(null);
-      const response = await getAllMedicines(page, limit);
+      const response = await getAllMedicines(page, limit, appliedAllergies);
       setMedicines(response.medicines);
       setTotalPages(response.pagination.totalPages);
       setTotal(response.pagination.total);
@@ -67,20 +73,25 @@ export default function MedicinesPage() {
   };
 
   const handleSearch = async () => {
-    if (!searchTerm.trim()) {
-      setPage(1);
-      fetchMedicines();
-      return;
-    }
-
+    // Apply allergies when searching
+    setAppliedAllergies([...allergies]);
+    
     try {
       setLoading(true);
       setError(null);
       setPage(1);
-      const response = await searchMedicines(searchTerm, 1, limit);
-      setMedicines(response.medicines);
-      setTotalPages(response.pagination.totalPages);
-      setTotal(response.pagination.total);
+      
+      if (!searchTerm.trim()) {
+        const response = await getAllMedicines(1, limit, allergies);
+        setMedicines(response.medicines);
+        setTotalPages(response.pagination.totalPages);
+        setTotal(response.pagination.total);
+      } else {
+        const response = await searchMedicines(searchTerm, 1, limit, allergies);
+        setMedicines(response.medicines);
+        setTotalPages(response.pagination.totalPages);
+        setTotal(response.pagination.total);
+      }
     } catch (err: any) {
       setError(
         err.response?.data?.message || "Search failed. Please try again."
@@ -91,42 +102,220 @@ export default function MedicinesPage() {
     }
   };
 
+  // Add allergy tag
+  const addAllergy = () => {
+    const trimmed = allergyInput.trim().toLowerCase();
+    if (trimmed && !allergies.includes(trimmed)) {
+      setAllergies([...allergies, trimmed]);
+      setAllergyInput("");
+    }
+  };
+
+  // Remove allergy tag
+  const removeAllergy = (allergy: string) => {
+    setAllergies(allergies.filter((a) => a !== allergy));
+  };
+
+  // Handle allergy input keydown
+  const handleAllergyKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addAllergy();
+    }
+  };
+
+  // Check if medicine has allergy warnings (use backend response or calculate locally)
+  const getMedicineAllergyWarnings = (medicine: Medicine): string[] => {
+    // First check if backend already provided warnings
+    if (medicine.allergyWarnings && medicine.allergyWarnings.length > 0) {
+      return medicine.allergyWarnings;
+    }
+    
+    // Fallback to local calculation using APPLIED allergies only
+    if (appliedAllergies.length === 0) return [];
+    
+    const warnings: string[] = [];
+    const fieldsToCheck = [
+      medicine.productDetails?.generics,
+      medicine.productDetails?.whenNotToUse,
+      medicine.productDetails?.sideEffects,
+      medicine.productDetails?.drugInteractions,
+      medicine.productDetails?.precautions,
+      medicine.title,
+    ];
+
+    for (const allergy of appliedAllergies) {
+      for (const field of fieldsToCheck) {
+        if (field && field.toLowerCase().includes(allergy.toLowerCase())) {
+          if (!warnings.includes(allergy)) {
+            warnings.push(allergy);
+          }
+          break;
+        }
+      }
+    }
+
+    return warnings;
+  };
+
+  // Clear all allergies
+  const clearAllAllergies = () => {
+    setAllergies([]);
+    if (appliedAllergies.length > 0) {
+      setAppliedAllergies([]);
+      // Refetch without allergies
+      if (searchTerm.trim()) {
+        searchMedicines(searchTerm, 1, limit, []).then(response => {
+          setMedicines(response.medicines);
+          setTotalPages(response.pagination.totalPages);
+          setTotal(response.pagination.total);
+        });
+      } else {
+        getAllMedicines(1, limit, []).then(response => {
+          setMedicines(response.medicines);
+          setTotalPages(response.pagination.totalPages);
+          setTotal(response.pagination.total);
+        });
+      }
+    }
+  };
+
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <main className="min-h-screen bg-background py-12 px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Medicine Database
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            Comprehensive information about medications, dosages, side effects,
-            and interactions
-          </p>
-        </div>
+    <main className="min-h-screen bg-slate-50">
+      {/* Dark Header */}
+      <div className="bg-slate-800 py-8 px-4">
+        <div className="max-w-4xl mx-auto">
+          {/* Title + Search Combined */}
+          <div className="flex items-center gap-4 mb-5">
+            <div className="w-12 h-12 bg-slate-700 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Pill className="w-6 h-6 text-teal-400" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-white">Drug Encyclopedia</h1>
+              <p className="text-sm text-slate-400">Search medications, dosages, side effects & usage guidelines</p>
+            </div>
+          </div>
 
-        <div className="mb-8 space-y-6">
+          {/* Search Bar */}
           <div className="relative">
-            <Search className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
             <Input
               placeholder="Search medicines, brands, or generics..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              className="pl-10 h-12 border-blue-200 focus:border-blue-600"
+              className="pl-12 pr-28 h-12 bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500/20 rounded-xl"
             />
             <Button
               onClick={handleSearch}
-              className="absolute right-2 top-2 bg-blue-600 hover:bg-blue-700"
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-teal-600 hover:bg-teal-500 text-white rounded-lg px-5 h-9"
             >
               Search
             </Button>
           </div>
+
+          {/* Allergy/Intolerance Filter */}
+          <div className="mt-4">
+            {/* Toggle Button */}
+            <button
+              onClick={() => setShowAllergyPanel(!showAllergyPanel)}
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm ${
+                showAllergyPanel || appliedAllergies.length > 0
+                  ? 'bg-rose-500/20 border border-rose-500/40 text-rose-300'
+                  : 'bg-slate-700/50 border border-slate-600 text-slate-400 hover:bg-slate-700 hover:text-white'
+              }`}
+            >
+              <ShieldAlert className="w-4 h-4" />
+              <span className="font-medium">Allergy & Intolerance Filter</span>
+              {appliedAllergies.length > 0 && (
+                <span className="bg-rose-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                  {appliedAllergies.length}
+                </span>
+              )}
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${showAllergyPanel ? 'rotate-180' : ''}`} />
+            </button>
+
+            {/* Expanded Panel */}
+            {showAllergyPanel && (
+              <div className="mt-3 p-4 bg-slate-700/60 rounded-xl border border-slate-600/50">
+                {/* Info Text */}
+                <div className="flex items-center gap-2 mb-3 text-xs text-slate-400">
+                  <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+                  <span>Add allergies then click Search to highlight matching medicines</span>
+                </div>
+                
+                {/* Input Section */}
+                <div className="flex gap-2 mb-3">
+                  <Input
+                    placeholder="e.g., Penicillin, Aspirin, Sulfa..."
+                    value={allergyInput}
+                    onChange={(e) => setAllergyInput(e.target.value)}
+                    onKeyDown={handleAllergyKeyDown}
+                    className="h-10 bg-slate-600/50 border-slate-500/50 text-white placeholder:text-slate-400 focus:border-teal-400 rounded-lg text-sm"
+                  />
+                  <Button
+                    onClick={addAllergy}
+                    size="sm"
+                    className="h-10 px-4 bg-teal-600 hover:bg-teal-500 text-white rounded-lg"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </Button>
+                </div>
+
+                {/* Allergy Tags */}
+                {allergies.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {allergies.map((allergy) => (
+                      <span
+                        key={allergy}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-rose-500/15 text-rose-300 rounded-lg text-sm border border-rose-500/30"
+                      >
+                        <span className="capitalize">{allergy}</span>
+                        <button
+                          onClick={() => removeAllergy(allergy)}
+                          className="hover:text-white transition-colors"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </span>
+                    ))}
+                    <button
+                      onClick={clearAllAllergies}
+                      className="text-xs text-slate-500 hover:text-rose-400 transition-colors px-2"
+                    >
+                      Clear all
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Active Allergies Badge (when panel is closed) */}
+            {!showAllergyPanel && appliedAllergies.length > 0 && (
+              <div className="mt-3 flex items-center gap-2 flex-wrap">
+                <span className="text-xs text-slate-400">Active filters:</span>
+                {appliedAllergies.map((allergy) => (
+                  <span
+                    key={allergy}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-rose-500/20 text-rose-300 rounded-full text-xs font-medium border border-rose-500/30"
+                  >
+                    <AlertTriangle className="w-3 h-3" />
+                    <span className="capitalize">{allergy}</span>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
+      </div>
+
+      <div className="py-8 px-4">
+        <div className="max-w-6xl mx-auto">
 
         {/* Error Alert */}
         {error && (
@@ -136,69 +325,129 @@ export default function MedicinesPage() {
           </Alert>
         )}
 
-        {/* Loading State */}
+        {/* Loading State - Skeleton Cards with Pill Animation */}
         {loading ? (
-          <div className="flex justify-center items-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+          <div className="space-y-8">
+            {/* Pill Animation */}
+            <div className="flex flex-col items-center justify-center py-8">
+              <div className="relative">
+                <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-teal-500/30 animate-bounce">
+                  <Pill className="w-8 h-8 text-white" />
+                </div>
+                {/* Pulse rings */}
+                <div className="absolute inset-0 rounded-2xl bg-teal-500/20 animate-ping" />
+              </div>
+              <p className="mt-4 text-slate-500 font-medium animate-pulse">Loading medicines...</p>
+            </div>
+            
+            {/* Skeleton Cards */}
+            <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4">
+              {[...Array(10)].map((_, i) => (
+                <div 
+                  key={i} 
+                  className="bg-white rounded-lg border border-slate-200 overflow-hidden"
+                  style={{ animationDelay: `${i * 50}ms` }}
+                >
+                  {/* Image skeleton */}
+                  <div className="w-full h-32 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] animate-[shimmer_1.5s_infinite]" />
+                  {/* Content skeleton */}
+                  <div className="p-3 space-y-3">
+                    <div className="h-4 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] animate-[shimmer_1.5s_infinite] rounded" />
+                    <div className="h-3 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-200 bg-[length:200%_100%] animate-[shimmer_1.5s_infinite] rounded w-2/3" />
+                    <div className="h-3 bg-slate-100 rounded w-1/2 animate-pulse" />
+                    <div className="h-6 bg-slate-100 rounded-full w-3/4 animate-pulse" />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         ) : (
           <>
-            <div className="mb-4 text-sm text-muted-foreground">
-              {total} medicine{total !== 1 ? "s" : ""} found
-            </div>
+            {/* Active Allergy Filter Indicator */}
+            {appliedAllergies.length > 0 && (
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-rose-100 rounded-lg border border-rose-200 mb-6 w-fit">
+                <ShieldAlert className="w-4 h-4 text-rose-600" />
+                <span className="text-xs font-medium text-rose-700">
+                  Filtering for {appliedAllergies.length} allerg{appliedAllergies.length > 1 ? 'ies' : 'y'}
+                </span>
+              </div>
+            )}
             <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4">
-              {medicines.map((medicine) => (
+              {medicines.map((medicine) => {
+                const allergyWarnings = getMedicineAllergyWarnings(medicine);
+                const hasAllergyWarning = allergyWarnings.length > 0;
+                
+                return (
                 <Link key={medicine.id} href={`/medicines/${medicine.slug}`}>
-                  <Card className="h-full hover:shadow-lg transition cursor-pointer border-blue-100 overflow-hidden">
+                  <Card className={`h-full hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden group ${
+                    hasAllergyWarning 
+                      ? 'border-rose-400 border-2 ring-2 ring-rose-400/20 bg-gradient-to-b from-rose-50 to-white' 
+                      : 'border-slate-200 hover:border-slate-300'
+                  }`}>
+                    {/* Allergy Warning Banner */}
+                    {hasAllergyWarning && (
+                      <div className="bg-gradient-to-r from-rose-500 to-rose-600 text-white px-3 py-2.5 flex items-center gap-2">
+                        <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                          <AlertTriangle className="w-3.5 h-3.5" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-bold uppercase tracking-wide">Allergy Alert</p>
+                          <p className="text-xs opacity-90 truncate capitalize">
+                            {allergyWarnings.join(", ")}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    
                     {/* Product Image */}
-                    <div className="w-full h-32 bg-gray-100 relative overflow-hidden">
+                    <div className={`w-full h-32 relative overflow-hidden ${hasAllergyWarning ? 'bg-rose-50' : 'bg-slate-100'}`}>
                       <Image
                         src={medicine.productImage || "/placeholder.svg"}
                         alt={medicine.title}
                         fill
-                        className="object-contain p-2"
+                        className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 20vw"
                       />
                     </div>
 
                     <CardHeader className="p-3">
-                      <CardTitle className="text-sm text-foreground line-clamp-2 leading-tight">
+                      <CardTitle className="text-sm text-slate-800 line-clamp-2 leading-tight group-hover:text-teal-700 transition-colors">
                         {medicine.title}
                       </CardTitle>
-                      <CardDescription className="text-xs">
+                      <CardDescription className="text-xs text-slate-500">
                         {medicine.brand}
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="p-3 pt-0 space-y-2">
                       {medicine.productDetails.generics && (
                         <div>
-                          <p className="text-xs text-muted-foreground mb-1">
+                          <p className="text-xs text-slate-500 mb-1">
                             Generic
                           </p>
-                          <p className="text-xs font-medium text-foreground line-clamp-1">
+                          <p className="text-xs font-medium text-slate-700 line-clamp-1">
                             {medicine.productDetails.generics}
                           </p>
                         </div>
                       )}
                       <div className="flex items-center gap-1 text-sm">
-                        <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-xs line-clamp-1">
+                        <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full text-xs line-clamp-1">
                           {medicine.usedFor}
                         </span>
                       </div>
                       {medicine.productDetails.requiresPrescriptionYesNo ===
                         "Yes" && (
-                        <span className="block bg-red-100 text-red-700 px-2 py-0.5 rounded text-xs text-center">
+                        <span className="block bg-red-100 text-red-700 px-2 py-0.5 rounded text-xs text-center font-medium">
                           Rx Required
                         </span>
                       )}
                     </CardContent>
                   </Card>
                 </Link>
-              ))}
-            </div>{" "}
+              )})}
+            </div>
             {medicines.length === 0 && !loading && (
               <div className="text-center py-12">
-                <p className="text-muted-foreground text-lg">
+                <p className="text-slate-500 text-lg">
                   No medicines found matching your search.
                 </p>
               </div>
@@ -210,18 +459,18 @@ export default function MedicinesPage() {
                   onClick={() => handlePageChange(page - 1)}
                   disabled={page === 1}
                   variant="outline"
-                  className=" cursor-pointer"
+                  className="cursor-pointer border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800"
                 >
                   Previous
                 </Button>
-                <span className="text-sm text-muted-foreground px-4">
+                <span className="text-sm text-slate-500 px-4">
                   Page {page} of {totalPages}
                 </span>
                 <Button
                   onClick={() => handlePageChange(page + 1)}
                   disabled={page === totalPages}
                   variant="outline"
-                  className=" cursor-pointer"
+                  className="cursor-pointer border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800"
                 >
                   Next
                 </Button>
@@ -229,6 +478,7 @@ export default function MedicinesPage() {
             )}
           </>
         )}
+        </div>
       </div>
     </main>
   );

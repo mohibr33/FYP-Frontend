@@ -113,44 +113,46 @@ export default function UsersManagement() {
   }
 
   return (
-    <Card className="p-6">
-      <div className="space-y-4">
+    <Card className="border-0 shadow-sm bg-white">
+      <div className="p-6 space-y-6">
+        {/* Search Section */}
         <div className="flex flex-col sm:flex-row gap-4 items-end">
           <div className="flex-1 space-y-2">
-            <Label>Search Users</Label>
+            <Label className="text-slate-600 text-sm">Search Users</Label>
             <div className="flex gap-2">
               <Input
                 placeholder="Search by name or email..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                className="border-slate-200 focus:border-slate-400 focus:ring-slate-400"
               />
-              <Button onClick={handleSearch}>
+              <Button onClick={handleSearch} className="bg-slate-800 hover:bg-slate-700 text-white">
                 <Search className="h-4 w-4" />
               </Button>
             </div>
           </div>
-          <Button variant="outline" onClick={loadUsers}>
+          <Button variant="outline" onClick={loadUsers} className="border-slate-300 text-slate-600 hover:bg-slate-50">
             Clear
           </Button>
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-8">
+          <div className="flex justify-center py-12">
             <Spinner className="h-6 w-6" />
           </div>
         ) : (
           <>
-            <div className="rounded-md border overflow-x-auto">
+            <div className="rounded-lg border border-slate-200 overflow-hidden">
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead>Verified</TableHead>
-                    <TableHead>Created</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                  <TableRow className="bg-slate-50 hover:bg-slate-50">
+                    <TableHead className="text-slate-600 font-medium">Name</TableHead>
+                    <TableHead className="text-slate-600 font-medium">Email</TableHead>
+                    <TableHead className="text-slate-600 font-medium">Role</TableHead>
+                    <TableHead className="text-slate-600 font-medium">Verified</TableHead>
+                    <TableHead className="text-slate-600 font-medium">Created</TableHead>
+                    <TableHead className="text-slate-600 font-medium text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -158,24 +160,24 @@ export default function UsersManagement() {
                     <TableRow>
                       <TableCell
                         colSpan={6}
-                        className="text-center text-gray-500"
+                        className="text-center text-slate-400 py-12"
                       >
                         No users found
                       </TableCell>
                     </TableRow>
                   ) : (
                     users.map((user) => (
-                      <TableRow key={user.id}>
-                        <TableCell className="font-medium">
+                      <TableRow key={user.id} className="border-slate-100 hover:bg-slate-50/50">
+                        <TableCell className="font-medium text-slate-800">
                           {user.firstName} {user.lastName}
                         </TableCell>
-                        <TableCell>{user.email}</TableCell>
+                        <TableCell className="text-slate-600">{user.email}</TableCell>
                         <TableCell>
                           <span
-                            className={`px-2 py-1 rounded text-xs ${
+                            className={`px-2.5 py-1 rounded-full text-xs font-medium ${
                               user.role === "admin"
-                                ? "bg-purple-100 text-purple-800"
-                                : "bg-blue-100 text-blue-800"
+                                ? "bg-slate-800 text-white"
+                                : "bg-slate-100 text-slate-600"
                             }`}
                           >
                             {user.role}
@@ -183,20 +185,20 @@ export default function UsersManagement() {
                         </TableCell>
                         <TableCell>
                           <span
-                            className={`px-2 py-1 rounded text-xs ${
+                            className={`px-2.5 py-1 rounded-full text-xs font-medium ${
                               user.isVerified
-                                ? "bg-green-100 text-green-800"
-                                : "bg-red-100 text-red-800"
+                                ? "bg-emerald-50 text-emerald-700"
+                                : "bg-slate-100 text-slate-500"
                             }`}
                           >
                             {user.isVerified ? "Yes" : "No"}
                           </span>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="text-slate-500 text-sm">
                           {new Date(user.createdAt).toLocaleDateString()}
                         </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex justify-end gap-2">
+                          <TableCell className="text-right">
+                          <div className="flex justify-end gap-1">
                             <Button
                               variant="ghost"
                               size="sm"
@@ -204,8 +206,9 @@ export default function UsersManagement() {
                                 setEditingUser(user);
                                 setEditDialogOpen(true);
                               }}
+                              className="h-8 w-8 p-0 hover:bg-blue-50"
                             >
-                              <Edit className="h-4 w-4" />
+                              <Edit className="h-4 w-4 text-blue-500" />
                             </Button>
                             <Button
                               variant="ghost"
@@ -214,8 +217,9 @@ export default function UsersManagement() {
                                 setUserToDelete(user);
                                 setDeleteDialogOpen(true);
                               }}
+                              className="h-8 w-8 p-0 hover:bg-red-50"
                             >
-                              <Trash2 className="h-4 w-4 text-red-600" />
+                              <Trash2 className="h-4 w-4 text-red-500" />
                             </Button>
                           </div>
                         </TableCell>
@@ -227,16 +231,17 @@ export default function UsersManagement() {
             </div>
 
             {totalPages > 1 && (
-              <div className="flex justify-between items-center">
-                <p className="text-sm text-gray-600">
+              <div className="flex justify-between items-center pt-2">
+                <p className="text-sm text-slate-500">
                   Page {page} of {totalPages}
                 </p>
-                <div className="flex gap-2">
+                <div className="flex gap-1">
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page === 1}
+                    className="border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40"
                   >
                     <ChevronLeft className="h-4 w-4" />
                   </Button>
@@ -245,6 +250,7 @@ export default function UsersManagement() {
                     size="sm"
                     onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                     disabled={page === totalPages}
+                    className="border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40"
                   >
                     <ChevronRight className="h-4 w-4" />
                   </Button>

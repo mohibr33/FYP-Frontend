@@ -13,14 +13,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { Loader2, ChefHat, Calendar, Sparkles } from "lucide-react";
+import { Loader2, ChefHat, Calendar, Sparkles, Check } from "lucide-react";
 
 export default function GenerateMealPlanPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
-  const [duration, setDuration] = useState<"7" | "30">("7");
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState("");
   const [hasProfile, setHasProfile] = useState(false);
@@ -69,7 +66,7 @@ export default function GenerateMealPlanPage() {
     setProgress(0);
 
     try {
-      const response = await generateMealPlan({ duration });
+      const response = await generateMealPlan({ duration: "7" });
       if (response.success && response.data) {
         setProgress(100);
         // API returns 'id' not '_id'
@@ -92,19 +89,19 @@ export default function GenerateMealPlanPage() {
 
   if (authLoading || checkingProfile) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-slate-600" />
       </div>
     );
   }
 
   if (!hasProfile) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-12 px-4">
+      <div className="min-h-screen bg-slate-50 py-12 px-4">
         <div className="max-w-2xl mx-auto">
-          <Card>
+          <Card className="border-slate-200 shadow-lg">
             <CardHeader>
-              <CardTitle>Health Profile Required</CardTitle>
+              <CardTitle className="text-slate-800">Health Profile Required</CardTitle>
               <CardDescription>
                 You need to create a health profile before generating a meal
                 plan
@@ -113,7 +110,7 @@ export default function GenerateMealPlanPage() {
             <CardContent>
               <Button
                 onClick={() => router.push("/meal-planner/profile")}
-                className="w-full"
+                className="w-full bg-slate-800 hover:bg-slate-700 text-white"
               >
                 Create Health Profile
               </Button>
@@ -125,18 +122,24 @@ export default function GenerateMealPlanPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-12 px-2">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-8">
-          <Sparkles className="h-16 w-16 mx-auto text-blue-600 mb-4" />
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+    <div className="min-h-screen bg-slate-50">
+      {/* Dark Header */}
+      <div className="bg-slate-800 py-10 px-4">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-700 rounded-full mb-4">
+            <Sparkles className="h-8 w-8 text-amber-400" />
+          </div>
+          <h1 className="text-3xl font-bold text-white mb-2">
             Generate AI Meal Plan
           </h1>
-          <p className="text-gray-600">
-            Choose your plan duration and let AI create personalized meals for
-            you
+          <p className="text-slate-300">
+            Let AI create a personalized 7-day meal plan based on your health profile
           </p>
         </div>
+      </div>
+
+      <div className="py-8 px-4">
+        <div className="max-w-3xl mx-auto">
 
         {error && (
           <Alert variant="destructive" className="mb-6">
@@ -144,120 +147,66 @@ export default function GenerateMealPlanPage() {
           </Alert>
         )}
 
-        <Card className="">
-          <CardHeader>
-            <CardTitle>Select Plan Duration</CardTitle>
-            <CardDescription>
-              Choose how many days you'd like your personalized meal plan to
-              cover
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <RadioGroup
-              value={duration}
-              onValueChange={(val) => setDuration(val as "7" | "30")}
-              disabled={generating}
-            >
-              <div className="grid md:grid-cols-2 gap-4">
-                <Card
-                  className={`cursor-pointer transition-all ${
-                    duration === "7" ? "ring-2 ring-blue-600" : ""
-                  }`}
-                >
-                  <CardContent className="pt-6">
-                    <div className="flex items-start gap-4">
-                      <RadioGroupItem
-                        value="7"
-                        id="duration-7"
-                        className="mt-1"
-                      />
-                      <div className="flex-1">
-                        <Label htmlFor="duration-7" className="cursor-pointer">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Calendar className="h-5 w-5 text-blue-600" />
-                            <span className="font-semibold text-lg">
-                              7-Day Plan
-                            </span>
-                          </div>
-                          <p className="text-sm text-gray-600">
-                            Perfect for trying out personalized meal planning
-                            and adjusting to new recipes
-                          </p>
-                          <div className="mt-3 space-y-1">
-                            <p className="text-xs text-gray-500">
-                              ✓ Weekly meal variety
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              ✓ Easier grocery shopping
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              ✓ Quick results
-                            </p>
-                          </div>
-                        </Label>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card
-                  className={`cursor-pointer transition-all ${
-                    duration === "30" ? "ring-2 ring-blue-600" : ""
-                  }`}
-                >
-                  <CardContent className="pt-6">
-                    <div className="flex items-start gap-4">
-                      <RadioGroupItem
-                        value="30"
-                        id="duration-30"
-                        className="mt-1"
-                      />
-                      <div className="flex-1">
-                        <Label htmlFor="duration-30" className="cursor-pointer">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Calendar className="h-5 w-5 text-purple-600" />
-                            <span className="font-semibold text-lg">
-                              30-Day Plan
-                            </span>
-                          </div>
-                          <p className="text-sm text-gray-600">
-                            Ideal for committed healthy eating and achieving
-                            long-term fitness goals
-                          </p>
-                          <div className="mt-3 space-y-1">
-                            <p className="text-xs text-gray-500">
-                              ✓ Maximum variety
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              ✓ Better habit formation
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              ✓ Cost-effective planning
-                            </p>
-                          </div>
-                        </Label>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+        <Card className="border border-slate-200 shadow-lg rounded-2xl overflow-hidden">
+          <CardHeader className="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-700 text-white py-6">
+            <div className="flex items-center gap-3">
+              <Calendar className="h-8 w-8" />
+              <div>
+                <CardTitle className="text-white text-2xl">7-Day Meal Plan</CardTitle>
+                <CardDescription className="text-slate-300">
+                  A week of personalized Pakistani meals tailored to your goals
+                </CardDescription>
               </div>
-            </RadioGroup>
+            </div>
+          </CardHeader>
+          <CardContent className="pt-6 space-y-6">
+            {/* Features */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                <Check className="h-5 w-5 text-emerald-600 mt-0.5" />
+                <div>
+                  <p className="font-medium text-slate-800">Personalized Nutrition</p>
+                  <p className="text-sm text-slate-500">Based on your health profile and goals</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                <Check className="h-5 w-5 text-emerald-600 mt-0.5" />
+                <div>
+                  <p className="font-medium text-slate-800">Pakistani Cuisine</p>
+                  <p className="text-sm text-slate-500">Traditional recipes with local ingredients</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                <Check className="h-5 w-5 text-emerald-600 mt-0.5" />
+                <div>
+                  <p className="font-medium text-slate-800">Shopping List</p>
+                  <p className="text-sm text-slate-500">Complete grocery list with estimated costs</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                <Check className="h-5 w-5 text-emerald-600 mt-0.5" />
+                <div>
+                  <p className="font-medium text-slate-800">Detailed Recipes</p>
+                  <p className="text-sm text-slate-500">Step-by-step cooking instructions</p>
+                </div>
+              </div>
+            </div>
 
             {generating && (
-              <div className="space-y-4 py-8">
+              <div className="space-y-4 py-6 bg-slate-50 rounded-lg px-4 border border-slate-100">
                 <div className="flex items-center justify-center gap-3">
-                  <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
-                  <p className="text-lg font-medium text-gray-700">
+                  <Loader2 className="h-6 w-6 animate-spin text-slate-600" />
+                  <p className="text-lg font-medium text-slate-700">
                     AI is creating your personalized meal plan...
                   </p>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
                   <div
-                    className="bg-blue-600 h-2 transition-all duration-500 ease-out"
+                    className="bg-slate-700 h-2 transition-all duration-500 ease-out"
                     style={{ width: `${progress}%` }}
                   />
                 </div>
-                <p className="text-center text-sm text-gray-600">
+                <p className="text-center text-sm text-slate-600">
                   {progress < 20 &&
                     "Analyzing your health profile and dietary needs..."}
                   {progress >= 20 &&
@@ -272,22 +221,20 @@ export default function GenerateMealPlanPage() {
                   {progress >= 80 &&
                     "Almost done! Finalizing your meal plan..."}
                 </p>
-                <p className="text-center text-xs text-gray-500 mt-2">
-                  ⏱️ This typically takes 1-6 minutes. Please don't close this
-                  page.
+                <p className="text-center text-xs text-slate-500 mt-2">
+                  This typically takes 1-3 minutes. Please don&apos;t close this page.
                 </p>
               </div>
             )}
 
             {!generating && (
-              <div className="pt-4">
-                <Button onClick={handleGenerate} className="w-full" size="lg">
-                  <ChefHat className="h-5 w-5 mr-2" />
-                  Generate {duration}-Day Meal Plan
+              <div className="pt-2">
+                <Button onClick={handleGenerate} className="w-full bg-slate-800 hover:bg-slate-700 text-white" size="lg">
+                  <ChefHat className="h-5 w-5 mr-2 text-orange-400" />
+                  Generate 7-Day Meal Plan
                 </Button>
-                <p className="text-xs text-gray-500 text-center mt-3">
-                  ⏱️ AI generation takes 1-3 minutes • Creates personalized
-                  Pakistani meals
+                <p className="text-xs text-slate-500 text-center mt-3">
+                  AI generation takes 1-3 minutes • Creates personalized Pakistani meals
                 </p>
               </div>
             )}
@@ -295,9 +242,10 @@ export default function GenerateMealPlanPage() {
         </Card>
 
         <div className="mt-6 text-center">
-          <Button variant="link" onClick={() => router.push("/meal-planner")}>
+          <Button variant="outline" onClick={() => router.push("/meal-planner")} className="border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800">
             Back to Dashboard
           </Button>
+        </div>
         </div>
       </div>
     </div>

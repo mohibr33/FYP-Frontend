@@ -2,9 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/auth/auth-context";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Spinner } from "@/components/ui/spinner";
 import UsersManagement from "@/components/admin/users-management";
 import ArticlesManagement from "@/components/admin/articles-management";
@@ -17,99 +14,124 @@ import {
   Headphones,
   Pill,
   Star,
-  BarChart3,
+  Shield,
 } from "lucide-react";
+
+type AdminSection = "users" | "articles" | "tickets" | "medicines" | "reviews";
 
 export default function AdminPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(true);
+  const [activeSection, setActiveSection] = useState<AdminSection>("users");
 
   useEffect(() => {
-    console.log("Admin page - authLoading:", authLoading, "user:", user);
-
     if (authLoading) return;
 
     if (!user) {
-      console.log("No user found, redirecting to login");
       router.push("/auth/login");
       return;
     }
 
-    console.log("User role:", user.role);
-
-    // Check if user has admin role
     if (user.role !== "admin") {
-      console.log("User is not admin, redirecting to dashboard");
       router.push("/dashboard");
       return;
     }
 
-    console.log("Admin access granted");
     setLoading(false);
   }, [user, authLoading, router]);
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Spinner className="h-8 w-8" />
+      <div className="min-h-screen bg-slate-100">
+        <div className="bg-slate-800 py-8 px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="animate-pulse">
+              <div className="h-8 w-48 bg-slate-700 rounded mb-4"></div>
+              <div className="h-6 w-64 bg-slate-700 rounded"></div>
+            </div>
+          </div>
+        </div>
+        <div className="max-w-7xl mx-auto py-8 px-4">
+          <div className="flex items-center justify-center py-20">
+            <Spinner className="h-8 w-8" />
+          </div>
+        </div>
       </div>
     );
   }
 
+  const navItems = [
+    { id: "users" as AdminSection, label: "Users", icon: Users, color: "text-indigo-400" },
+    { id: "articles" as AdminSection, label: "Articles", icon: FileText, color: "text-blue-400" },
+    { id: "tickets" as AdminSection, label: "Tickets", icon: Headphones, color: "text-purple-400" },
+    { id: "medicines" as AdminSection, label: "Medicines", icon: Pill, color: "text-teal-400" },
+    { id: "reviews" as AdminSection, label: "Reviews", icon: Star, color: "text-amber-400" },
+  ];
+
+  const renderContent = () => {
+    switch (activeSection) {
+      case "users":
+        return <UsersManagement />;
+      case "articles":
+        return <ArticlesManagement />;
+      case "tickets":
+        return <TicketsManagement />;
+      case "medicines":
+        return <MedicinesManagement />;
+      case "reviews":
+        return <ReviewsManagement />;
+      default:
+        return <UsersManagement />;
+    }
+  };
+
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
-        <p className="text-gray-600">
-          Manage users, content, support tickets, and more
-        </p>
+    <div className="min-h-screen bg-slate-100">
+      {/* Dark Header with Navigation */}
+      <div className="bg-slate-800 py-8 px-4">
+        <div className="max-w-7xl mx-auto">
+          {/* Title */}
+          <div className="flex items-center gap-4 mb-8">
+            <div className="w-12 h-12 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+              <Shield className="w-6 h-6 text-purple-400" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-white">Admin Dashboard</h1>
+              <p className="text-slate-400 text-sm">
+                Manage users, content, support tickets, and more
+              </p>
+            </div>
+          </div>
+
+          {/* Navigation Options */}
+          <div className="grid grid-cols-5 gap-3">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeSection === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveSection(item.id)}
+                  className={`rounded-xl p-4 text-center transition-all ${
+                    isActive
+                      ? "bg-white text-slate-800 shadow-lg"
+                      : "bg-white/5 border border-white/10 text-white hover:bg-white/10"
+                  }`}
+                >
+                  <Icon className={`h-6 w-6 mx-auto mb-2 ${isActive ? item.color : item.color}`} />
+                  <p className="font-medium text-sm">{item.label}</p>
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
-      <Tabs defaultValue="users" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5 lg:w-auto">
-          <TabsTrigger value="users" className="flex items-center gap-2">
-            <Users className="h-4 w-4" />
-            <span className="hidden sm:inline">Users</span>
-          </TabsTrigger>
-          <TabsTrigger value="articles" className="flex items-center gap-2">
-            <FileText className="h-4 w-4" />
-            <span className="hidden sm:inline">Articles</span>
-          </TabsTrigger>
-          <TabsTrigger value="tickets" className="flex items-center gap-2">
-            <Headphones className="h-4 w-4" />
-            <span className="hidden sm:inline">Tickets</span>
-          </TabsTrigger>
-          <TabsTrigger value="medicines" className="flex items-center gap-2">
-            <Pill className="h-4 w-4" />
-            <span className="hidden sm:inline">Medicines</span>
-          </TabsTrigger>
-          <TabsTrigger value="reviews" className="flex items-center gap-2">
-            <Star className="h-4 w-4" />
-            <span className="hidden sm:inline">Reviews</span>
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="users">
-          <UsersManagement />
-        </TabsContent>
-
-        <TabsContent value="articles">
-          <ArticlesManagement />
-        </TabsContent>
-
-        <TabsContent value="tickets">
-          <TicketsManagement />
-        </TabsContent>
-
-        <TabsContent value="medicines">
-          <MedicinesManagement />
-        </TabsContent>
-
-        <TabsContent value="reviews">
-          <ReviewsManagement />
-        </TabsContent>
-      </Tabs>
+      {/* Content */}
+      <div className="max-w-7xl mx-auto py-8 px-4">
+        {renderContent()}
+      </div>
     </div>
   );
 }

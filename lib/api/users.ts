@@ -49,6 +49,19 @@ export async function verifyOtp(data: {
   };
 }
 
+export async function resendOtp(data: {
+  email: string;
+}): Promise<{ success: boolean; message: string }> {
+  const response = await apiClient.post<ApiResponse<undefined>>(
+    "/api/users/resend-otp",
+    data
+  );
+  return {
+    success: response.data.success,
+    message: response.data.message || "OTP sent",
+  };
+}
+
 export async function loginUser(data: {
   email: string;
   password: string;

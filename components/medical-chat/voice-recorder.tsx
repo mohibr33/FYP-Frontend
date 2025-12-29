@@ -85,22 +85,22 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
             onClick={stopRecording}
             className="h-10 w-10 rounded-full animate-pulse"
           >
-            <Square className="h-5 w-5" />
+            <Square className="h-5 w-5 text-white" />
           </Button>
           <span className="text-sm text-muted-foreground tabular-nums">
             {formatTime(recordingTime)}
           </span>
         </>
       ) : (
-        <Button
+<Button
           type="button"
           variant="outline"
           size="icon"
           onClick={startRecording}
           disabled={disabled}
-          className="h-10 w-10 rounded-full"
+          className="h-10 w-10 rounded-full border-slate-200 hover:bg-slate-100 hover:text-slate-900"
         >
-          <Mic className="h-5 w-5" />
+          <Mic className="h-5 w-5 text-rose-500" />
         </Button>
       )}
     </div>

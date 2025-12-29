@@ -1,13 +1,14 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { resetPassword } from "@/lib/api/users";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useSearchParams, useRouter } from "next/navigation";
+import { Spinner } from "@/components/ui/spinner";
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
   const params = useSearchParams();
   const router = useRouter();
   const presetEmail = params.get("email") || "";
@@ -74,7 +75,7 @@ export default function ResetPasswordPage() {
             />
           </div>
           {error && <p className="text-red-600 text-sm">{error}</p>}
-          {success && <p className="text-green-600 text-sm">{success}</p>}
+          {success && <p className="text-emerald-600 text-sm">{success}</p>}
           <Button type="submit" disabled={loading} className="w-full">
             {loading ? "Resetting..." : "Reset Password"}
           </Button>
@@ -83,12 +84,33 @@ export default function ResetPasswordPage() {
           Back to{" "}
           <button
             onClick={() => router.push("/auth/login")}
-            className="text-blue-600 underline"
+            className="text-slate-700 underline hover:text-slate-900"
           >
             Login
           </button>
         </div>
       </Card>
     </div>
+  );
+}
+
+function LoadingFallback() {
+  return (
+    <div className="max-w-md mx-auto py-10">
+      <Card className="p-6">
+        <div className="flex flex-col items-center space-y-4">
+          <Spinner className="h-6 w-6" />
+          <p className="text-slate-500">Loading...</p>
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <ResetPasswordContent />
+    </Suspense>
   );
 }

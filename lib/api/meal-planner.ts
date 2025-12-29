@@ -235,7 +235,7 @@ export interface MealPlan {
 }
 
 export interface GenerateMealPlanRequest {
-  duration: "7" | "30";
+  duration: "7";
 }
 
 export interface UpdateMealPlanStatusRequest {

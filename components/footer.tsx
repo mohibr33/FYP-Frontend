@@ -39,12 +39,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="#about" className="hover:text-white transition">
+                <Link href="/about" className="hover:text-white transition">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white transition">
+                <Link href="/privacy-policy" className="hover:text-white transition">
                   Privacy Policy
                 </Link>
               </li>
@@ -55,19 +55,19 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Connect</h4>
             <div className="flex gap-4">
-              <a href="#" className="text-slate-400 hover:text-white transition" aria-label="Facebook">
+              <a href="#" className="text-slate-400 hover:text-blue-400 transition" aria-label="Facebook">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="text-slate-400 hover:text-white transition" aria-label="Twitter">
+              <a href="#" className="text-slate-400 hover:text-sky-400 transition" aria-label="Twitter">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="text-slate-400 hover:text-white transition" aria-label="LinkedIn">
+              <a href="#" className="text-slate-400 hover:text-blue-500 transition" aria-label="LinkedIn">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="text-slate-400 hover:text-white transition" aria-label="Instagram">
+              <a href="#" className="text-slate-400 hover:text-pink-400 transition" aria-label="Instagram">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="text-slate-400 hover:text-white transition" aria-label="Email">
+              <a href="#" className="text-slate-400 hover:text-emerald-400 transition" aria-label="Email">
                 <Mail className="w-5 h-5" />
               </a>
             </div>

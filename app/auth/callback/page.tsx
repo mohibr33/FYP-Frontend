@@ -1,11 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/components/auth/auth-context";
 import { Card } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 
-export default function GoogleCallbackPage() {
+function GoogleCallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { refreshProfile } = useAuth();
@@ -89,15 +89,15 @@ export default function GoogleCallbackPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <Card className="p-6 max-w-md w-full space-y-4">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+        <Card className="p-6 max-w-md w-full space-y-4 border-slate-200">
           <h1 className="text-xl font-semibold text-red-600">
             Authentication Error
           </h1>
-          <p className="text-gray-600">{error}</p>
+          <p className="text-slate-600">{error}</p>
           <button
             onClick={() => router.push("/auth/login")}
-            className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="w-full px-4 py-2 bg-slate-800 text-white rounded hover:bg-slate-700"
           >
             Back to Login
           </button>
@@ -107,20 +107,43 @@ export default function GoogleCallbackPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="p-8 max-w-md w-full">
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+      <Card className="p-8 max-w-md w-full border-slate-200">
         <div className="flex flex-col items-center space-y-4">
           <Spinner className="h-8 w-8" />
-          <h2 className="text-lg font-medium">
+          <h2 className="text-lg font-medium text-slate-800">
             {processing
               ? "Completing Google Sign-In..."
               : "Redirecting to dashboard..."}
           </h2>
-          <p className="text-sm text-gray-500 text-center">
+          <p className="text-sm text-slate-500 text-center">
             Please wait while we set up your account.
           </p>
         </div>
       </Card>
     </div>
+  );
+}
+
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+      <Card className="p-8 max-w-md w-full border-slate-200">
+        <div className="flex flex-col items-center space-y-4">
+          <Spinner className="h-8 w-8" />
+          <h2 className="text-lg font-medium text-slate-800">
+            Loading...
+          </h2>
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+export default function GoogleCallbackPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <GoogleCallbackContent />
+    </Suspense>
   );
 }

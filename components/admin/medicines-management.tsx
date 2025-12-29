@@ -234,16 +234,18 @@ export default function MedicinesManagement() {
 
   return (
     <div className="space-y-6">
-      <Card className="p-6">
-        <div className="space-y-4">
+      <Card className="border-0 shadow-sm bg-white">
+        <div className="p-6 space-y-6">
+          {/* Header */}
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Medicines Management</h2>
-            <Button onClick={() => setCreateDialogOpen(true)}>
+            <h2 className="text-xl font-semibold text-slate-800">Medicines Management</h2>
+            <Button onClick={() => setCreateDialogOpen(true)} className="bg-slate-800 hover:bg-slate-700 text-white">
               <Plus className="h-4 w-4 mr-2" />
               Add Medicine
             </Button>
           </div>
 
+          {/* Search */}
           <div className="flex gap-2">
             <div className="flex-1">
               <Input
@@ -251,9 +253,10 @@ export default function MedicinesManagement() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                className="border-slate-200 focus:border-slate-400 focus:ring-slate-400"
               />
             </div>
-            <Button onClick={handleSearch} variant="outline">
+            <Button onClick={handleSearch} className="bg-slate-800 hover:bg-slate-700 text-white">
               <Search className="h-4 w-4 mr-2" />
               Search
             </Button>
@@ -266,6 +269,7 @@ export default function MedicinesManagement() {
                   loadMedicines();
                 }}
                 variant="outline"
+                className="border-slate-300 text-slate-600 hover:bg-slate-50"
               >
                 Clear
               </Button>
@@ -273,55 +277,59 @@ export default function MedicinesManagement() {
           </div>
 
           {loading ? (
-            <div className="flex justify-center py-8">
+            <div className="flex justify-center py-12">
               <Spinner className="h-6 w-6" />
             </div>
           ) : (
             <>
-              <div className="rounded-md border overflow-x-auto">
+              <div className="rounded-lg border border-slate-200 overflow-hidden">
                 <Table>
                   <TableHeader>
-                    <TableRow>
-                      <TableHead>Product ID</TableHead>
-                      <TableHead>Title</TableHead>
-                      <TableHead>Brand</TableHead>
-                      <TableHead>Category</TableHead>
-                      <TableHead>Generics</TableHead>
-                      <TableHead>Rx Required</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
+                    <TableRow className="bg-slate-50 hover:bg-slate-50">
+                      <TableHead className="text-slate-600 font-medium">Product ID</TableHead>
+                      <TableHead className="text-slate-600 font-medium">Title</TableHead>
+                      <TableHead className="text-slate-600 font-medium">Brand</TableHead>
+                      <TableHead className="text-slate-600 font-medium">Category</TableHead>
+                      <TableHead className="text-slate-600 font-medium">Generics</TableHead>
+                      <TableHead className="text-slate-600 font-medium">Rx Required</TableHead>
+                      <TableHead className="text-slate-600 font-medium text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {medicines.length === 0 ? (
-                      <TableRow>
-                        <TableCell
-                          colSpan={7}
-                          className="text-center text-gray-500"
-                        >
-                          No medicines found
-                        </TableCell>
-                      </TableRow>
+                    <TableRow>
+                      <TableCell
+                        colSpan={7}
+                        className="text-center text-slate-400 py-12"
+                      >
+                        No medicines found
+                      </TableCell>
+                    </TableRow>
                     ) : (
                       medicines.map((medicine) => (
-                        <TableRow key={medicine.id}>
-                          <TableCell className="font-mono text-xs">
+                        <TableRow key={medicine.id} className="border-slate-100 hover:bg-slate-50/50">
+                          <TableCell className="font-mono text-xs text-slate-500">
                             {medicine.productId}
                           </TableCell>
-                          <TableCell className="font-medium max-w-xs truncate">
+                          <TableCell className="font-medium max-w-xs truncate text-slate-800">
                             {medicine.title}
                           </TableCell>
-                          <TableCell>{medicine.brand}</TableCell>
-                          <TableCell>{medicine.childCategory || "-"}</TableCell>
-                          <TableCell className="text-sm">
+                          <TableCell className="text-slate-600">{medicine.brand}</TableCell>
+                          <TableCell>
+                            <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600">
+                              {medicine.childCategory || "-"}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-sm text-slate-500">
                             {medicine.productDetails?.generics || "-"}
                           </TableCell>
                           <TableCell>
                             <span
-                              className={`px-2 py-1 rounded text-xs ${
+                              className={`px-2.5 py-1 rounded-full text-xs font-medium ${
                                 medicine.productDetails
                                   ?.requiresPrescriptionYesNo === "Yes"
-                                  ? "bg-orange-100 text-orange-800"
-                                  : "bg-green-100 text-green-800"
+                                  ? "bg-amber-50 text-amber-700"
+                                  : "bg-emerald-50 text-emerald-700"
                               }`}
                             >
                               {medicine.productDetails
@@ -329,13 +337,14 @@ export default function MedicinesManagement() {
                             </span>
                           </TableCell>
                           <TableCell className="text-right">
-                            <div className="flex justify-end gap-2">
+                            <div className="flex justify-end gap-1">
                               <Button
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => openEditDialog(medicine)}
+                                className="h-8 w-8 p-0 hover:bg-blue-50"
                               >
-                                <Edit className="h-4 w-4" />
+                                <Edit className="h-4 w-4 text-blue-500" />
                               </Button>
                               <Button
                                 variant="ghost"
@@ -344,8 +353,9 @@ export default function MedicinesManagement() {
                                   setSelectedMedicine(medicine);
                                   setDeleteDialogOpen(true);
                                 }}
+                                className="h-8 w-8 p-0 hover:bg-red-50"
                               >
-                                <Trash2 className="h-4 w-4 text-red-600" />
+                                <Trash2 className="h-4 w-4 text-red-500" />
                               </Button>
                             </div>
                           </TableCell>
@@ -357,16 +367,17 @@ export default function MedicinesManagement() {
               </div>
 
               {totalPages > 1 && (
-                <div className="flex justify-between items-center">
-                  <p className="text-sm text-gray-600">
+              <div className="flex justify-between items-center pt-2">
+                  <p className="text-sm text-slate-500">
                     Page {page} of {totalPages}
                   </p>
-                  <div className="flex gap-2">
+                  <div className="flex gap-1">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => setPage((p) => Math.max(1, p - 1))}
                       disabled={page === 1}
+                      className="border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40"
                     >
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
@@ -377,6 +388,7 @@ export default function MedicinesManagement() {
                         setPage((p) => Math.min(totalPages, p + 1))
                       }
                       disabled={page === totalPages}
+                      className="border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40"
                     >
                       <ChevronRight className="h-4 w-4" />
                     </Button>

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { GoogleIcon } from "@/components/ui/google-icon";
 import { API_BASE_URL } from "@/lib/api-config";
+import { UserPlus } from "lucide-react";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -84,109 +85,107 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto py-10">
-      <Card className="p-6 space-y-4">
-        <h1 className="text-xl font-semibold">Create Account</h1>
-        <form onSubmit={onSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="firstName">First Name</Label>
-            <Input
-              id="firstName"
-              value={form.firstName}
-              onChange={(e) => update("firstName", e.target.value)}
-            />
-            {fieldErrors.firstName && (
-              <p className="text-red-600 text-xs mt-1">
-                {fieldErrors.firstName.join("; ")}
-              </p>
-            )}
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-teal-50 flex items-center justify-center py-10 px-4">
+      <div className="w-full max-w-md">
+        {/* Header Card */}
+        <div className="bg-gradient-to-r from-slate-800 to-slate-700 rounded-t-xl p-6 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 mb-4">
+            <UserPlus className="h-8 w-8 text-teal-400" />
           </div>
-          <div>
-            <Label htmlFor="lastName">Last Name</Label>
-            <Input
-              id="lastName"
-              value={form.lastName}
-              onChange={(e) => update("lastName", e.target.value)}
-            />
-            {fieldErrors.lastName && (
-              <p className="text-red-600 text-xs mt-1">
-                {fieldErrors.lastName.join("; ")}
-              </p>
-            )}
-          </div>
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              value={form.email}
-              onChange={(e) => update("email", e.target.value)}
-            />
-          </div>
-          <div>
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              value={form.password}
-              onChange={(e) => update("password", e.target.value)}
-            />
-          </div>
-          <div>
-            <Label htmlFor="phone">Phone (optional)</Label>
-            <Input
-              id="phone"
-              value={form.phone}
-              onChange={(e) =>
-                update("phone", e.target.value.replace(/[^0-9]/g, ""))
-              }
-              placeholder="Digits only"
-            />
-            {fieldErrors.phone && (
-              <p className="text-red-600 text-xs mt-1">
-                {fieldErrors.phone.join("; ")}
-              </p>
-            )}
-          </div>
-          {error && <p className="text-red-600 text-sm">{error}</p>}
-          {success && <p className="text-green-600 text-sm">{success}</p>}
-          <Button type="submit" disabled={loading} className="w-full">
-            {loading ? "Registering..." : "Register"}
-          </Button>
-        </form>
-
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              Or continue with
-            </span>
-          </div>
+          <h1 className="text-2xl font-bold text-white">Create Account</h1>
+          <p className="text-slate-300 mt-1">Join Digital Health Assistant</p>
         </div>
 
-        <Button
-          type="button"
-          variant="outline"
-          className="w-full"
-          onClick={handleGoogleSignup}
-          disabled={loading}
-        >
-          <GoogleIcon className="mr-2 h-4 w-4" />
-          Sign up with Google
-        </Button>
+        {/* Form Card */}
+        <Card className="rounded-t-none border-t-0 p-6 space-y-4 border-slate-200">
+          <form onSubmit={onSubmit} className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="firstName" className="text-slate-700">First Name</Label>
+                <Input
+                  id="firstName"
+                  className="border-slate-200"
+                  value={form.firstName}
+                  onChange={(e) => update("firstName", e.target.value)}
+                />
+                {fieldErrors.firstName && (
+                  <p className="text-red-600 text-xs mt-1">
+                    {fieldErrors.firstName.join("; ")}
+                  </p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="lastName" className="text-slate-700">Last Name</Label>
+                <Input
+                  id="lastName"
+                  className="border-slate-200"
+                  value={form.lastName}
+                  onChange={(e) => update("lastName", e.target.value)}
+                />
+                {fieldErrors.lastName && (
+                  <p className="text-red-600 text-xs mt-1">
+                    {fieldErrors.lastName.join("; ")}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div>
+              <Label htmlFor="email" className="text-slate-700">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                className="border-slate-200"
+                value={form.email}
+                onChange={(e) => update("email", e.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="password" className="text-slate-700">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                className="border-slate-200"
+                value={form.password}
+                onChange={(e) => update("password", e.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="phone" className="text-slate-700">Phone (optional)</Label>
+              <Input
+                id="phone"
+                className="border-slate-200"
+                value={form.phone}
+                onChange={(e) =>
+                  update("phone", e.target.value.replace(/[^0-9]/g, ""))
+                }
+                placeholder="Digits only"
+              />
+              {fieldErrors.phone && (
+                <p className="text-red-600 text-xs mt-1">
+                  {fieldErrors.phone.join("; ")}
+                </p>
+              )}
+            </div>
+            {error && <p className="text-red-600 text-sm">{error}</p>}
+            {success && <p className="text-emerald-600 text-sm">{success}</p>}
+            <Button type="submit" disabled={loading} className="w-full bg-slate-800 hover:bg-slate-700 text-white">
+              {loading ? "Creating account..." : "Create Account"}
+            </Button>
+          </form>
 
-        <div className="text-sm text-center">
-          Already have an account?{" "}
-          <button
-            onClick={() => router.push("/auth/login")}
-            className="text-blue-600 underline"
-          >
-            Login
-          </button>
-        </div>
-      </Card>
+          <div className="text-sm text-center">
+            <p className="text-slate-600">
+              Already have an account?{" "}
+              <button
+                onClick={() => router.push("/auth/login")}
+                className="text-slate-800 font-medium underline hover:text-slate-600"
+              >
+                Login
+              </button>
+            </p>
+          </div>
+        </Card>
+      </div>
     </div>
   );
 }

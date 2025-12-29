@@ -99,7 +99,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "C:\\Users\\riazm\\OneDrive\\Desktop\\FYP_FND",
+    "outputFileTracingRoot": "C:\\Users\\riazm\\OneDrive\\Desktop\\fyp\\frontend",
     "cacheComponents": false,
     "cacheLife": {
       "default": {
@@ -289,11 +289,11 @@
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.mjs",
     "turbopack": {
-      "root": "C:\\Users\\riazm\\OneDrive\\Desktop\\FYP_FND"
+      "root": "C:\\Users\\riazm\\OneDrive\\Desktop\\fyp\\frontend"
     },
     "distDirRoot": ".next"
   },
-  "appDir": "C:\\Users\\riazm\\OneDrive\\Desktop\\FYP_FND",
+  "appDir": "C:\\Users\\riazm\\OneDrive\\Desktop\\fyp\\frontend",
   "relativeAppDir": "",
   "files": [
     ".next\\routes-manifest.json",
