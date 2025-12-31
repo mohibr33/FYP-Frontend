@@ -1,10 +1,11 @@
 {
   "/auth/login/page": "app/auth/login/page.js",
   "/dashboard/page": "app/dashboard/page.js",
+  "/meal-planner/generate/page": "app/meal-planner/generate/page.js",
   "/meal-planner/page": "app/meal-planner/page.js",
-  "/meal-planner/profile/page": "app/meal-planner/profile/page.js",
+  "/meal-planner/plans/[id]/page": "app/meal-planner/plans/[id]/page.js",
+  "/meal-planner/plans/page": "app/meal-planner/plans/page.js",
   "/meal-planner/profile/view/page": "app/meal-planner/profile/view/page.js",
-  "/medicines/[slug]/page": "app/medicines/[slug]/page.js",
-  "/medicines/page": "app/medicines/page.js",
+  "/medical-chat/page": "app/medical-chat/page.js",
   "/page": "app/page.js"
 }
