@@ -12,16 +12,21 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, AlertCircle, Pill, X, AlertTriangle, ShieldAlert, ChevronDown, Plus } from "lucide-react";
+import { Search, AlertCircle, Pill, X, AlertTriangle, ShieldAlert, ChevronDown, Plus, ShieldCheck, Heart, User } from "lucide-react";
 import {
   getAllMedicines,
   searchMedicines,
   getMedicineBrands,
+  getAllMedicinesWithRisk,
+  searchMedicinesWithRisk,
 } from "@/lib/api/medicines";
 import type { Medicine } from "@/lib/types";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useAuth } from "@/components/auth/auth-context";
+import { RiskBadge, RiskNotifierCard } from "@/components/medicines/risk-notifier";
 
 export default function MedicinesPage() {
+  const { token, user } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [medicines, setMedicines] = useState<Medicine[]>([]);
@@ -39,10 +44,14 @@ export default function MedicinesPage() {
   const [allergyInput, setAllergyInput] = useState("");
   const [showAllergyPanel, setShowAllergyPanel] = useState(false);
 
+  // Risk assessment mode
+  const [riskMode, setRiskMode] = useState(false);
+  const [hasHealthProfile, setHasHealthProfile] = useState(false);
+
   useEffect(() => {
     fetchBrands();
     fetchMedicines();
-  }, [page]);
+  }, [page, riskMode]);
 
   const fetchBrands = async () => {
     try {
@@ -57,7 +66,17 @@ export default function MedicinesPage() {
     try {
       setLoading(true);
       setError(null);
-      const response = await getAllMedicines(page, limit, appliedAllergies);
+      
+      let response;
+      if (riskMode && token) {
+        // Use risk-aware endpoint
+        response = await getAllMedicinesWithRisk(page, limit);
+        setHasHealthProfile(response.hasHealthProfile ?? false);
+      } else {
+        // Use regular endpoint with manual allergies
+        response = await getAllMedicines(page, limit, appliedAllergies);
+      }
+      
       setMedicines(response.medicines);
       setTotalPages(response.pagination.totalPages);
       setTotal(response.pagination.total);
@@ -73,25 +92,38 @@ export default function MedicinesPage() {
   };
 
   const handleSearch = async () => {
-    // Apply allergies when searching
-    setAppliedAllergies([...allergies]);
+    // Apply allergies when searching (only if not in risk mode)
+    if (!riskMode) {
+      setAppliedAllergies([...allergies]);
+    }
     
     try {
       setLoading(true);
       setError(null);
       setPage(1);
       
-      if (!searchTerm.trim()) {
-        const response = await getAllMedicines(1, limit, allergies);
-        setMedicines(response.medicines);
-        setTotalPages(response.pagination.totalPages);
-        setTotal(response.pagination.total);
+      let response;
+      
+      if (riskMode && token) {
+        // Use risk-aware endpoints
+        if (!searchTerm.trim()) {
+          response = await getAllMedicinesWithRisk(1, limit);
+        } else {
+          response = await searchMedicinesWithRisk(searchTerm, 1, limit);
+        }
+        setHasHealthProfile(response.hasHealthProfile ?? false);
       } else {
-        const response = await searchMedicines(searchTerm, 1, limit, allergies);
-        setMedicines(response.medicines);
-        setTotalPages(response.pagination.totalPages);
-        setTotal(response.pagination.total);
+        // Use regular endpoints with manual allergies
+        if (!searchTerm.trim()) {
+          response = await getAllMedicines(1, limit, allergies);
+        } else {
+          response = await searchMedicines(searchTerm, 1, limit, allergies);
+        }
       }
+      
+      setMedicines(response.medicines);
+      setTotalPages(response.pagination.totalPages);
+      setTotal(response.pagination.total);
     } catch (err: any) {
       setError(
         err.response?.data?.message || "Search failed. Please try again."
@@ -220,97 +252,153 @@ export default function MedicinesPage() {
           </div>
 
           {/* Allergy/Intolerance Filter */}
-          <div className="mt-4">
-            {/* Toggle Button */}
-            <button
-              onClick={() => setShowAllergyPanel(!showAllergyPanel)}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm ${
-                showAllergyPanel || appliedAllergies.length > 0
-                  ? 'bg-rose-500/20 border border-rose-500/40 text-rose-300'
-                  : 'bg-slate-700/50 border border-slate-600 text-slate-400 hover:bg-slate-700 hover:text-white'
-              }`}
-            >
-              <ShieldAlert className="w-4 h-4" />
-              <span className="font-medium">Allergy & Intolerance Filter</span>
-              {appliedAllergies.length > 0 && (
-                <span className="bg-rose-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                  {appliedAllergies.length}
-                </span>
-              )}
-              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${showAllergyPanel ? 'rotate-180' : ''}`} />
-            </button>
-
-            {/* Expanded Panel */}
-            {showAllergyPanel && (
-              <div className="mt-3 p-4 bg-slate-700/60 rounded-xl border border-slate-600/50">
-                {/* Info Text */}
-                <div className="flex items-center gap-2 mb-3 text-xs text-slate-400">
-                  <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
-                  <span>Add allergies then click Search to highlight matching medicines</span>
-                </div>
-                
-                {/* Input Section */}
-                <div className="flex gap-2 mb-3">
-                  <Input
-                    placeholder="e.g., Penicillin, Aspirin, Sulfa..."
-                    value={allergyInput}
-                    onChange={(e) => setAllergyInput(e.target.value)}
-                    onKeyDown={handleAllergyKeyDown}
-                    className="h-10 bg-slate-600/50 border-slate-500/50 text-white placeholder:text-slate-400 focus:border-teal-400 rounded-lg text-sm"
-                  />
-                  <Button
-                    onClick={addAllergy}
-                    size="sm"
-                    className="h-10 px-4 bg-teal-600 hover:bg-teal-500 text-white rounded-lg"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </Button>
-                </div>
-
-                {/* Allergy Tags */}
-                {allergies.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {allergies.map((allergy) => (
-                      <span
-                        key={allergy}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-rose-500/15 text-rose-300 rounded-lg text-sm border border-rose-500/30"
-                      >
-                        <span className="capitalize">{allergy}</span>
-                        <button
-                          onClick={() => removeAllergy(allergy)}
-                          className="hover:text-white transition-colors"
-                        >
-                          <X className="w-3.5 h-3.5" />
-                        </button>
-                      </span>
-                    ))}
-                    <button
-                      onClick={clearAllAllergies}
-                      className="text-xs text-slate-500 hover:text-rose-400 transition-colors px-2"
-                    >
-                      Clear all
-                    </button>
-                  </div>
+          <div className="mt-4 flex flex-wrap gap-3">
+            {/* Manual Allergy Filter Toggle */}
+            {!riskMode && (
+              <button
+                onClick={() => setShowAllergyPanel(!showAllergyPanel)}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm ${
+                  showAllergyPanel || appliedAllergies.length > 0
+                    ? 'bg-rose-500/20 border border-rose-500/40 text-rose-300'
+                    : 'bg-slate-700/50 border border-slate-600 text-slate-400 hover:bg-slate-700 hover:text-white'
+                }`}
+              >
+                <ShieldAlert className="w-4 h-4" />
+                <span className="font-medium">Allergy & Intolerance Filter</span>
+                {appliedAllergies.length > 0 && (
+                  <span className="bg-rose-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                    {appliedAllergies.length}
+                  </span>
                 )}
-              </div>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${showAllergyPanel ? 'rotate-180' : ''}`} />
+              </button>
             )}
 
-            {/* Active Allergies Badge (when panel is closed) */}
-            {!showAllergyPanel && appliedAllergies.length > 0 && (
-              <div className="mt-3 flex items-center gap-2 flex-wrap">
-                <span className="text-xs text-slate-400">Active filters:</span>
-                {appliedAllergies.map((allergy) => (
-                  <span
-                    key={allergy}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-rose-500/20 text-rose-300 rounded-full text-xs font-medium border border-rose-500/30"
-                  >
-                    <AlertTriangle className="w-3 h-3" />
-                    <span className="capitalize">{allergy}</span>
-                  </span>
-                ))}
-              </div>
+            {/* Risk Assessment Mode Toggle */}
+            {token && (
+              <button
+                onClick={() => {
+                  setRiskMode(!riskMode);
+                  setShowAllergyPanel(false);
+                  setPage(1);
+                }}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-sm ${
+                  riskMode
+                    ? 'bg-emerald-500/20 border border-emerald-500/40 text-emerald-300'
+                    : 'bg-slate-700/50 border border-slate-600 text-slate-400 hover:bg-slate-700 hover:text-white'
+                }`}
+              >
+                <Heart className="w-4 h-4" />
+                <span className="font-medium">Health Profile Risk Assessment</span>
+                {riskMode && (
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                )}
+              </button>
+            )}
+
+            {/* Login prompt for risk assessment */}
+            {!token && (
+              <Link
+                href="/auth/login"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-700/50 border border-slate-600 text-slate-400 hover:bg-slate-700 hover:text-white transition-all duration-200 text-sm"
+              >
+                <User className="w-4 h-4" />
+                <span className="font-medium">Login for personalized risk assessment</span>
+              </Link>
             )}
           </div>
+
+          {/* Risk Mode Active Banner */}
+          {riskMode && (
+            <div className="mt-3 p-3 bg-emerald-500/10 rounded-xl border border-emerald-500/30">
+              <div className="flex items-center gap-2 text-sm text-emerald-300">
+                <ShieldCheck className="w-4 h-4" />
+                <span className="font-medium">Risk assessment active</span>
+                <span className="text-emerald-400/70">•</span>
+                <span className="text-emerald-400/70">
+                  {hasHealthProfile 
+                    ? "Using your health profile for personalized warnings"
+                    : "Create a health profile for better results"}
+                </span>
+                {!hasHealthProfile && (
+                  <Link href="/meal-planner/profile" className="ml-auto text-xs underline hover:text-white">
+                    Create Profile
+                  </Link>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Expanded Allergy Panel - Only show when not in risk mode */}
+          {showAllergyPanel && !riskMode && (
+            <div className="mt-3 p-4 bg-slate-700/60 rounded-xl border border-slate-600/50">
+              {/* Info Text */}
+              <div className="flex items-center gap-2 mb-3 text-xs text-slate-400">
+                <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+                <span>Add allergies then click Search to highlight matching medicines</span>
+              </div>
+              
+              {/* Input Section */}
+              <div className="flex gap-2 mb-3">
+                <Input
+                  placeholder="e.g., Penicillin, Aspirin, Sulfa..."
+                  value={allergyInput}
+                  onChange={(e) => setAllergyInput(e.target.value)}
+                  onKeyDown={handleAllergyKeyDown}
+                  className="h-10 bg-slate-600/50 border-slate-500/50 text-white placeholder:text-slate-400 focus:border-teal-400 rounded-lg text-sm"
+                />
+                <Button
+                  onClick={addAllergy}
+                  size="sm"
+                  className="h-10 px-4 bg-teal-600 hover:bg-teal-500 text-white rounded-lg"
+                >
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+
+              {/* Allergy Tags */}
+              {allergies.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {allergies.map((allergy) => (
+                    <span
+                      key={allergy}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-rose-500/15 text-rose-300 rounded-lg text-sm border border-rose-500/30"
+                    >
+                      <span className="capitalize">{allergy}</span>
+                      <button
+                        onClick={() => removeAllergy(allergy)}
+                        className="hover:text-white transition-colors"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </span>
+                  ))}
+                  <button
+                    onClick={clearAllAllergies}
+                    className="text-xs text-slate-500 hover:text-rose-400 transition-colors px-2"
+                  >
+                    Clear all
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Active Allergies Badge (when panel is closed and not in risk mode) */}
+          {!showAllergyPanel && !riskMode && appliedAllergies.length > 0 && (
+            <div className="mt-3 flex items-center gap-2 flex-wrap">
+              <span className="text-xs text-slate-400">Active filters:</span>
+              {appliedAllergies.map((allergy) => (
+                <span
+                  key={allergy}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 bg-rose-500/20 text-rose-300 rounded-full text-xs font-medium border border-rose-500/30"
+                >
+                  <AlertTriangle className="w-3 h-3" />
+                  <span className="capitalize">{allergy}</span>
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -363,8 +451,8 @@ export default function MedicinesPage() {
           </div>
         ) : (
           <>
-            {/* Active Allergy Filter Indicator */}
-            {appliedAllergies.length > 0 && (
+            {/* Active Allergy Filter Indicator - Only when not in risk mode */}
+            {!riskMode && appliedAllergies.length > 0 && (
               <div className="flex items-center gap-2 px-3 py-1.5 bg-rose-100 rounded-lg border border-rose-200 mb-6 w-fit">
                 <ShieldAlert className="w-4 h-4 text-rose-600" />
                 <span className="text-xs font-medium text-rose-700">
@@ -372,20 +460,45 @@ export default function MedicinesPage() {
                 </span>
               </div>
             )}
+
+            {/* Risk Mode Active Indicator */}
+            {riskMode && (
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-100 rounded-lg border border-emerald-200 mb-6 w-fit">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span className="text-xs font-medium text-emerald-700">
+                  Personalized risk assessment active
+                </span>
+              </div>
+            )}
+
             <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-4">
               {medicines.map((medicine) => {
                 const allergyWarnings = getMedicineAllergyWarnings(medicine);
-                const hasAllergyWarning = allergyWarnings.length > 0;
+                const hasAllergyWarning = !riskMode && allergyWarnings.length > 0;
+                const riskEval = medicine.riskEvaluation;
+                const hasRiskWarning = riskMode && riskEval && riskEval.level !== "safe";
+                
+                // Determine card styling based on mode
+                const getCardBorderClass = () => {
+                  if (riskMode && riskEval) {
+                    if (riskEval.level === "high_risk") return "border-rose-400 border-2 ring-2 ring-rose-400/20 bg-gradient-to-b from-rose-50 to-white";
+                    if (riskEval.level === "caution") return "border-amber-400 border-2 ring-2 ring-amber-400/20 bg-gradient-to-b from-amber-50 to-white";
+                    return "border-emerald-300 border bg-gradient-to-b from-emerald-50/50 to-white";
+                  }
+                  if (hasAllergyWarning) return "border-rose-400 border-2 ring-2 ring-rose-400/20 bg-gradient-to-b from-rose-50 to-white";
+                  return "border-slate-200 hover:border-slate-300";
+                };
                 
                 return (
                 <Link key={medicine.id} href={`/medicines/${medicine.slug}`}>
-                  <Card className={`h-full hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden group ${
-                    hasAllergyWarning 
-                      ? 'border-rose-400 border-2 ring-2 ring-rose-400/20 bg-gradient-to-b from-rose-50 to-white' 
-                      : 'border-slate-200 hover:border-slate-300'
-                  }`}>
-                    {/* Allergy Warning Banner */}
-                    {hasAllergyWarning && (
+                  <Card className={`h-full hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden group ${getCardBorderClass()}`}>
+                    {/* Risk Evaluation Banner - In Risk Mode */}
+                    {riskMode && riskEval && (
+                      <RiskNotifierCard risk={riskEval} />
+                    )}
+
+                    {/* Allergy Warning Banner - In Manual Mode */}
+                    {!riskMode && hasAllergyWarning && (
                       <div className="bg-gradient-to-r from-rose-500 to-rose-600 text-white px-3 py-2.5 flex items-center gap-2">
                         <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
                           <AlertTriangle className="w-3.5 h-3.5" />
@@ -400,7 +513,12 @@ export default function MedicinesPage() {
                     )}
                     
                     {/* Product Image */}
-                    <div className={`w-full h-32 relative overflow-hidden ${hasAllergyWarning ? 'bg-rose-50' : 'bg-slate-100'}`}>
+                    <div className={`w-full h-32 relative overflow-hidden ${
+                      hasAllergyWarning || (riskEval?.level === "high_risk") ? 'bg-rose-50' : 
+                      riskEval?.level === "caution" ? 'bg-amber-50' :
+                      riskEval?.level === "safe" && riskMode ? 'bg-emerald-50/50' :
+                      'bg-slate-100'
+                    }`}>
                       <Image
                         src={medicine.productImage || "/placeholder.svg"}
                         alt={medicine.title}

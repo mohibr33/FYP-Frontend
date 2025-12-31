@@ -29,6 +29,22 @@ export async function getAllMedicines(
 }
 
 /**
+ * Get all medicines with risk evaluation (requires auth)
+ */
+export async function getAllMedicinesWithRisk(
+  page = 1,
+  limit = 20
+): Promise<MedicinesResponse> {
+  const response = await apiClient.get<ApiResponse<MedicinesResponse>>(
+    "/api/medicines/with-risk/list",
+    {
+      params: { page, limit },
+    }
+  );
+  return response.data.data;
+}
+
+/**
  * Search medicines by query
  */
 export async function searchMedicines(
@@ -46,6 +62,23 @@ export async function searchMedicines(
         limit,
         ...(allergies.length > 0 && { allergies: allergies.join(",") })
       },
+    }
+  );
+  return response.data.data;
+}
+
+/**
+ * Search medicines with risk evaluation (requires auth)
+ */
+export async function searchMedicinesWithRisk(
+  query: string,
+  page = 1,
+  limit = 20
+): Promise<MedicinesResponse> {
+  const response = await apiClient.get<ApiResponse<MedicinesResponse>>(
+    "/api/medicines/with-risk/search",
+    {
+      params: { q: query, page, limit },
     }
   );
   return response.data.data;
@@ -101,6 +134,16 @@ export async function getMedicinesByBrand(
 export async function getMedicineBySlug(slug: string): Promise<Medicine> {
   const response = await apiClient.get<ApiResponse<Medicine>>(
     `/api/medicines/slug/${slug}`
+  );
+  return response.data.data;
+}
+
+/**
+ * Get single medicine by slug with risk evaluation (requires auth)
+ */
+export async function getMedicineBySlugWithRisk(slug: string): Promise<Medicine> {
+  const response = await apiClient.get<ApiResponse<Medicine>>(
+    `/api/medicines/with-risk/slug/${slug}`
   );
   return response.data.data;
 }

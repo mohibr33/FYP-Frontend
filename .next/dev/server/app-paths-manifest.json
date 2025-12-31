@@ -1,24 +1,10 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/about/page": "app/about/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/articles/[slug]/page": "app/articles/[slug]/page.js",
-  "/articles/page": "app/articles/page.js",
   "/auth/login/page": "app/auth/login/page.js",
-  "/auth/register/page": "app/auth/register/page.js",
-  "/auth/verify-otp/page": "app/auth/verify-otp/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/meal-planner/generate/page": "app/meal-planner/generate/page.js",
   "/meal-planner/page": "app/meal-planner/page.js",
-  "/meal-planner/plans/[id]/page": "app/meal-planner/plans/[id]/page.js",
-  "/meal-planner/plans/page": "app/meal-planner/plans/page.js",
   "/meal-planner/profile/page": "app/meal-planner/profile/page.js",
   "/meal-planner/profile/view/page": "app/meal-planner/profile/view/page.js",
-  "/medical-chat/page": "app/medical-chat/page.js",
   "/medicines/[slug]/page": "app/medicines/[slug]/page.js",
   "/medicines/page": "app/medicines/page.js",
-  "/page": "app/page.js",
-  "/privacy-policy/page": "app/privacy-policy/page.js",
-  "/profile/page": "app/profile/page.js",
-  "/support/page": "app/support/page.js"
+  "/page": "app/page.js"
 }

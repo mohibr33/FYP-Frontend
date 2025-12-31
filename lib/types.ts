@@ -66,6 +66,23 @@ export interface ProductDetails {
   drugInteractions: string;
 }
 
+// Risk Evaluation Types
+export type RiskLevel = "safe" | "caution" | "high_risk";
+
+export interface RiskFactor {
+  type: "allergy" | "condition" | "medication" | "pregnancy" | "side_effect";
+  severity: RiskLevel;
+  match: string;
+  message: string;
+}
+
+export interface RiskEvaluation {
+  level: RiskLevel;
+  message: string;
+  factors: RiskFactor[];
+  hasProfile: boolean;
+}
+
 export interface Medicine {
   id: string;
   productId: string;
@@ -77,6 +94,7 @@ export interface Medicine {
   childCategory: string;
   productDetails: ProductDetails;
   allergyWarnings?: string[];
+  riskEvaluation?: RiskEvaluation;
   createdAt: string;
   updatedAt: string;
 }
@@ -84,6 +102,7 @@ export interface Medicine {
 export interface MedicinesResponse {
   medicines: Medicine[];
   pagination: Pagination;
+  hasHealthProfile?: boolean;
 }
 
 export interface BrandsResponse {

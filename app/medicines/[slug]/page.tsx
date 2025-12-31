@@ -29,7 +29,7 @@ import {
   Edit,
   Trash2,
 } from "lucide-react";
-import { getMedicineBySlug } from "@/lib/api/medicines";
+import { getMedicineBySlug, getMedicineBySlugWithRisk } from "@/lib/api/medicines";
 import {
   getMedicineReviews,
   createReview,
@@ -41,6 +41,7 @@ import type { Review } from "@/lib/api/reviews";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useAuth } from "@/components/auth/auth-context";
 import { useRouter } from "next/navigation";
+import { RiskNotifierBanner } from "@/components/medicines/risk-notifier";
 
 export default function MedicinePage({
   params,
@@ -48,7 +49,7 @@ export default function MedicinePage({
   params: Promise<{ slug: string }>;
 }) {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const [medicine, setMedicine] = useState<Medicine | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [averageRating, setAverageRating] = useState<number>(0);
@@ -72,14 +73,27 @@ export default function MedicinePage({
     if (medicineSlug) {
       fetchMedicine();
     }
-  }, [medicineSlug]);
+  }, [medicineSlug, token]);
 
   const fetchMedicine = async () => {
     if (!medicineSlug) return;
     try {
       setLoading(true);
       setError(null);
-      const data = await getMedicineBySlug(medicineSlug);
+      
+      // Try to fetch with risk evaluation if user is logged in
+      let data: Medicine;
+      if (token) {
+        try {
+          data = await getMedicineBySlugWithRisk(medicineSlug);
+        } catch {
+          // Fallback to regular endpoint if risk endpoint fails
+          data = await getMedicineBySlug(medicineSlug);
+        }
+      } else {
+        data = await getMedicineBySlug(medicineSlug);
+      }
+      
       setMedicine(data);
       // Fetch reviews after getting medicine data
       if (data.id) {
@@ -361,6 +375,11 @@ export default function MedicinePage({
 
       {/* Content */}
       <div className="max-w-6xl mx-auto py-8 px-4">
+        {/* Risk Evaluation Banner */}
+        {medicine.riskEvaluation && (
+          <RiskNotifierBanner risk={medicine.riskEvaluation} className="mb-6" />
+        )}
+
         {/* Description & How It Works */}
         <div className="grid lg:grid-cols-2 gap-6 mb-6">
           {medicine.productDetails.description && (

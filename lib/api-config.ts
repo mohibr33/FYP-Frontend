@@ -33,7 +33,12 @@ apiClient.interceptors.response.use(
   (error) => {
     if (error.response) {
       // Server responded with error
-      console.error("API Error:", error.response.data);
+      console.error("API Error:", {
+        status: error.response.status,
+        statusText: error.response.statusText,
+        url: error.config?.url,
+        data: error.response.data,
+      });
     } else if (error.request) {
       // Request made but no response
       console.error("Network Error:", error.message);
