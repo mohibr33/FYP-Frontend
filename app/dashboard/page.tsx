@@ -435,8 +435,8 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
 
-          {/* Lab Analysis Card - Coming Soon */}
-          <Card className="bg-slate-50 border-0 shadow-sm opacity-70">
+          {/* Lab Analysis Card */}
+          <Card className="bg-white border-0 shadow-sm">
             <CardHeader className="pb-2">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
@@ -444,15 +444,12 @@ export default function DashboardPage() {
                     <FlaskConical className="w-5 h-5 text-purple-500" />
                   </div>
                   <div>
-                    <CardTitle className="text-lg text-slate-600">Lab Analysis</CardTitle>
-                    <CardDescription className="text-slate-400 text-xs">
-                      AI-powered report analysis
-                    </CardDescription>
+                    <CardTitle className="text-lg text-slate-800">Lab Analyzer</CardTitle>
+                    <CardDescription className="text-slate-500 text-xs">AI-powered report analysis</CardDescription>
                   </div>
                 </div>
-                <Badge className="bg-slate-200 text-slate-600 border-0 text-xs gap-1">
-                  <Lock className="w-3 h-3" />
-                  Coming Soon
+                <Badge className="bg-emerald-100 text-emerald-700 border-0 text-xs">
+                  Active
                 </Badge>
               </div>
             </CardHeader>
@@ -460,9 +457,13 @@ export default function DashboardPage() {
               <p className="text-sm text-slate-500">
                 Upload and analyze your lab reports with AI assistance.
               </p>
-              <Button disabled size="sm" className="w-full" variant="outline">
-                <Bell className="w-4 h-4 mr-2" />
-                Notify Me
+              <Button
+                onClick={() => router.push("/lab-analyzer")}
+                size="sm"
+                className="w-full bg-slate-800 hover:bg-slate-700 text-white"
+              >
+                <FlaskConical className="w-4 h-4 mr-2" />
+                Analyze Reports
               </Button>
             </CardContent>
           </Card>

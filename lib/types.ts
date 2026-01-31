@@ -177,3 +177,198 @@ export interface SendVoiceMessageResponse extends SendMessageResponse {
   transcription: string;
   audioUrl: string;
 }
+
+// Drug Interaction Types
+export type InteractionSeverity = "minor" | "moderate" | "major" | "contraindicated";
+export type SafetyRiskLevel = "low" | "medium" | "high" | "critical";
+
+export interface DrugInteraction {
+  drug1: string;
+  drug2: string;
+  severity: InteractionSeverity;
+  description: string;
+  mechanism?: string;
+  clinicalEffects?: string;
+  management?: string;
+}
+
+export interface AllergyAlert {
+  medicine: string;
+  allergen: string;
+  severity: SafetyRiskLevel;
+  message: string;
+}
+
+export interface ConditionConflict {
+  medicine: string;
+  condition: string;
+  severity: SafetyRiskLevel;
+  message: string;
+  recommendation?: string;
+}
+
+export interface RegulatoryFlag {
+  medicine: string;
+  flag: string;
+  category: "pregnancy" | "breastfeeding" | "pediatric" | "geriatric" | "controlled";
+  severity: SafetyRiskLevel;
+  details: string;
+}
+
+export interface SafetyFlag {
+  medicine: string;
+  type: "black_box_warning" | "fda_alert" | "recall" | "interaction_warning" | "dosage_warning";
+  severity: SafetyRiskLevel;
+  message: string;
+  details?: string;
+}
+
+export interface HealthProfileSnapshot {
+  allergies: string[];
+  medicalConditions: string[];
+  specialConditions: string[];
+  age?: number;
+  isPregnant?: boolean;
+  isBreastfeeding?: boolean;
+}
+
+export interface MedicineInput {
+  id?: string;
+  name: string;
+  genericName?: string;
+  slug?: string;
+}
+
+export interface InteractionSummary {
+  totalInteractions: number;
+  criticalCount: number;
+  majorCount: number;
+  moderateCount: number;
+  minorCount: number;
+  overallRisk: SafetyRiskLevel;
+  hasHealthProfile: boolean;
+  recommendation: string;
+}
+
+export interface InteractionScanResult {
+  medicines: MedicineInput[];
+  drugInteractions: DrugInteraction[];
+  allergyAlerts: AllergyAlert[];
+  conditionConflicts: ConditionConflict[];
+  regulatoryFlags: RegulatoryFlag[];
+  safetyFlags: SafetyFlag[];
+  summary: InteractionSummary;
+  aiAnalysis?: string;
+  scannedAt: string;
+}
+
+export interface MedicineSearchResult {
+  id: string;
+  name: string;
+  genericName?: string;
+  slug: string;
+  brand?: string;
+  image?: string;
+}
+
+// Scan history item (summary view)
+export interface ScanHistoryItem {
+  id: string;
+  medicines: MedicineInput[];
+  summary: InteractionSummary;
+  overallRisk: SafetyRiskLevel;
+  healthProfileUsed: boolean;
+  createdAt: string;
+}
+
+// Full scan result with ID (returned after scanning)
+export interface InteractionScanResultWithId extends InteractionScanResult {
+  id: string;
+}
+
+// Scan history response with pagination
+export interface ScanHistoryResponse {
+  scans: ScanHistoryItem[];
+  pagination: Pagination;
+}
+
+export interface DosageCalculation {
+  medicineName: string;
+  totalDoses: number;
+  dosesPerDay: number;
+  daysRemaining: number;
+  estimatedEndDate: string;
+  refillDate?: string; // When to refill (7 days before end)
+}
+
+export interface ConfirmDoseResult {
+  success: boolean;
+  message: string;
+  dose?: ScheduledDose;
+}
+
+// Lab Report Types
+export interface Biomarker {
+  name: string;
+  value: string;
+  unit: string;
+  referenceRange: string;
+  status: "normal" | "abnormal" | "critical";
+  normalRange?: string;
+  explanation?: string;
+  causes?: string[];
+  relatedConditions?: string[];
+}
+
+export interface ReportSummary {
+  totalBiomarkers: number;
+  normalCount: number;
+  abnormalCount: number;
+  criticalCount: number;
+  overallStatus: "normal" | "abnormal" | "critical";
+  keyFindings: string[];
+}
+
+export interface CriticalAlert {
+  biomarker: string;
+  value: string;
+  normalRange: string;
+  severity: "critical" | "high";
+  message: string;
+  recommendation: string;
+}
+
+export interface LabReport {
+  id: string;
+  userId: string;
+  title: string;
+  fileName: string;
+  fileUrl: string;
+  biomarkers: Biomarker[];
+  summary: ReportSummary;
+  analysis?: string;
+  overallStatus: string;
+  criticalAlerts?: CriticalAlert[];
+  flaggedConditions?: string[];
+  flaggedMedications?: string[];
+  personalizedRecommendations?: string;
+  testDate?: string;
+  labName?: string;
+  uploadedAt: string;
+  analyzedAt?: string;
+  isSharedWithDoctor: boolean;
+  doctorEmail?: string;
+}
+
+export interface LabReportsResponse {
+  reports: LabReport[];
+  pagination: Pagination;
+}
+
+export interface TrendDataPoint {
+  date: string;
+  value: string;
+  unit: string;
+  status: "normal" | "abnormal" | "critical";
+  normalRange?: string;
+}

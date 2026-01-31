@@ -135,17 +135,6 @@ export default function AboutPage() {
               </p>
             </div>
 
-            {/* Medication Adherence */}
-            <div className="group relative bg-gradient-to-br from-rose-50 to-pink-50 p-6 rounded-2xl border border-rose-100 hover:border-rose-200 hover:shadow-lg hover:shadow-rose-100/50 transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-br from-rose-500 to-pink-500 rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-rose-500/20 group-hover:scale-110 transition-transform duration-300">
-                <Bell className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="font-bold text-slate-800 mb-2">Medication Reminders</h3>
-              <p className="text-sm text-slate-500 leading-relaxed">
-                Stay on track with schedules and receive intelligent reminders for missed doses.
-              </p>
-            </div>
-
             {/* Dosage Calculator */}
             <div className="group relative bg-gradient-to-br from-cyan-50 to-sky-50 p-6 rounded-2xl border border-cyan-100 hover:border-cyan-200 hover:shadow-lg hover:shadow-cyan-100/50 transition-all duration-300">
               <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-sky-500 rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-cyan-500/20 group-hover:scale-110 transition-transform duration-300">

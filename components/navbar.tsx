@@ -15,7 +15,9 @@ import {
   Shield,
   User,
   LayoutDashboard,
-  ChevronDown
+  ChevronDown,
+  FlaskConical,
+  FileText
 } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "./auth/auth-context";
@@ -102,6 +104,14 @@ export default function Navbar() {
                 <Link href="/meal-planner" className={navLinkClass('/meal-planner')}>
                   Meal Planner
                   {isActive('/meal-planner') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
+                </Link>
+                <Link href="/interaction-checker" className={navLinkClass('/interaction-checker')}>
+                  Interactions
+                  {isActive('/interaction-checker') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
+                </Link>
+                <Link href="/lab-analyzer" className={navLinkClass('/lab-analyzer')}>
+                  Lab Analyzer
+                  {isActive('/lab-analyzer') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
                 </Link>
                 <Link href="/support" className={navLinkClass('/support')}>
                   Support
@@ -279,6 +289,22 @@ export default function Navbar() {
                 >
                   <ChefHat className="w-5 h-5" />
                   Meal Planner
+                </Link>
+                <Link
+                  href="/interaction-checker"
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${isActive('/interaction-checker') ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-50'}`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <FlaskConical className="w-5 h-5" />
+                  Interactions
+                </Link>
+                <Link
+                  href="/lab-analyzer"
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${isActive('/lab-analyzer') ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-50'}`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <FileText className="w-5 h-5" />
+                  Lab Analyzer
                 </Link>
                 <Link
                   href="/support"

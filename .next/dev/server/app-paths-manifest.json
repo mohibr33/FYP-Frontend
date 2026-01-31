@@ -1,11 +1,8 @@
 {
   "/auth/login/page": "app/auth/login/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/meal-planner/generate/page": "app/meal-planner/generate/page.js",
-  "/meal-planner/page": "app/meal-planner/page.js",
-  "/meal-planner/plans/[id]/page": "app/meal-planner/plans/[id]/page.js",
-  "/meal-planner/plans/page": "app/meal-planner/plans/page.js",
-  "/meal-planner/profile/view/page": "app/meal-planner/profile/view/page.js",
-  "/medical-chat/page": "app/medical-chat/page.js",
+  "/interaction-checker/page": "app/interaction-checker/page.js",
+  "/lab-analyzer/[id]/page": "app/lab-analyzer/[id]/page.js",
+  "/lab-analyzer/page": "app/lab-analyzer/page.js",
   "/page": "app/page.js"
 }

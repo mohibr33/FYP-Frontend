@@ -31,17 +31,35 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response) {
+    // Log full error for debugging
+    console.log("Full error object:", JSON.stringify(error, null, 2));
+    
+    if (error.response && typeof error.response === 'object' && Object.keys(error.response).length > 0) {
       // Server responded with error
-      console.error("API Error:", {
-        status: error.response.status,
-        statusText: error.response.statusText,
-        url: error.config?.url,
-        data: error.response.data,
-      });
+      const responseData = error.response.data;
+      const errorInfo: any = {};
+      
+      if (error.response.status !== undefined) {
+        errorInfo.status = error.response.status;
+      }
+      
+      if (error.response.statusText) {
+        errorInfo.statusText = error.response.statusText;
+      }
+      
+      if (error.config?.url) {
+        errorInfo.url = error.config.url;
+      }
+      
+      if (responseData !== undefined && responseData !== null) {
+        errorInfo.data = responseData;
+      }
+      
+      console.error("API Error:", errorInfo);
     } else if (error.request) {
       // Request made but no response
       console.error("Network Error:", error.message);
+      console.error("Request config:", error.config);
     } else {
       // Something else happened
       console.error("Error:", error.message);

@@ -14,6 +14,7 @@ export interface AuthUser {
   role: string;
   isVerified: boolean;
   createdAt: string;
+  phone?: string;
 }
 
 export interface LoginResponse {
@@ -81,7 +82,7 @@ export async function getProfile(): Promise<AuthUser> {
   const userData = response.data.data?.user || response.data.data;
   console.log("getProfile userData:", userData);
 
-  // Map the API response to AuthUser format
+// Map the API response to AuthUser format
   return {
     id: userData.id,
     name: `${userData.firstName} ${userData.lastName}`,
@@ -89,6 +90,7 @@ export async function getProfile(): Promise<AuthUser> {
     role: userData.role,
     isVerified: userData.isVerified,
     createdAt: userData.createdAt,
+    phone: userData.phone || undefined,
   };
 }
 
@@ -112,4 +114,30 @@ export async function resetPassword(data: {
     data
   );
   return { message: response.data.message || "Password reset" };
+}
+
+export interface UpdateProfileData {
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  gender?: "Male" | "Female" | "Other";
+}
+
+export async function updateProfile(data: UpdateProfileData): Promise<AuthUser> {
+  const response = await apiClient.put<ApiResponse<any>>(
+    "/api/users/profile",
+    data
+  );
+  
+  const userData = response.data.data?.user || response.data.data;
+  
+  return {
+    id: userData.id,
+    name: `${userData.firstName} ${userData.lastName}`,
+    email: userData.email,
+    role: userData.role,
+    isVerified: userData.isVerified,
+    createdAt: userData.createdAt,
+    phone: userData.phone || undefined,
+  };
 }
