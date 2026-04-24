@@ -43,7 +43,7 @@ export default function Navbar() {
   };
 
   const navLinkClass = (path: string) => `
-    relative px-3 py-2 text-sm font-medium transition-all duration-200
+    relative px-2 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap
     ${isActive(path) 
       ? 'text-teal-600' 
       : 'text-slate-600 hover:text-slate-900'
@@ -102,19 +102,23 @@ export default function Navbar() {
                   {isActive('/medical-chat') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
                 </Link>
                 <Link href="/meal-planner" className={navLinkClass('/meal-planner')}>
-                  Meal Planner
+                  Meals
                   {isActive('/meal-planner') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
                 </Link>
                 <Link href="/interaction-checker" className={navLinkClass('/interaction-checker')}>
-                  Interactions
+                  Interact
                   {isActive('/interaction-checker') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
                 </Link>
                 <Link href="/lab-analyzer" className={navLinkClass('/lab-analyzer')}>
-                  Lab Analyzer
+                  Lab
                   {isActive('/lab-analyzer') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
                 </Link>
+                <Link href="/medicine-adherence" className={navLinkClass('/medicine-adherence')}>
+                  Meds
+                  {isActive('/medicine-adherence') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
+                </Link>
                 <Link href="/support" className={navLinkClass('/support')}>
-                  Support
+                  Help
                   {isActive('/support') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
                 </Link>
               </>
@@ -288,7 +292,7 @@ export default function Navbar() {
                   onClick={() => setIsOpen(false)}
                 >
                   <ChefHat className="w-5 h-5" />
-                  Meal Planner
+                  Meals
                 </Link>
                 <Link
                   href="/interaction-checker"
@@ -296,7 +300,7 @@ export default function Navbar() {
                   onClick={() => setIsOpen(false)}
                 >
                   <FlaskConical className="w-5 h-5" />
-                  Interactions
+                  Interact
                 </Link>
                 <Link
                   href="/lab-analyzer"
@@ -304,7 +308,15 @@ export default function Navbar() {
                   onClick={() => setIsOpen(false)}
                 >
                   <FileText className="w-5 h-5" />
-                  Lab Analyzer
+                  Lab
+                </Link>
+                <Link
+                  href="/medicine-adherence"
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${isActive('/medicine-adherence') ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-50'}`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Pill className="w-5 h-5" />
+                  Meds
                 </Link>
                 <Link
                   href="/support"
@@ -312,7 +324,7 @@ export default function Navbar() {
                   onClick={() => setIsOpen(false)}
                 >
                   <Headphones className="w-5 h-5" />
-                  Support
+                  Help
                 </Link>
               </>
             )}

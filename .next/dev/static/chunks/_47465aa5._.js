@@ -82,8 +82,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__XCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-x.js [app-client] (ecmascript) <export default as XCircle>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/plus.js [app-client] (ecmascript) <export default as Plus>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$triangle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertTriangle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/triangle-alert.js [app-client] (ecmascript) <export default as AlertTriangle>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$chart$2f$LineChart$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/chart/LineChart.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Line$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/cartesian/Line.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$chart$2f$BarChart$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/chart/BarChart.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Bar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/cartesian/Bar.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$XAxis$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/cartesian/XAxis.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$YAxis$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/cartesian/YAxis.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$CartesianGrid$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/recharts/es6/cartesian/CartesianGrid.js [app-client] (ecmascript)");
@@ -104,29 +104,44 @@ var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.sign
 ;
 ;
 function generateMonthlyData(reports) {
-    const months = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec"
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const formatDate = (date)=>date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric'
+        });
+    const countByDate = (targetDate)=>{
+        return reports.filter((report)=>{
+            const reportDate = new Date(report.uploadedAt);
+            return reportDate.toDateString() === targetDate.toDateString();
+        }).length;
+    };
+    const countAnalyzedByDate = (targetDate)=>{
+        return reports.filter((report)=>{
+            const reportDate = new Date(report.uploadedAt);
+            return reportDate.toDateString() === targetDate.toDateString() && report.analyzedAt;
+        }).length;
+    };
+    return [
+        {
+            date: formatDate(yesterday),
+            uploaded: countByDate(yesterday),
+            analyzed: countAnalyzedByDate(yesterday)
+        },
+        {
+            date: formatDate(today),
+            uploaded: countByDate(today),
+            analyzed: countAnalyzedByDate(today)
+        },
+        {
+            date: formatDate(tomorrow),
+            uploaded: countByDate(tomorrow),
+            analyzed: countAnalyzedByDate(tomorrow)
+        }
     ];
-    const monthCounts = Array(12).fill(0);
-    reports.forEach((report)=>{
-        const date = new Date(report.uploadedAt);
-        monthCounts[date.getMonth()]++;
-    });
-    return months.map((month, index)=>({
-            month,
-            count: monthCounts[index]
-        })).filter((item)=>item.count > 0 || item.month === months[new Date().getMonth()]);
 }
 function LabAnalyzerPage() {
     _s();
@@ -139,8 +154,8 @@ function LabAnalyzerPage() {
     const [totalPages, setTotalPages] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
     const [showUploadModal, setShowUploadModal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [showShareModal, setShowShareModal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [showErrorModal, setShowErrorModal1] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [uploadError, setUploadError1] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const [showErrorModal, setShowErrorModal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [uploadError, setUploadError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
     const [selectedReport, setSelectedReport] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [doctorEmail, setDoctorEmail] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
     const [sharing, setSharing] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
@@ -214,7 +229,7 @@ function LabAnalyzerPage() {
                     className: "w-5 h-5 text-emerald-600"
                 }, void 0, false, {
                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                    lineNumber: 105,
+                    lineNumber: 132,
                     columnNumber: 16
                 }, this);
             case "abnormal":
@@ -222,7 +237,7 @@ function LabAnalyzerPage() {
                     className: "w-5 h-5 text-amber-600"
                 }, void 0, false, {
                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                    lineNumber: 107,
+                    lineNumber: 134,
                     columnNumber: 16
                 }, this);
             case "critical":
@@ -230,7 +245,7 @@ function LabAnalyzerPage() {
                     className: "w-5 h-5 text-red-600"
                 }, void 0, false, {
                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                    lineNumber: 109,
+                    lineNumber: 136,
                     columnNumber: 16
                 }, this);
             default:
@@ -238,7 +253,7 @@ function LabAnalyzerPage() {
                     className: "w-5 h-5 text-slate-400"
                 }, void 0, false, {
                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                    lineNumber: 111,
+                    lineNumber: 138,
                     columnNumber: 16
                 }, this);
         }
@@ -274,12 +289,12 @@ function LabAnalyzerPage() {
                 className: "w-8 h-8 animate-spin text-slate-600"
             }, void 0, false, {
                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                lineNumber: 144,
+                lineNumber: 171,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/app/lab-analyzer/page.tsx",
-            lineNumber: 143,
+            lineNumber: 170,
             columnNumber: 7
         }, this);
     }
@@ -319,7 +334,7 @@ function LabAnalyzerPage() {
                                             children: "Lab Test Analyzer"
                                         }, void 0, false, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 175,
+                                            lineNumber: 202,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -327,13 +342,13 @@ function LabAnalyzerPage() {
                                             children: "Upload and analyze your lab reports with AI-powered insights"
                                         }, void 0, false, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 176,
+                                            lineNumber: 203,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 174,
+                                    lineNumber: 201,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -344,31 +359,31 @@ function LabAnalyzerPage() {
                                             className: "w-5 h-5"
                                         }, void 0, false, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 184,
+                                            lineNumber: 211,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "Upload Report"
                                         }, void 0, false, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 185,
+                                            lineNumber: 212,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 180,
+                                    lineNumber: 207,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                            lineNumber: 173,
+                            lineNumber: 200,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                        lineNumber: 172,
+                        lineNumber: 199,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -386,7 +401,7 @@ function LabAnalyzerPage() {
                                                     children: "Total Reports"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                    lineNumber: 195,
+                                                    lineNumber: 222,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -394,13 +409,13 @@ function LabAnalyzerPage() {
                                                     children: reports.length
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                    lineNumber: 196,
+                                                    lineNumber: 223,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 194,
+                                            lineNumber: 221,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -409,23 +424,23 @@ function LabAnalyzerPage() {
                                                 className: "w-6 h-6 text-blue-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 199,
+                                                lineNumber: 226,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 198,
+                                            lineNumber: 225,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 193,
+                                    lineNumber: 220,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                lineNumber: 192,
+                                lineNumber: 219,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -440,7 +455,7 @@ function LabAnalyzerPage() {
                                                     children: "Abnormal Results"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                    lineNumber: 206,
+                                                    lineNumber: 233,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -448,13 +463,13 @@ function LabAnalyzerPage() {
                                                     children: reports.filter((r)=>r.overallStatus === "abnormal").length
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                    lineNumber: 207,
+                                                    lineNumber: 234,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 205,
+                                            lineNumber: 232,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -463,23 +478,23 @@ function LabAnalyzerPage() {
                                                 className: "w-6 h-6 text-amber-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 212,
+                                                lineNumber: 239,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 211,
+                                            lineNumber: 238,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 204,
+                                    lineNumber: 231,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                lineNumber: 203,
+                                lineNumber: 230,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -494,7 +509,7 @@ function LabAnalyzerPage() {
                                                     children: "Critical Alerts"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                    lineNumber: 219,
+                                                    lineNumber: 246,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -502,13 +517,13 @@ function LabAnalyzerPage() {
                                                     children: reports.filter((r)=>r.overallStatus === "critical").length
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                    lineNumber: 220,
+                                                    lineNumber: 247,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 218,
+                                            lineNumber: 245,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -517,29 +532,29 @@ function LabAnalyzerPage() {
                                                 className: "w-6 h-6 text-red-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 225,
+                                                lineNumber: 252,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 224,
+                                            lineNumber: 251,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 217,
+                                    lineNumber: 244,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                lineNumber: 216,
+                                lineNumber: 243,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                        lineNumber: 191,
+                        lineNumber: 218,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -552,36 +567,37 @@ function LabAnalyzerPage() {
                                     children: "Reports Timeline & Status Trend"
                                 }, void 0, false, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 235,
+                                    lineNumber: 262,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$ResponsiveContainer$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ResponsiveContainer"], {
                                     width: "100%",
-                                    height: 220,
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$chart$2f$LineChart$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["LineChart"], {
+                                    height: 280,
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$chart$2f$BarChart$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["BarChart"], {
                                         data: generateMonthlyData(reports),
                                         margin: {
-                                            top: 10,
-                                            right: 20,
+                                            top: 20,
+                                            right: 30,
                                             left: 0,
-                                            bottom: 0
+                                            bottom: 20
                                         },
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$CartesianGrid$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CartesianGrid"], {
                                                 strokeDasharray: "3 3",
-                                                stroke: "#e2e8f0"
+                                                stroke: "#e2e8f0",
+                                                vertical: false
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 241,
+                                                lineNumber: 268,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$XAxis$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["XAxis"], {
-                                                dataKey: "month",
+                                                dataKey: "date",
                                                 stroke: "#64748b",
                                                 fontSize: 12
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 242,
+                                                lineNumber: 269,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$YAxis$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["YAxis"], {
@@ -589,72 +605,86 @@ function LabAnalyzerPage() {
                                                 fontSize: 12
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 243,
+                                                lineNumber: 270,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Tooltip$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Tooltip"], {
                                                 contentStyle: {
                                                     backgroundColor: "#1e293b",
-                                                    border: "none",
+                                                    border: "1px solid #475569",
                                                     borderRadius: "8px",
                                                     color: "#fff",
-                                                    fontSize: "12px"
+                                                    fontSize: "12px",
+                                                    padding: "12px"
                                                 },
                                                 cursor: {
-                                                    stroke: "#14b8a6"
+                                                    fill: "rgba(148, 163, 184, 0.1)"
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 244,
+                                                lineNumber: 271,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$component$2f$Legend$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Legend"], {
                                                 wrapperStyle: {
-                                                    fontSize: "12px"
+                                                    fontSize: "12px",
+                                                    paddingTop: "16px"
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 248,
+                                                lineNumber: 275,
                                                 columnNumber: 17
                                             }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Line$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Line"], {
-                                                type: "monotone",
-                                                dataKey: "count",
-                                                stroke: "#0ea5e9",
-                                                strokeWidth: 2,
-                                                dot: {
-                                                    fill: "#0ea5e9",
-                                                    r: 4
-                                                },
-                                                activeDot: {
-                                                    r: 6
-                                                },
-                                                name: "Reports"
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Bar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Bar"], {
+                                                dataKey: "uploaded",
+                                                fill: "#0ea5e9",
+                                                radius: [
+                                                    8,
+                                                    8,
+                                                    0,
+                                                    0
+                                                ],
+                                                name: "Uploaded"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 249,
+                                                lineNumber: 276,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$recharts$2f$es6$2f$cartesian$2f$Bar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Bar"], {
+                                                dataKey: "analyzed",
+                                                fill: "#10b981",
+                                                radius: [
+                                                    8,
+                                                    8,
+                                                    0,
+                                                    0
+                                                ],
+                                                name: "Analyzed"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/lab-analyzer/page.tsx",
+                                                lineNumber: 282,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                                        lineNumber: 237,
+                                        lineNumber: 264,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 236,
+                                    lineNumber: 263,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                            lineNumber: 234,
+                            lineNumber: 261,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                        lineNumber: 232,
+                        lineNumber: 259,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -670,7 +700,7 @@ function LabAnalyzerPage() {
                                                 children: "All Lab Reports"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 267,
+                                                lineNumber: 297,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -678,13 +708,13 @@ function LabAnalyzerPage() {
                                                 children: "Search and filter your reports"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 268,
+                                                lineNumber: 298,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                                        lineNumber: 266,
+                                        lineNumber: 296,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -698,7 +728,7 @@ function LabAnalyzerPage() {
                                                 className: "px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 271,
+                                                lineNumber: 301,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -708,7 +738,7 @@ function LabAnalyzerPage() {
                                                 className: "px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 278,
+                                                lineNumber: 308,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -718,7 +748,7 @@ function LabAnalyzerPage() {
                                                 className: "px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 284,
+                                                lineNumber: 314,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -731,19 +761,19 @@ function LabAnalyzerPage() {
                                                 children: "Clear"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 290,
+                                                lineNumber: 320,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                                        lineNumber: 270,
+                                        lineNumber: 300,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                lineNumber: 265,
+                                lineNumber: 295,
                                 columnNumber: 11
                             }, this),
                             filteredReports.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -755,12 +785,12 @@ function LabAnalyzerPage() {
                                             className: "w-12 h-12 text-slate-400"
                                         }, void 0, false, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 302,
+                                            lineNumber: 332,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                                        lineNumber: 301,
+                                        lineNumber: 331,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -768,7 +798,7 @@ function LabAnalyzerPage() {
                                         children: "No lab reports uploaded yet"
                                     }, void 0, false, {
                                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                                        lineNumber: 304,
+                                        lineNumber: 334,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -776,7 +806,7 @@ function LabAnalyzerPage() {
                                         children: "Start by uploading your first lab report to get AI-powered insights"
                                     }, void 0, false, {
                                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                                        lineNumber: 305,
+                                        lineNumber: 335,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -787,20 +817,20 @@ function LabAnalyzerPage() {
                                                 className: "w-5 h-5"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 310,
+                                                lineNumber: 340,
                                                 columnNumber: 17
                                             }, this),
                                             "Upload Your First Report"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                                        lineNumber: 306,
+                                        lineNumber: 336,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                lineNumber: 300,
+                                lineNumber: 330,
                                 columnNumber: 13
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "space-y-4 p-6",
@@ -817,7 +847,7 @@ function LabAnalyzerPage() {
                                                             children: getStatusIcon(report.overallStatus)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                            lineNumber: 323,
+                                                            lineNumber: 353,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -827,7 +857,7 @@ function LabAnalyzerPage() {
                                                                     children: report.title
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                                    lineNumber: 327,
+                                                                    lineNumber: 357,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -843,19 +873,19 @@ function LabAnalyzerPage() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                                    lineNumber: 328,
+                                                                    lineNumber: 358,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                            lineNumber: 326,
+                                                            lineNumber: 356,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                    lineNumber: 322,
+                                                    lineNumber: 352,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -866,7 +896,7 @@ function LabAnalyzerPage() {
                                                             children: report.overallStatus.toUpperCase()
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                            lineNumber: 338,
+                                                            lineNumber: 368,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -881,12 +911,12 @@ function LabAnalyzerPage() {
                                                                 className: "w-4 h-4 text-slate-600"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                                lineNumber: 350,
+                                                                lineNumber: 380,
                                                                 columnNumber: 25
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                            lineNumber: 341,
+                                                            lineNumber: 371,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -900,12 +930,12 @@ function LabAnalyzerPage() {
                                                                 className: "w-4 h-4 text-red-600"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                                lineNumber: 360,
+                                                                lineNumber: 390,
                                                                 columnNumber: 25
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                            lineNumber: 352,
+                                                            lineNumber: 382,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -918,41 +948,41 @@ function LabAnalyzerPage() {
                                                             children: "View Details"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                            lineNumber: 362,
+                                                            lineNumber: 392,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                    lineNumber: 337,
+                                                    lineNumber: 367,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 321,
+                                            lineNumber: 351,
                                             columnNumber: 19
                                         }, this)
                                     }, report.id, false, {
                                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                                        lineNumber: 317,
+                                        lineNumber: 347,
                                         columnNumber: 17
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                lineNumber: 315,
+                                lineNumber: 345,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                        lineNumber: 264,
+                        lineNumber: 294,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                lineNumber: 170,
+                lineNumber: 197,
                 columnNumber: 7
             }, this),
             showUploadModal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -970,7 +1000,7 @@ function LabAnalyzerPage() {
                                             children: "Upload Lab Report"
                                         }, void 0, false, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 387,
+                                            lineNumber: 417,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -978,13 +1008,13 @@ function LabAnalyzerPage() {
                                             children: "Share your lab test results for AI analysis"
                                         }, void 0, false, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 388,
+                                            lineNumber: 418,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 386,
+                                    lineNumber: 416,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -994,18 +1024,18 @@ function LabAnalyzerPage() {
                                         className: "w-6 h-6 text-slate-600"
                                     }, void 0, false, {
                                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                                        lineNumber: 394,
+                                        lineNumber: 424,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 390,
+                                    lineNumber: 420,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                            lineNumber: 385,
+                            lineNumber: 415,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(UploadForm, {
@@ -1013,18 +1043,18 @@ function LabAnalyzerPage() {
                             onSuccess: fetchReports
                         }, void 0, false, {
                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                            lineNumber: 397,
+                            lineNumber: 427,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                    lineNumber: 384,
+                    lineNumber: 414,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                lineNumber: 383,
+                lineNumber: 413,
                 columnNumber: 9
             }, this),
             showShareModal && selectedReport && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1042,7 +1072,7 @@ function LabAnalyzerPage() {
                                             children: "Share with Doctor"
                                         }, void 0, false, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 408,
+                                            lineNumber: 438,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1050,13 +1080,13 @@ function LabAnalyzerPage() {
                                             children: "Grant access to your lab report"
                                         }, void 0, false, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 409,
+                                            lineNumber: 439,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 407,
+                                    lineNumber: 437,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1066,18 +1096,18 @@ function LabAnalyzerPage() {
                                         className: "w-6 h-6 text-slate-600"
                                     }, void 0, false, {
                                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                                        lineNumber: 415,
+                                        lineNumber: 445,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 411,
+                                    lineNumber: 441,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                            lineNumber: 406,
+                            lineNumber: 436,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1090,7 +1120,7 @@ function LabAnalyzerPage() {
                                             children: "Report"
                                         }, void 0, false, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 420,
+                                            lineNumber: 450,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1101,7 +1131,7 @@ function LabAnalyzerPage() {
                                                     children: selectedReport.title
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                    lineNumber: 424,
+                                                    lineNumber: 454,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1109,19 +1139,19 @@ function LabAnalyzerPage() {
                                                     children: new Date(selectedReport.uploadedAt).toLocaleDateString()
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                    lineNumber: 425,
+                                                    lineNumber: 455,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 423,
+                                            lineNumber: 453,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 419,
+                                    lineNumber: 449,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1131,7 +1161,7 @@ function LabAnalyzerPage() {
                                             children: "Doctor's Email"
                                         }, void 0, false, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 429,
+                                            lineNumber: 459,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1142,13 +1172,13 @@ function LabAnalyzerPage() {
                                             className: "w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                                         }, void 0, false, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 432,
+                                            lineNumber: 462,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 428,
+                                    lineNumber: 458,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1161,7 +1191,7 @@ function LabAnalyzerPage() {
                                                 className: "w-4 h-4 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 447,
+                                                lineNumber: 477,
                                                 columnNumber: 21
                                             }, this),
                                             "Sharing..."
@@ -1172,7 +1202,7 @@ function LabAnalyzerPage() {
                                                 className: "w-4 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                                lineNumber: 452,
+                                                lineNumber: 482,
                                                 columnNumber: 21
                                             }, this),
                                             "Share Report"
@@ -1180,38 +1210,38 @@ function LabAnalyzerPage() {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 440,
+                                    lineNumber: 470,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                            lineNumber: 418,
+                            lineNumber: 448,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                    lineNumber: 405,
+                    lineNumber: 435,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                lineNumber: 404,
+                lineNumber: 434,
                 columnNumber: 9
             }, this),
             showErrorModal && uploadError && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ErrorModal, {
                 message: uploadError,
-                onClose: ()=>setShowErrorModal1(false)
+                onClose: ()=>setShowErrorModal(false)
             }, void 0, false, {
                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                lineNumber: 464,
+                lineNumber: 494,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/lab-analyzer/page.tsx",
-        lineNumber: 169,
+        lineNumber: 196,
         columnNumber: 5
     }, this);
 }
@@ -1238,7 +1268,7 @@ function ErrorModal({ message, onClose }) {
                                     children: "Upload Failed"
                                 }, void 0, false, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 479,
+                                    lineNumber: 509,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1246,13 +1276,13 @@ function ErrorModal({ message, onClose }) {
                                     children: "Something went wrong"
                                 }, void 0, false, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 480,
+                                    lineNumber: 510,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                            lineNumber: 478,
+                            lineNumber: 508,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1262,18 +1292,18 @@ function ErrorModal({ message, onClose }) {
                                 className: "w-6 h-6"
                             }, void 0, false, {
                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                lineNumber: 486,
+                                lineNumber: 516,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                            lineNumber: 482,
+                            lineNumber: 512,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                    lineNumber: 477,
+                    lineNumber: 507,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1285,7 +1315,7 @@ function ErrorModal({ message, onClose }) {
                                 className: "w-6 h-6 text-red-600 flex-shrink-0 mt-0.5"
                             }, void 0, false, {
                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                lineNumber: 491,
+                                lineNumber: 521,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1293,18 +1323,18 @@ function ErrorModal({ message, onClose }) {
                                 children: message
                             }, void 0, false, {
                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                lineNumber: 492,
+                                lineNumber: 522,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                        lineNumber: 490,
+                        lineNumber: 520,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                    lineNumber: 489,
+                    lineNumber: 519,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1312,7 +1342,7 @@ function ErrorModal({ message, onClose }) {
                     children: "Please upload a clear lab report image or PDF containing test results."
                 }, void 0, false, {
                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                    lineNumber: 495,
+                    lineNumber: 525,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1321,18 +1351,18 @@ function ErrorModal({ message, onClose }) {
                     children: "Close"
                 }, void 0, false, {
                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                    lineNumber: 498,
+                    lineNumber: 528,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/lab-analyzer/page.tsx",
-            lineNumber: 476,
+            lineNumber: 506,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/lab-analyzer/page.tsx",
-        lineNumber: 475,
+        lineNumber: 505,
         columnNumber: 5
     }, this);
 }
@@ -1345,6 +1375,8 @@ function UploadForm({ onClose, onSuccess }) {
     const [labName, setLabName] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
     const [uploading, setUploading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [dragActive, setDragActive] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [uploadError, setUploadError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const [showErrorModal, setShowErrorModal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     function handleDrag(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -1379,7 +1411,7 @@ function UploadForm({ onClose, onSuccess }) {
             onClose();
             onSuccess();
             setShowErrorModal(false);
-            setUploadError(null);
+            setUploadError("");
         } catch (err) {
             const errorMessage = err.response?.data?.message || err.response?.data?.error || "Failed to upload report";
             setUploadError(errorMessage);
@@ -1399,7 +1431,7 @@ function UploadForm({ onClose, onSuccess }) {
                         children: "Lab Report Image/PDF"
                     }, void 0, false, {
                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                        lineNumber: 566,
+                        lineNumber: 598,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1416,12 +1448,12 @@ function UploadForm({ onClose, onSuccess }) {
                                         className: "w-8 h-8 text-teal-600"
                                     }, void 0, false, {
                                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                                        lineNumber: 581,
+                                        lineNumber: 613,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 580,
+                                    lineNumber: 612,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1429,7 +1461,7 @@ function UploadForm({ onClose, onSuccess }) {
                                     children: file.name
                                 }, void 0, false, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 583,
+                                    lineNumber: 615,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1440,7 +1472,7 @@ function UploadForm({ onClose, onSuccess }) {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 584,
+                                    lineNumber: 616,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1450,13 +1482,13 @@ function UploadForm({ onClose, onSuccess }) {
                                     children: "✕ Remove"
                                 }, void 0, false, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 585,
+                                    lineNumber: 617,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                            lineNumber: 579,
+                            lineNumber: 611,
                             columnNumber: 13
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             children: [
@@ -1464,7 +1496,7 @@ function UploadForm({ onClose, onSuccess }) {
                                     className: "w-12 h-12 text-slate-400 mx-auto mb-3"
                                 }, void 0, false, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 595,
+                                    lineNumber: 627,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1472,7 +1504,7 @@ function UploadForm({ onClose, onSuccess }) {
                                     children: "Drag and drop your lab report here"
                                 }, void 0, false, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 596,
+                                    lineNumber: 628,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1480,7 +1512,7 @@ function UploadForm({ onClose, onSuccess }) {
                                     children: "Supports: JPG, PNG, GIF, BMP, TIFF, WEBP, PDF"
                                 }, void 0, false, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 599,
+                                    lineNumber: 631,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -1494,30 +1526,30 @@ function UploadForm({ onClose, onSuccess }) {
                                             onChange: (e)=>e.target.files && setFile(e.target.files[0])
                                         }, void 0, false, {
                                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                                            lineNumber: 604,
+                                            lineNumber: 636,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 602,
+                                    lineNumber: 634,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/lab-analyzer/page.tsx",
-                            lineNumber: 594,
+                            lineNumber: 626,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                        lineNumber: 569,
+                        lineNumber: 601,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                lineNumber: 565,
+                lineNumber: 597,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1527,7 +1559,7 @@ function UploadForm({ onClose, onSuccess }) {
                         children: "Report Title (Optional)"
                     }, void 0, false, {
                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                        lineNumber: 617,
+                        lineNumber: 649,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1538,13 +1570,13 @@ function UploadForm({ onClose, onSuccess }) {
                         className: "w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                     }, void 0, false, {
                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                        lineNumber: 620,
+                        lineNumber: 652,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                lineNumber: 616,
+                lineNumber: 648,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1557,7 +1589,7 @@ function UploadForm({ onClose, onSuccess }) {
                                 children: "Test Date (Optional)"
                             }, void 0, false, {
                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                lineNumber: 631,
+                                lineNumber: 663,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1567,13 +1599,13 @@ function UploadForm({ onClose, onSuccess }) {
                                 className: "w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                             }, void 0, false, {
                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                lineNumber: 634,
+                                lineNumber: 666,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                        lineNumber: 630,
+                        lineNumber: 662,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1583,7 +1615,7 @@ function UploadForm({ onClose, onSuccess }) {
                                 children: "Lab Name (Optional)"
                             }, void 0, false, {
                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                lineNumber: 642,
+                                lineNumber: 674,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1594,19 +1626,19 @@ function UploadForm({ onClose, onSuccess }) {
                                 className: "w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                             }, void 0, false, {
                                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                                lineNumber: 645,
+                                lineNumber: 677,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                        lineNumber: 641,
+                        lineNumber: 673,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                lineNumber: 629,
+                lineNumber: 661,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1619,7 +1651,7 @@ function UploadForm({ onClose, onSuccess }) {
                         children: "Cancel"
                     }, void 0, false, {
                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                        lineNumber: 656,
+                        lineNumber: 688,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1632,7 +1664,7 @@ function UploadForm({ onClose, onSuccess }) {
                                     className: "w-4 h-4 animate-spin"
                                 }, void 0, false, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 670,
+                                    lineNumber: 702,
                                     columnNumber: 15
                                 }, this),
                                 "Analyzing..."
@@ -1643,7 +1675,7 @@ function UploadForm({ onClose, onSuccess }) {
                                     className: "w-4 h-4"
                                 }, void 0, false, {
                                     fileName: "[project]/app/lab-analyzer/page.tsx",
-                                    lineNumber: 675,
+                                    lineNumber: 707,
                                     columnNumber: 15
                                 }, this),
                                 "Upload & Analyze"
@@ -1651,23 +1683,31 @@ function UploadForm({ onClose, onSuccess }) {
                         }, void 0, true)
                     }, void 0, false, {
                         fileName: "[project]/app/lab-analyzer/page.tsx",
-                        lineNumber: 663,
+                        lineNumber: 695,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/lab-analyzer/page.tsx",
-                lineNumber: 655,
+                lineNumber: 687,
                 columnNumber: 7
+            }, this),
+            showErrorModal && uploadError && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ErrorModal, {
+                message: uploadError,
+                onClose: ()=>setShowErrorModal(false)
+            }, void 0, false, {
+                fileName: "[project]/app/lab-analyzer/page.tsx",
+                lineNumber: 716,
+                columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/lab-analyzer/page.tsx",
-        lineNumber: 564,
+        lineNumber: 596,
         columnNumber: 5
     }, this);
 }
-_s1(UploadForm, "6aMaQl9Jqr7FReN75jDHetw5S/8=");
+_s1(UploadForm, "dr610ND306P/lu0fpazBU/3wJB0=");
 _c2 = UploadForm;
 var _c, _c1, _c2;
 __turbopack_context__.k.register(_c, "LabAnalyzerPage");

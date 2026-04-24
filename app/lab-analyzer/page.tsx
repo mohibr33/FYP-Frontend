@@ -10,18 +10,45 @@ import { getLabReports, deleteLabReport, shareLabReportWithDoctor } from "@/lib/
 import type { LabReport } from "@/lib/types";
 
 function generateMonthlyData(reports: LabReport[]) {
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  const monthCounts = Array(12).fill(0);
-  
-  reports.forEach(report => {
-    const date = new Date(report.uploadedAt);
-    monthCounts[date.getMonth()]++;
-  });
-  
-  return months.map((month, index) => ({
-    month,
-    count: monthCounts[index],
-  })).filter(item => item.count > 0 || item.month === months[new Date().getMonth()]);
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  const formatDate = (date: Date) => date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+  const countByDate = (targetDate: Date) => {
+    return reports.filter(report => {
+      const reportDate = new Date(report.uploadedAt);
+      return reportDate.toDateString() === targetDate.toDateString();
+    }).length;
+  };
+
+  const countAnalyzedByDate = (targetDate: Date) => {
+    return reports.filter(report => {
+      const reportDate = new Date(report.uploadedAt);
+      return reportDate.toDateString() === targetDate.toDateString() && report.analyzedAt;
+    }).length;
+  };
+
+  return [
+    {
+      date: formatDate(yesterday),
+      uploaded: countByDate(yesterday),
+      analyzed: countAnalyzedByDate(yesterday),
+    },
+    {
+      date: formatDate(today),
+      uploaded: countByDate(today),
+      analyzed: countAnalyzedByDate(today),
+    },
+    {
+      date: formatDate(tomorrow),
+      uploaded: countByDate(tomorrow),
+      analyzed: countAnalyzedByDate(tomorrow),
+    },
+  ];
 }
 
 export default function LabAnalyzerPage() {
@@ -233,29 +260,32 @@ export default function LabAnalyzerPage() {
           {/* Overall Trend Line Chart */}
           <div className="bg-white rounded-2xl border border-slate-200 shadow-lg p-6">
             <h3 className="text-base font-semibold text-slate-800 mb-4">Reports Timeline & Status Trend</h3>
-            <ResponsiveContainer width="100%" height={220}>
-              <LineChart
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart
                 data={generateMonthlyData(reports)}
-                margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
+                margin={{ top: 20, right: 30, left: 0, bottom: 20 }}
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="month" stroke="#64748b" fontSize={12} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                <XAxis dataKey="date" stroke="#64748b" fontSize={12} />
                 <YAxis stroke="#64748b" fontSize={12} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: "#1e293b", border: "none", borderRadius: "8px", color: "#fff", fontSize: "12px" }}
-                  cursor={{ stroke: "#14b8a6" }}
+                  contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #475569", borderRadius: "8px", color: "#fff", fontSize: "12px", padding: "12px" }}
+                  cursor={{ fill: "rgba(148, 163, 184, 0.1)" }}
                 />
-                <Legend wrapperStyle={{ fontSize: "12px" }} />
-                <Line 
-                  type="monotone" 
-                  dataKey="count" 
-                  stroke="#0ea5e9" 
-                  strokeWidth={2}
-                  dot={{ fill: "#0ea5e9", r: 4 }}
-                  activeDot={{ r: 6 }}
-                  name="Reports"
+                <Legend wrapperStyle={{ fontSize: "12px", paddingTop: "16px" }} />
+                <Bar 
+                  dataKey="uploaded" 
+                  fill="#0ea5e9" 
+                  radius={[8, 8, 0, 0]}
+                  name="Uploaded"
                 />
-              </LineChart>
+                <Bar 
+                  dataKey="analyzed" 
+                  fill="#10b981" 
+                  radius={[8, 8, 0, 0]}
+                  name="Analyzed"
+                />
+              </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
@@ -513,6 +543,8 @@ function UploadForm({ onClose, onSuccess }: { onClose: () => void; onSuccess: ()
   const [labName, setLabName] = useState("");
   const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+  const [showErrorModal, setShowErrorModal] = useState(false);
 
   function handleDrag(e: React.DragEvent) {
     e.preventDefault();
@@ -550,7 +582,7 @@ function UploadForm({ onClose, onSuccess }: { onClose: () => void; onSuccess: ()
       onClose();
       onSuccess();
       setShowErrorModal(false);
-      setUploadError(null);
+      setUploadError("");
     } catch (err: any) {
       const errorMessage = err.response?.data?.message || err.response?.data?.error || "Failed to upload report";
       setUploadError(errorMessage);
@@ -678,6 +710,14 @@ function UploadForm({ onClose, onSuccess }: { onClose: () => void; onSuccess: ()
           )}
         </button>
       </div>
+
+      {/* Error Modal */}
+      {showErrorModal && uploadError && (
+        <ErrorModal
+          message={uploadError}
+          onClose={() => setShowErrorModal(false)}
+        />
+      )}
     </form>
   );
 }

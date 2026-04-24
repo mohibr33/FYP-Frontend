@@ -372,3 +372,66 @@ export interface TrendDataPoint {
   status: "normal" | "abnormal" | "critical";
   normalRange?: string;
 }
+
+// User Medicine Adherence Types
+export type DoseStatus = "pending" | "taken" | "missed";
+
+export interface UserMedicine {
+  id: string;
+  userId: string;
+  name: string;
+  doctorName: string | null;
+  duration: number;
+  isLifetime: boolean;
+  intakeTimes: string[];
+  notes: string | null;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface DoseSchedule {
+  id: string;
+  userMedicineId: string;
+  scheduledDate: string;
+  scheduledTime: string;
+  status: DoseStatus;
+  takenAt: string | null;
+  reminderSent: boolean;
+  createdAt: string;
+  updatedAt: string;
+  medicine?: UserMedicine;
+}
+
+export interface Reminder {
+  id: string;
+  medicineName: string;
+  scheduledTime: string;
+  scheduledDate: string;
+  status: DoseStatus;
+  takenAt: string | null;
+}
+
+export interface SummaryReport {
+  totalMedicines: number;
+  totalDoses: number;
+  takenDoses: number;
+  missedDoses: number;
+  pendingDoses: number;
+  adherenceRate: number;
+  dailyBreakdown: {
+    date: string;
+    total: number;
+    taken: number;
+    missed: number;
+    pending: number;
+  }[];
+  medicineBreakdown: {
+    medicineId: string;
+    medicineName: string;
+    total: number;
+    taken: number;
+    missed: number;
+    adherenceRate: number;
+  }[];
+}
