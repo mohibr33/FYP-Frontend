@@ -13,13 +13,13 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-slate-900 text-white py-12 px-4">
+    <footer className="bg-black text-white py-12 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           {/* Brand Section */}
           <div className="space-y-4">
             <h3 className="font-bold text-lg">Digital Healthcare Assistant</h3>
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-white/50">
               Your trusted partner in healthcare information and patient empowerment.
             </p>
           </div>
@@ -27,24 +27,24 @@ export default function Footer() {
           {/* Quick Links */}
           <div>
             <h4 className="font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-sm text-slate-400">
+            <ul className="space-y-2 text-sm text-white/50">
               <li>
-                <Link href="/articles" className="hover:text-white transition">
+                <Link href="/articles" className="hover:text-teal-400 transition">
                   Articles
                 </Link>
               </li>
               <li>
-                <Link href="/medicines" className="hover:text-white transition">
+                <Link href="/medicines" className="hover:text-teal-400 transition">
                   Medicines
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-white transition">
+                <Link href="/about" className="hover:text-teal-400 transition">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/privacy-policy" className="hover:text-white transition">
+                <Link href="/privacy-policy" className="hover:text-teal-400 transition">
                   Privacy Policy
                 </Link>
               </li>
@@ -55,19 +55,19 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Connect</h4>
             <div className="flex gap-4">
-              <a href="#" className="text-slate-400 hover:text-blue-400 transition" aria-label="Facebook">
+              <a href="#" className="text-white/50 hover:text-teal-400 transition" aria-label="Facebook">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="text-slate-400 hover:text-sky-400 transition" aria-label="Twitter">
+              <a href="#" className="text-white/50 hover:text-teal-400 transition" aria-label="Twitter">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="text-slate-400 hover:text-blue-500 transition" aria-label="LinkedIn">
+              <a href="#" className="text-white/50 hover:text-teal-400 transition" aria-label="LinkedIn">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="text-slate-400 hover:text-pink-400 transition" aria-label="Instagram">
+              <a href="#" className="text-white/50 hover:text-teal-400 transition" aria-label="Instagram">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="text-slate-400 hover:text-emerald-400 transition" aria-label="Email">
+              <a href="#" className="text-white/50 hover:text-teal-400 transition" aria-label="Email">
                 <Mail className="w-5 h-5" />
               </a>
             </div>
@@ -75,7 +75,7 @@ export default function Footer() {
         </div>
 
         {/* Divider and Copyright */}
-        <div className="border-t border-slate-800 pt-8 text-center text-sm text-slate-400">
+        <div className="border-t border-white/10 pt-8 text-center text-sm text-white/50">
           <p>&copy; 2025 Digital Health Care Assistant. All rights reserved.</p>
         </div>
       </div>

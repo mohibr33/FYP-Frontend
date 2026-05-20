@@ -17,7 +17,10 @@ import {
   LayoutDashboard,
   ChevronDown,
   FlaskConical,
-  FileText
+  FileText,
+  Sparkles,
+  HeartPulse,
+  Activity
 } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "./auth/auth-context";
@@ -68,7 +71,7 @@ export default function Navbar() {
             href="/"
             className="flex items-center gap-2.5 group"
           >
-            <div className="w-9 h-9 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl flex items-center justify-center shadow-md shadow-slate-500/20 group-hover:shadow-lg group-hover:shadow-slate-500/30 transition-all duration-300 relative overflow-hidden">
+            <div className="w-9 h-9 bg-gradient-to-br from-black to-black rounded-xl flex items-center justify-center shadow-md shadow-slate-500/20 group-hover:shadow-lg group-hover:shadow-slate-500/30 transition-all duration-300 relative overflow-hidden">
               {/* Heart with medical cross */}
               <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M16 26C16 26 6 20 6 13C6 10.5 8 8 11 8C13 8 15 9.5 16 11C17 9.5 19 8 21 8C24 8 26 10.5 26 13C26 20 16 26 16 26Z" fill="#14b8a6"/>
@@ -76,7 +79,7 @@ export default function Navbar() {
                 <rect x="11" y="14" width="10" height="4" rx="1" fill="white"/>
               </svg>
             </div>
-            <span className="font-bold text-xl bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+            <span className="font-bold text-xl bg-gradient-to-r from-black to-slate-600 bg-clip-text text-transparent">
               Digital Health
             </span>
           </Link>
@@ -117,6 +120,18 @@ export default function Navbar() {
                   Meds
                   {isActive('/medicine-adherence') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
                 </Link>
+                <Link href="/stress-wellness" className={navLinkClass('/stress-wellness')}>
+                  Wellness
+                  {isActive('/stress-wellness') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
+                </Link>
+                <Link href="/chronic-disease" className={navLinkClass('/chronic-disease')}>
+                  Chronic
+                  {isActive('/chronic-disease') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
+                </Link>
+                <Link href="/rehab" className={navLinkClass('/rehab')}>
+                  Rehab
+                  {isActive('/rehab') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
+                </Link>
                 <Link href="/support" className={navLinkClass('/support')}>
                   Help
                   {isActive('/support') && <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full" />}
@@ -152,7 +167,7 @@ export default function Navbar() {
                     <div className="fixed inset-0 z-40" onClick={() => setShowUserMenu(false)} />
                     <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                       {/* User Info Header */}
-                      <div className="bg-gradient-to-r from-slate-800 to-slate-700 px-4 py-4">
+                      <div className="bg-gradient-to-r from-black to-slate-700 px-4 py-4">
                         <div className="flex items-center gap-3">
                           <div className="w-11 h-11 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg shadow-teal-500/20">
                             <User className="w-6 h-6 text-white" />
@@ -192,7 +207,7 @@ export default function Navbar() {
                             onClick={() => setShowUserMenu(false)}
                             className="flex items-center gap-3 px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
                           >
-                            <div className="w-8 h-8 bg-slate-800 rounded-lg flex items-center justify-center">
+                            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
                               <Shield className="w-4 h-4 text-white" />
                             </div>
                             <span className="font-medium">Admin Panel</span>
@@ -319,6 +334,30 @@ export default function Navbar() {
                   Meds
                 </Link>
                 <Link
+                  href="/stress-wellness"
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${isActive('/stress-wellness') ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-50'}`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Sparkles className="w-5 h-5" />
+                  Wellness
+                </Link>
+                <Link
+                  href="/chronic-disease"
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${isActive('/chronic-disease') ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-50'}`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <HeartPulse className="w-5 h-5" />
+                  Chronic
+                </Link>
+                <Link
+                  href="/rehab"
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${isActive('/rehab') ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-50'}`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Activity className="w-5 h-5" />
+                  Rehab
+                </Link>
+                <Link
                   href="/support"
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${isActive('/support') ? 'bg-teal-50 text-teal-700' : 'text-slate-600 hover:bg-slate-50'}`}
                   onClick={() => setIsOpen(false)}
@@ -343,7 +382,7 @@ export default function Navbar() {
             {user ? (
               <div className="space-y-2">
                 <div className="flex items-center gap-3 px-4 py-3 bg-slate-50 rounded-xl">
-                  <div className="w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-800 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                  <div className="w-10 h-10 bg-gradient-to-br from-slate-700 to-black rounded-full flex items-center justify-center text-white text-sm font-semibold">
                     {getUserInitials()}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -372,7 +411,7 @@ export default function Navbar() {
                 {user.role === "admin" && (
                   <Link
                     href="/admin"
-                    className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-sm font-medium transition-colors"
+                    className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-black hover:bg-slate-700 text-white rounded-xl text-sm font-medium transition-colors"
                     onClick={() => setIsOpen(false)}
                   >
                     <Shield className="w-4 h-4" />

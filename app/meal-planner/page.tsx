@@ -89,7 +89,7 @@ export default function MealPlannerDashboard() {
     return (
       <div className="min-h-screen bg-slate-50">
         {/* Dark Header */}
-        <div className="bg-slate-800 py-10 px-4">
+        <div className="bg-black py-10 px-4">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-700 rounded-full mb-4">
               <ChefHat className="h-8 w-8 text-orange-400" />
@@ -148,7 +148,7 @@ export default function MealPlannerDashboard() {
 
               <div className="pt-4">
                 <Link href="/meal-planner/profile">
-                  <Button className="w-full bg-slate-800 hover:bg-slate-700 text-white" size="lg">
+                  <Button className="w-full bg-black hover:bg-slate-700 text-white" size="lg">
                     <Plus className="h-5 w-5 mr-2" />
                     Create Health Profile
                   </Button>
@@ -167,7 +167,7 @@ export default function MealPlannerDashboard() {
     return (
       <div className="min-h-screen bg-slate-50">
         {/* Dark Header */}
-        <div className="bg-slate-800 py-10 px-4">
+        <div className="bg-black py-10 px-4">
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="text-center md:text-left">
@@ -213,7 +213,7 @@ export default function MealPlannerDashboard() {
               </CardHeader>
               <CardContent>
                 <Link href="/meal-planner/generate">
-                  <Button className="w-full bg-slate-800 hover:bg-slate-900 text-white" size="lg">
+                  <Button className="w-full bg-black hover:bg-black text-white" size="lg">
                     <Plus className="h-4 w-4 mr-2" />
                     Generate Meal Plan
                   </Button>
@@ -236,7 +236,7 @@ export default function MealPlannerDashboard() {
               </CardHeader>
               <CardContent>
                 <Link href="/meal-planner/profile">
-                  <Button className="w-full bg-slate-800 hover:bg-slate-900 text-white" size="lg">
+                  <Button className="w-full bg-black hover:bg-black text-white" size="lg">
                     Edit Health Profile
                   </Button>
                 </Link>
@@ -257,7 +257,7 @@ export default function MealPlannerDashboard() {
             </CardHeader>
             <CardContent>
               <Link href="/meal-planner/plans">
-                <Button className="w-full bg-slate-800 hover:bg-slate-900 text-white" size="lg">
+                <Button className="w-full bg-black hover:bg-black text-white" size="lg">
                   View All Plans
                 </Button>
               </Link>
@@ -334,7 +334,7 @@ export default function MealPlannerDashboard() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Dark Header */}
-      <div className="bg-slate-800 py-8 px-4">
+      <div className="bg-black py-8 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex justify-between items-center">
             <div>
@@ -386,7 +386,7 @@ export default function MealPlannerDashboard() {
             return (
               <Card key={planId} className="overflow-hidden border border-gray-200 shadow-lg rounded-2xl">
                 {/* Header with subtle gradient */}
-                <CardHeader className="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-700 text-white py-5">
+                <CardHeader className="bg-gradient-to-br from-black via-black to-slate-700 text-white py-5">
                   <div className="flex justify-between items-start">
                     <div>
                       <div className="flex items-center gap-2 mb-2">
@@ -461,13 +461,13 @@ export default function MealPlannerDashboard() {
                   {/* Quick Actions */}
                   <div className="flex gap-3 mt-4">
                     <Link href={`/meal-planner/plans/${planId}?tab=shopping`} className="flex-1">
-                      <Button variant="outline" className="w-full border-slate-200 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800 transition-all" size="sm">
+                      <Button variant="outline" className="w-full border-slate-200 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800 transition-all" size="sm">
                         <ShoppingCart className="h-4 w-4 mr-2 text-teal-500" />
                         Shopping List
                       </Button>
                     </Link>
                     <Link href={`/meal-planner/plans/${planId}?tab=meals`} className="flex-1">
-                      <Button variant="outline" className="w-full border-slate-200 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800 transition-all" size="sm">
+                      <Button variant="outline" className="w-full border-slate-200 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800 transition-all" size="sm">
                         <Calendar className="h-4 w-4 mr-2 text-blue-500" />
                         Meal Schedule
                       </Button>

@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/rehab/layout,_N_T_/rehab/page,_N_T_/rehab"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/rehab/__PAGE__",
+    "/rehab",
+    "/_index",
+    "/_head"
+  ]
+}

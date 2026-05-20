@@ -163,7 +163,7 @@ export function ScanHistory({ onViewScan, onNewScan }: ScanHistoryProps) {
     <>
       <div className="bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-slate-800 to-slate-700 px-6 py-4">
+        <div className="bg-gradient-to-r from-black to-slate-700 px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">

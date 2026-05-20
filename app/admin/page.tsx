@@ -44,7 +44,7 @@ export default function AdminPage() {
   if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-slate-100">
-        <div className="bg-slate-800 py-8 px-4">
+        <div className="bg-black py-8 px-4">
           <div className="max-w-7xl mx-auto">
             <div className="animate-pulse">
               <div className="h-8 w-48 bg-slate-700 rounded mb-4"></div>
@@ -89,7 +89,7 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-slate-100">
       {/* Dark Header with Navigation */}
-      <div className="bg-slate-800 py-8 px-4">
+      <div className="bg-black py-8 px-4">
         <div className="max-w-7xl mx-auto">
           {/* Title */}
           <div className="flex items-center gap-4 mb-8">

@@ -62,7 +62,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
             "h-9 w-9 rounded-xl flex items-center justify-center shrink-0 shadow-sm",
             isUser 
               ? "bg-gradient-to-br from-teal-500 to-teal-600" 
-              : "bg-gradient-to-br from-slate-700 to-slate-800"
+              : "bg-gradient-to-br from-slate-700 to-black"
           )}
         >
           {isUser ? (
@@ -140,7 +140,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
                 </p>
               </div>
             ) : (
-              <div className="prose prose-sm max-w-none prose-p:leading-7 prose-p:text-slate-700 prose-strong:text-slate-800 prose-pre:bg-slate-800 prose-pre:text-slate-100 prose-pre:border-0 prose-pre:rounded-xl prose-code:before:content-none prose-code:after:content-none prose-code:bg-slate-200 prose-code:text-slate-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:text-sm prose-headings:text-slate-800 prose-headings:mt-4 prose-headings:mb-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-li:text-slate-700 prose-ol:text-slate-700">
+              <div className="prose prose-sm max-w-none prose-p:leading-7 prose-p:text-slate-700 prose-strong:text-slate-800 prose-pre:bg-black prose-pre:text-slate-100 prose-pre:border-0 prose-pre:rounded-xl prose-code:before:content-none prose-code:after:content-none prose-code:bg-slate-200 prose-code:text-slate-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:text-sm prose-headings:text-slate-800 prose-headings:mt-4 prose-headings:mb-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-li:text-slate-700 prose-ol:text-slate-700">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {message.content}
                 </ReactMarkdown>

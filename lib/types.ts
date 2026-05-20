@@ -435,3 +435,272 @@ export interface SummaryReport {
     adherenceRate: number;
   }[];
 }
+
+// ─── Stress & Wellness Module ──────────────────────────────────────────────
+
+export type MoodLevel = "very_bad" | "bad" | "neutral" | "good" | "very_good";
+export type StressLevel = "low" | "moderate" | "high" | "severe";
+export type ScreeningType = "phq9" | "gad7";
+export type ScreeningSeverity = "minimal" | "mild" | "moderate" | "moderately_severe" | "severe";
+export type MeditationType = "guided_meditation" | "breathing" | "relaxation" | "stress_relief";
+export type ResourceCategory = "mental_health" | "stress_management" | "self_care" | "healthy_lifestyle";
+
+export interface MoodEntry {
+  id: string;
+  userId: string;
+  mood: MoodLevel;
+  note: string | null;
+  date: string;
+  createdAt: string;
+}
+
+export interface MoodTrend {
+  entries: MoodEntry[];
+  averageMood: number;
+  trend: "improving" | "declining" | "stable";
+  weeklySummary: { date: string; averageMood: number }[];
+  monthlySummary: { week: string; averageMood: number }[];
+}
+
+export interface StressAssessment {
+  id: string;
+  userId: string;
+  score: number;
+  level: StressLevel;
+  answers: { question: string; answer: number }[];
+  date: string;
+  createdAt: string;
+}
+
+export interface StressTrend {
+  assessments: StressAssessment[];
+  averageScore: number;
+  currentLevel: StressLevel;
+  weeklySummary: { date: string; averageScore: number }[];
+  monthlySummary: { week: string; averageScore: number }[];
+}
+
+export interface AnxietyScreening {
+  id: string;
+  userId: string;
+  testType: ScreeningType;
+  score: number;
+  severity: ScreeningSeverity;
+  answers: { question: string; answer: number }[];
+  recommendation: string | null;
+  aiGeneratedSuggestion: string | null;
+  createdAt: string;
+}
+
+export interface WellnessJournalEntry {
+  id: string;
+  userId: string | null;
+  title: string | null;
+  content: string;
+  isAnonymous: boolean;
+  sentiment: SentimentAnalysis | null;
+  analyzedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SentimentAnalysis {
+  overallSentiment: "positive" | "negative" | "neutral" | "mixed";
+  score: number;
+  emotions: { emotion: string; intensity: number }[];
+  stressIndicators: string[];
+  anxietyIndicators: string[];
+  recommendations: string[];
+}
+
+export interface MeditationSession {
+  id: string;
+  userId: string;
+  type: MeditationType;
+  duration: number;
+  title: string;
+  description: string | null;
+  audioUrl: string | null;
+  completedAt: string | null;
+  createdAt: string;
+}
+
+export interface MeditationStats {
+  totalSessions: number;
+  totalMinutes: number;
+  typeBreakdown: Record<string, number>;
+}
+
+export interface WellnessResource {
+  id: string;
+  title: string;
+  slug: string;
+  category: ResourceCategory;
+  excerpt: string | null;
+  content: string;
+  imageUrl: string | null;
+  author: string | null;
+  readTime: number | null;
+  tags: string[] | null;
+  sourceLink: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface WellnessResourcesResponse {
+  resources: WellnessResource[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export interface WellnessSummary {
+  moodEntriesThisWeek: number;
+  stressAssessmentsThisWeek: number;
+  lastScreening: AnxietyScreening | null;
+  communityPostsThisMonth: number;
+  meditationSessionsThisWeek: number;
+}
+
+// ─── Anonymous Community ───────────────────────────────────────────────────
+
+export type PostCategory = "stress" | "anxiety" | "studies" | "work_pressure" | "general";
+export type PostReaction = "supportive" | "empathetic" | "grateful" | "hopeful" | "thoughtful" | "encouraging";
+
+export interface CommunityPost {
+  id: string;
+  userId: string | null;
+  title: string | null;
+  content: string;
+  category: PostCategory;
+  isAnonymous: boolean;
+  reactionCount: number;
+  commentCount: number;
+  userReaction: PostReaction | null;
+  comments?: CommunityComment[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CommunityComment {
+  id: string;
+  postId: string;
+  userId: string | null;
+  parentId: string | null;
+  content: string;
+  isAnonymous: boolean;
+  createdAt: string;
+  replies?: CommunityComment[];
+}
+
+export interface CommunityPostsResponse {
+  posts: CommunityPost[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export interface CommunityStats {
+  totalPosts: number;
+  totalComments: number;
+  totalReactions: number;
+  myPosts: number;
+  categoryBreakdown: Record<string, number>;
+}
+
+// ─── Chronic Disease Management ──────────────────────────────────────────────
+
+export type ChronicCondition = "Diabetes" | "Hypertension" | "Asthma" | "Obesity" | "Heart Disease" | "Arthritis";
+
+export interface PatientCondition {
+  id: string;
+  userId: string;
+  condition: ChronicCondition;
+  diagnosedAt: string | null;
+  severity: string | null;
+  notes: string | null;
+  createdAt: string;
+}
+
+export interface DailyHealthLog {
+  id: string;
+  logDate: string;
+  symptoms: string[];
+  painLevel: number | null;
+  painLocation: string[] | null;
+  mobilityIssues: string[] | null;
+  fatigueLevel: number | null;
+  bloodPressureSystolic: number | null;
+  bloodPressureDiastolic: number | null;
+  bloodSugar: number | null;
+  heartRate: number | null;
+  oxygenLevel: number | null;
+  weight: number | null;
+  temperature: number | null;
+  medicationTaken: any;
+  notes: string | null;
+  condition?: { id: string; condition: string } | null;
+  alerts?: HealthAlert[];
+  createdAt: string;
+}
+
+export interface HealthAlert {
+  id: string;
+  type: string;
+  severity: string;
+  metric: string;
+  value: string;
+  threshold: string;
+  message: string;
+  isRead: boolean;
+  createdAt: string;
+}
+
+export interface HealthReport {
+  id: string;
+  title: string;
+  dateRange: { from: string; to: string };
+  data: any;
+  pdfUrl: string | null;
+  createdAt: string;
+}
+
+export interface ChronicDashboard {
+  conditions: Array<{
+    id: string;
+    condition: string;
+    severity: string | null;
+    diagnosedAt: string | null;
+    logCount: number;
+    lastLog: string | null;
+  }>;
+  recentLogs: DailyHealthLog[];
+  alerts: HealthAlert[];
+  stats: {
+    totalLogs: number;
+    totalAlerts: number;
+    activeConditions: number;
+    thisWeekLogs: number;
+  };
+}
+
+export interface TrendData {
+  dates: string[];
+  values: number[];
+  metric: string;
+  unit: string;
+}
+
+export interface HealthPrediction {
+  type: "trend_warning" | "abnormal_pattern" | "improvement";
+  severity: "info" | "warning" | "critical";
+  metric: string;
+  message: string;
+  trend: "increasing" | "decreasing" | "stable";
+  percentageChange: number;
+  consecutiveDays: number;
+  currentValue: string;
+  recommendation: string;
+}

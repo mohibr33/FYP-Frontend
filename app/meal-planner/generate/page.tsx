@@ -110,7 +110,7 @@ export default function GenerateMealPlanPage() {
             <CardContent>
               <Button
                 onClick={() => router.push("/meal-planner/profile")}
-                className="w-full bg-slate-800 hover:bg-slate-700 text-white"
+                className="w-full bg-black hover:bg-slate-700 text-white"
               >
                 Create Health Profile
               </Button>
@@ -124,7 +124,7 @@ export default function GenerateMealPlanPage() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Dark Header */}
-      <div className="bg-slate-800 py-10 px-4">
+      <div className="bg-black py-10 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-700 rounded-full mb-4">
             <Sparkles className="h-8 w-8 text-amber-400" />
@@ -148,7 +148,7 @@ export default function GenerateMealPlanPage() {
         )}
 
         <Card className="border border-slate-200 shadow-lg rounded-2xl overflow-hidden">
-          <CardHeader className="bg-gradient-to-br from-slate-800 via-slate-800 to-slate-700 text-white py-6">
+          <CardHeader className="bg-gradient-to-br from-black via-black to-slate-700 text-white py-6">
             <div className="flex items-center gap-3">
               <Calendar className="h-8 w-8" />
               <div>
@@ -229,7 +229,7 @@ export default function GenerateMealPlanPage() {
 
             {!generating && (
               <div className="pt-2">
-                <Button onClick={handleGenerate} className="w-full bg-slate-800 hover:bg-slate-700 text-white" size="lg">
+                <Button onClick={handleGenerate} className="w-full bg-black hover:bg-slate-700 text-white" size="lg">
                   <ChefHat className="h-5 w-5 mr-2 text-orange-400" />
                   Generate 7-Day Meal Plan
                 </Button>
@@ -242,7 +242,7 @@ export default function GenerateMealPlanPage() {
         </Card>
 
         <div className="mt-6 text-center">
-          <Button variant="outline" onClick={() => router.push("/meal-planner")} className="border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800">
+          <Button variant="outline" onClick={() => router.push("/meal-planner")} className="border-slate-300 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800">
             Back to Dashboard
           </Button>
         </div>

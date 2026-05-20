@@ -176,7 +176,7 @@ export const ChatWindow: React.FC = () => {
           ) : currentChat.messages.length === 0 ? (
             <div className="flex items-center justify-center min-h-[60vh]">
               <div className="text-center space-y-6 max-w-md px-4">
-                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center mx-auto shadow-lg">
+                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-700 to-black flex items-center justify-center mx-auto shadow-lg">
                   <Bot className="h-10 w-10 text-white" />
                 </div>
                 <div className="space-y-2">
@@ -219,7 +219,7 @@ export const ChatWindow: React.FC = () => {
               ))}
               {waitingForResponse && (
                 <div className="flex gap-4 px-6 py-8 bg-muted/20">
-<div className="h-8 w-8 rounded-full bg-slate-800 flex items-center justify-center shrink-0">
+<div className="h-8 w-8 rounded-full bg-black flex items-center justify-center shrink-0">
                     <Bot className="h-5 w-5 text-white" />
                   </div>
                   <div className="flex-1 space-y-2 pt-1">
@@ -289,7 +289,7 @@ export const ChatWindow: React.FC = () => {
                 type="submit"
                 size="icon"
                 disabled={!message.trim() || sending || waitingForResponse}
-                className="h-8 w-8 rounded-lg shrink-0 mb-1 bg-slate-800 hover:bg-slate-700"
+                className="h-8 w-8 rounded-lg shrink-0 mb-1 bg-black hover:bg-slate-700"
               >
                 <Send className="h-4 w-4" />
               </Button>

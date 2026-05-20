@@ -239,7 +239,7 @@ export default function MedicinesManagement() {
           {/* Header */}
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-slate-800">Medicines Management</h2>
-            <Button onClick={() => setCreateDialogOpen(true)} className="bg-slate-800 hover:bg-slate-700 text-white">
+            <Button onClick={() => setCreateDialogOpen(true)} className="bg-black hover:bg-slate-700 text-white">
               <Plus className="h-4 w-4 mr-2" />
               Add Medicine
             </Button>
@@ -256,7 +256,7 @@ export default function MedicinesManagement() {
                 className="border-slate-200 focus:border-slate-400 focus:ring-slate-400"
               />
             </div>
-            <Button onClick={handleSearch} className="bg-slate-800 hover:bg-slate-700 text-white">
+            <Button onClick={handleSearch} className="bg-black hover:bg-slate-700 text-white">
               <Search className="h-4 w-4 mr-2" />
               Search
             </Button>

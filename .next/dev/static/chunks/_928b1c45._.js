@@ -412,7 +412,7 @@ function LoginPage() {
             className: "w-full max-w-md",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "bg-gradient-to-r from-slate-800 to-slate-700 rounded-t-xl p-6 text-center",
+                    className: "bg-gradient-to-r from-black to-slate-700 rounded-t-xl p-6 text-center",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 mb-4",
@@ -524,7 +524,7 @@ function LoginPage() {
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                     type: "submit",
                                     disabled: loading,
-                                    className: "w-full bg-slate-800 hover:bg-slate-700 text-white",
+                                    className: "w-full bg-black hover:bg-slate-700 text-white",
                                     children: loading ? "Signing in..." : "Sign In"
                                 }, void 0, false, {
                                     fileName: "[project]/app/auth/login/page.tsx",
@@ -578,7 +578,7 @@ function LoginPage() {
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                             type: "button",
                             variant: "outline",
-                            className: "w-full border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800 transition-all duration-200",
+                            className: "w-full border-slate-300 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800 transition-all duration-200",
                             onClick: handleGoogleLogin,
                             disabled: loading,
                             children: [

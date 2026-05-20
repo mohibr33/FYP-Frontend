@@ -121,7 +121,7 @@ export default function ArticlesPage() {
   return (
     <main className="min-h-screen bg-slate-50">
       {/* Dark Header */}
-      <div className="bg-slate-800 py-8 px-4">
+      <div className="bg-black py-8 px-4">
         <div className="max-w-4xl mx-auto">
           {/* Title + Search Combined Layout */}
           <div className="flex items-center gap-4 mb-5">
@@ -167,7 +167,7 @@ export default function ArticlesPage() {
               onClick={() => handleCategoryChange(null)}
               className={`p-3 rounded-lg border transition text-center ${
                 selectedCategory === null
-                  ? "border-slate-800 bg-slate-800 text-white"
+                  ? "border-slate-800 bg-black text-white"
                   : "border-slate-200 hover:border-slate-400 text-slate-700"
               }`}
             >
@@ -179,7 +179,7 @@ export default function ArticlesPage() {
                 onClick={() => handleCategoryChange(cat.id)}
                 className={`p-3 rounded-lg border transition text-center ${
                   selectedCategory === cat.id
-                    ? "border-slate-800 bg-slate-800 text-white"
+                    ? "border-slate-800 bg-black text-white"
                     : "border-slate-200 hover:border-slate-400"
                 }`}
               >
@@ -334,7 +334,7 @@ export default function ArticlesPage() {
                   onClick={() => handlePageChange(page - 1)}
                   disabled={page === 1}
                   variant="outline"
-                  className="border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800"
+                  className="border-slate-300 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800"
                 >
                   Previous
                 </Button>
@@ -345,7 +345,7 @@ export default function ArticlesPage() {
                   onClick={() => handlePageChange(page + 1)}
                   disabled={page === totalPages}
                   variant="outline"
-                  className="border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800"
+                  className="border-slate-300 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800"
                 >
                   Next
                 </Button>

@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/stress-wellness/layout,_N_T_/stress-wellness/stress-assessment/layout,_N_T_/stress-wellness/stress-assessment/page,_N_T_/stress-wellness/stress-assessment"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/stress-wellness/stress-assessment/__PAGE__",
+    "/stress-wellness/stress-assessment",
+    "/stress-wellness",
+    "/_index",
+    "/_head"
+  ]
+}

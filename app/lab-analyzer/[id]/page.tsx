@@ -137,7 +137,7 @@ export default function LabReportDetailPage({ params }: { params: Promise<{ id: 
         </button>
 
         {/* Header */}
-        <div className="bg-gradient-to-r from-slate-800 via-slate-800 to-teal-900 rounded-2xl shadow-2xl p-10 text-white mb-8 print:border print:border-slate-300">
+        <div className="bg-gradient-to-r from-black via-black to-teal-900 rounded-2xl shadow-2xl p-10 text-white mb-8 print:border print:border-slate-300">
           <div className="flex items-start justify-between">
             <div>
               <h1 className="text-4xl font-bold mb-3">{report.title}</h1>

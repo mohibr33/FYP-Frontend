@@ -104,7 +104,7 @@ export default function ProfilePage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-teal-50">
       {/* Header */}
-      <div className="bg-slate-800 sticky top-0 z-10">
+      <div className="bg-black sticky top-0 z-10">
         <div className="max-w-3xl mx-auto px-4 py-4 flex items-center gap-3">
           <button
             onClick={() => router.push("/dashboard")}
@@ -125,7 +125,7 @@ export default function ProfilePage() {
         ) : user ? (
           <div className="space-y-4">
             {/* Profile Header Card */}
-            <div className="bg-gradient-to-r from-slate-800 to-slate-700 rounded-xl p-6 text-white">
+            <div className="bg-gradient-to-r from-black to-slate-700 rounded-xl p-6 text-white">
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
                 {/* User Info */}
                 <div className="flex-1 text-center sm:text-left">

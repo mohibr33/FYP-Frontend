@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/stress-wellness/layout,_N_T_/stress-wellness/mood/layout,_N_T_/stress-wellness/mood/page,_N_T_/stress-wellness/mood"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/stress-wellness/mood/__PAGE__",
+    "/stress-wellness/mood",
+    "/stress-wellness",
+    "/_index",
+    "/_head"
+  ]
+}

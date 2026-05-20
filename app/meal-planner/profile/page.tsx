@@ -217,7 +217,7 @@ export default function HealthProfilePage() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Dark Header */}
-      <div className="bg-slate-800 py-8 px-4">
+      <div className="bg-black py-8 px-4">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg shadow-teal-500/20">
@@ -251,9 +251,9 @@ export default function HealthProfilePage() {
                       onClick={() => setCurrentStep(stepNum)}
                       className={`relative w-11 h-11 rounded-full flex items-center justify-center font-semibold shrink-0 transition-all duration-200 ${
                         isCompleted
-                          ? "bg-slate-800 text-white"
+                          ? "bg-black text-white"
                           : isCurrent
-                          ? "bg-slate-800 text-white ring-4 ring-slate-200"
+                          ? "bg-black text-white ring-4 ring-slate-200"
                           : "bg-slate-100 text-slate-400 hover:bg-slate-200"
                       }`}
                     >
@@ -266,7 +266,7 @@ export default function HealthProfilePage() {
                     {stepNum < 5 && (
                       <div
                         className={`flex-1 h-0.5 mx-3 transition-colors ${
-                          stepNum < currentStep ? "bg-slate-800" : "bg-slate-200"
+                          stepNum < currentStep ? "bg-black" : "bg-slate-200"
                         }`}
                       />
                     )}
@@ -296,7 +296,7 @@ export default function HealthProfilePage() {
           )}
 
           {success && (
-            <Alert className="mb-6 bg-slate-800 border-slate-700">
+            <Alert className="mb-6 bg-black border-slate-700">
               <Check className="h-4 w-4 text-white" />
               <AlertDescription className="text-white">
                 {success}
@@ -306,7 +306,7 @@ export default function HealthProfilePage() {
 
           <Card className="border-slate-200 shadow-sm rounded-xl overflow-hidden">
             {/* Card Header */}
-            <div className="px-6 py-4 bg-slate-800 border-b border-slate-700">
+            <div className="px-6 py-4 bg-black border-b border-slate-700">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 bg-slate-700 rounded-lg flex items-center justify-center">
                   <CurrentStepIcon className="w-5 h-5 text-slate-300" />
@@ -463,7 +463,7 @@ export default function HealthProfilePage() {
                       />
                       <Button
                         type="button"
-                        className="h-10 px-3 bg-slate-800 hover:bg-slate-700 text-white"
+                        className="h-10 px-3 bg-black hover:bg-slate-700 text-white"
                         onClick={() =>
                           addArrayItem(
                             "medicalConditions",
@@ -524,7 +524,7 @@ export default function HealthProfilePage() {
                       />
                       <Button
                         type="button"
-                        className="h-10 px-3 bg-slate-800 hover:bg-slate-700 text-white"
+                        className="h-10 px-3 bg-black hover:bg-slate-700 text-white"
                         onClick={() =>
                           addArrayItem("allergies", allergyInput, setAllergyInput)
                         }
@@ -663,7 +663,7 @@ export default function HealthProfilePage() {
                       />
                       <Button
                         type="button"
-                        className="h-10 px-3 bg-slate-800 hover:bg-slate-700 text-white"
+                        className="h-10 px-3 bg-black hover:bg-slate-700 text-white"
                         onClick={() =>
                           addArrayItem(
                             "dislikedFoods",
@@ -721,7 +721,7 @@ export default function HealthProfilePage() {
                           fastingRequirements: !!checked,
                         })
                       }
-                      className="border-slate-400 data-[state=checked]:bg-slate-800 data-[state=checked]:border-slate-800"
+                      className="border-slate-400 data-[state=checked]:bg-black data-[state=checked]:border-slate-800"
                     />
                     <Label
                       htmlFor="fastingRequirements"
@@ -920,7 +920,7 @@ export default function HealthProfilePage() {
                 {currentStep < 5 ? (
                   <Button 
                     type="button" 
-                    className="h-10 px-5 bg-slate-800 hover:bg-slate-700 text-white"
+                    className="h-10 px-5 bg-black hover:bg-slate-700 text-white"
                     onClick={nextStep}
                   >
                     Next
@@ -928,7 +928,7 @@ export default function HealthProfilePage() {
                   </Button>
                 ) : (
                   <Button 
-                    className="h-10 px-5 bg-slate-800 hover:bg-slate-700 text-white" 
+                    className="h-10 px-5 bg-black hover:bg-slate-700 text-white" 
                     onClick={handleSubmit} 
                     disabled={loading}
                   >

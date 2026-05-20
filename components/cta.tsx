@@ -4,7 +4,7 @@ import { ArrowRight, Heart, Shield, Zap, Sparkles } from "lucide-react"
 
 export default function CTA() {
   return (
-    <section className="py-20 px-4 mx-4 md:mx-8 lg:mx-16 bg-slate-800 relative overflow-hidden mb-16 rounded-3xl">
+    <section className="py-20 px-4 mx-4 md:mx-8 lg:mx-16 bg-black relative overflow-hidden mb-16 rounded-3xl">
       {/* Background decorative elements */}
       <div className="absolute top-0 left-0 w-full h-full opacity-5">
         <div className="absolute top-10 left-10 w-32 h-32 border-2 border-white rounded-full" />

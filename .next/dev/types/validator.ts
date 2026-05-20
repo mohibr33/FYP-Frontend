@@ -126,6 +126,15 @@ type LayoutConfig<Route extends LayoutRoutes = LayoutRoutes> = {
   type __Unused = __Check
 }
 
+// Validate ../../../app/chronic-disease/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/chronic-disease">> = Specific
+  const handler = {} as typeof import("../../../app/chronic-disease/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../../app/dashboard/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/dashboard">> = Specific
@@ -279,10 +288,82 @@ type LayoutConfig<Route extends LayoutRoutes = LayoutRoutes> = {
   type __Unused = __Check
 }
 
+// Validate ../../../app/rehab/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/rehab">> = Specific
+  const handler = {} as typeof import("../../../app/rehab/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../../app/signup/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/signup">> = Specific
   const handler = {} as typeof import("../../../app/signup/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/stress-wellness/journal/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/stress-wellness/journal">> = Specific
+  const handler = {} as typeof import("../../../app/stress-wellness/journal/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/stress-wellness/meditation/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/stress-wellness/meditation">> = Specific
+  const handler = {} as typeof import("../../../app/stress-wellness/meditation/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/stress-wellness/mood/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/stress-wellness/mood">> = Specific
+  const handler = {} as typeof import("../../../app/stress-wellness/mood/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/stress-wellness/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/stress-wellness">> = Specific
+  const handler = {} as typeof import("../../../app/stress-wellness/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/stress-wellness/resources/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/stress-wellness/resources">> = Specific
+  const handler = {} as typeof import("../../../app/stress-wellness/resources/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/stress-wellness/screening/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/stress-wellness/screening">> = Specific
+  const handler = {} as typeof import("../../../app/stress-wellness/screening/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/stress-wellness/stress-assessment/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/stress-wellness/stress-assessment">> = Specific
+  const handler = {} as typeof import("../../../app/stress-wellness/stress-assessment/page.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check

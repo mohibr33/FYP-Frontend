@@ -230,7 +230,7 @@ export default function MedicinePage({
     return (
       <main className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-teal-50">
         {/* Dark header skeleton */}
-        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 py-8 px-4">
+        <div className="bg-gradient-to-r from-slate-900 via-black to-black py-8 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="animate-pulse">
               <div className="h-4 w-32 bg-slate-700 rounded mb-6"></div>
@@ -252,7 +252,7 @@ export default function MedicinePage({
     return (
       <main className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-teal-50">
         {/* Dark header for error state */}
-        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 py-8 px-4">
+        <div className="bg-gradient-to-r from-slate-900 via-black to-black py-8 px-4">
           <div className="max-w-6xl mx-auto">
             <Link
               href="/medicines"
@@ -277,7 +277,7 @@ export default function MedicinePage({
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-teal-50">
       {/* Dark Hero Header */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 py-8 px-4">
+      <div className="bg-gradient-to-r from-slate-900 via-black to-black py-8 px-4">
         <div className="max-w-6xl mx-auto">
           <Link
             href="/medicines"
@@ -671,7 +671,7 @@ export default function MedicinePage({
                     <Button
                       onClick={handleSubmitReview}
                       disabled={submittingReview || reviewComment.length < 10}
-                      className="flex-1 bg-slate-800 hover:bg-slate-700 text-white py-2.5 rounded-lg transition-colors disabled:opacity-50"
+                      className="flex-1 bg-black hover:bg-slate-700 text-white py-2.5 rounded-lg transition-colors disabled:opacity-50"
                     >
                       {submittingReview ? (
                         <>

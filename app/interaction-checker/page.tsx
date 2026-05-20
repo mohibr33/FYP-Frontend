@@ -156,7 +156,7 @@ export default function InteractionCheckerPage() {
   return (
     <main className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white relative overflow-hidden">
+      <div className="bg-gradient-to-br from-slate-900 via-black to-black text-white relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-32 h-32 bg-teal-500 rounded-full blur-3xl" />
@@ -214,7 +214,7 @@ export default function InteractionCheckerPage() {
             <Button
               variant={viewMode === "history" ? "default" : "outline"}
               onClick={() => setViewMode("history")}
-              className={viewMode === "history" ? "bg-slate-800 hover:bg-slate-700" : ""}
+              className={viewMode === "history" ? "bg-black hover:bg-slate-700" : ""}
             >
               <History className="w-4 h-4 mr-2" />
               Scan History
@@ -245,7 +245,7 @@ export default function InteractionCheckerPage() {
             <div className="lg:col-span-4 space-y-6">
               {/* Medicine Search Card */}
               <div className="bg-white rounded-2xl border border-slate-200 shadow-lg shadow-slate-200/50 overflow-hidden">
-                <div className="bg-gradient-to-r from-slate-800 to-slate-700 px-5 py-4">
+                <div className="bg-gradient-to-r from-black to-slate-700 px-5 py-4">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
                       <Pill className="w-5 h-5 text-white" />

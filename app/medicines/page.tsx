@@ -220,7 +220,7 @@ export default function MedicinesPage() {
   return (
     <main className="min-h-screen bg-slate-50">
       {/* Dark Header */}
-      <div className="bg-slate-800 py-8 px-4">
+      <div className="bg-black py-8 px-4">
         <div className="max-w-4xl mx-auto">
           {/* Title + Search Combined */}
           <div className="flex items-center gap-4 mb-5">
@@ -577,7 +577,7 @@ export default function MedicinesPage() {
                   onClick={() => handlePageChange(page - 1)}
                   disabled={page === 1}
                   variant="outline"
-                  className="cursor-pointer border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800"
+                  className="cursor-pointer border-slate-300 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800"
                 >
                   Previous
                 </Button>
@@ -588,7 +588,7 @@ export default function MedicinesPage() {
                   onClick={() => handlePageChange(page + 1)}
                   disabled={page === totalPages}
                   variant="outline"
-                  className="cursor-pointer border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800"
+                  className="cursor-pointer border-slate-300 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800"
                 >
                   Next
                 </Button>

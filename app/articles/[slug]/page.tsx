@@ -66,7 +66,7 @@ export default function ArticleDetailPage({
     return (
       <main className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-blue-50">
         {/* Dark header skeleton */}
-        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 py-8 px-4">
+        <div className="bg-gradient-to-r from-slate-900 via-black to-black py-8 px-4">
           <div className="max-w-4xl mx-auto">
             <div className="animate-pulse">
               <div className="h-4 w-32 bg-slate-700 rounded mb-6"></div>
@@ -89,7 +89,7 @@ export default function ArticleDetailPage({
     return (
       <main className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-blue-50">
         {/* Dark header for error state */}
-        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 py-8 px-4">
+        <div className="bg-gradient-to-r from-slate-900 via-black to-black py-8 px-4">
           <div className="max-w-4xl mx-auto">
             <Link
               href="/articles"
@@ -114,7 +114,7 @@ export default function ArticleDetailPage({
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-blue-50">
       {/* Dark Hero Header */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 py-8 px-4">
+      <div className="bg-gradient-to-r from-slate-900 via-black to-black py-8 px-4">
         <div className="max-w-4xl mx-auto">
           <Link
             href="/articles"
@@ -256,7 +256,7 @@ export default function ArticleDetailPage({
                       variant="outline"
                       size="sm"
                       onClick={() => handleCopyLink(article.sourceLink!)}
-                      className="w-fit border-slate-300 hover:bg-slate-800 hover:text-white hover:border-slate-800"
+                      className="w-fit border-slate-300 hover:bg-black hover:text-white hover:border-slate-800"
                     >
                       {copied ? (
                         <>

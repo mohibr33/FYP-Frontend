@@ -196,7 +196,7 @@ export default function LabAnalyzerPage() {
     <main className="min-h-screen bg-slate-100 py-8 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="bg-gradient-to-r from-slate-800 via-slate-800 to-teal-900 rounded-2xl shadow-2xl p-10 text-white mb-8">
+        <div className="bg-gradient-to-r from-black via-black to-teal-900 rounded-2xl shadow-2xl p-10 text-white mb-8">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-4xl font-bold mb-3">Lab Test Analyzer</h1>
@@ -527,7 +527,7 @@ function ErrorModal({ message, onClose }: { message: string; onClose: () => void
         </p>
         <button
           onClick={onClose}
-          className="w-full px-6 py-3 bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-slate-950 text-white rounded-lg font-semibold transition-all shadow-lg"
+          className="w-full px-6 py-3 bg-gradient-to-r from-black to-black hover:from-slate-900 hover:to-slate-950 text-white rounded-lg font-semibold transition-all shadow-lg"
         >
           Close
         </button>

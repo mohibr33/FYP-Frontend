@@ -187,7 +187,7 @@ export default function MealPlansLibraryPage() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Dark Header */}
-      <div className="bg-slate-800 py-8 px-4">
+      <div className="bg-black py-8 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex justify-between items-center">
             <div>
@@ -252,7 +252,7 @@ export default function MealPlansLibraryPage() {
               </p>
               {filter === "all" && (
                 <Link href="/meal-planner/generate">
-                    <Button className="bg-slate-800 hover:bg-slate-700 text-white">
+                    <Button className="bg-black hover:bg-slate-700 text-white">
                       <Plus className="h-4 w-4 mr-2 text-emerald-400" />
                       Generate Meal Plan
                     </Button>
@@ -339,7 +339,7 @@ export default function MealPlansLibraryPage() {
                     </div>
 
                     <Button
-                      className="w-full mt-2 border-slate-200 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800"
+                      className="w-full mt-2 border-slate-200 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800"
                       variant="outline"
                       onClick={(e) => {
                         e.stopPropagation();
@@ -356,7 +356,7 @@ export default function MealPlansLibraryPage() {
         )}
 
         <div className="mt-8 text-center">
-          <Button variant="outline" onClick={() => router.push("/meal-planner")} className="border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800">
+          <Button variant="outline" onClick={() => router.push("/meal-planner")} className="border-slate-300 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800">
             Back to Dashboard
           </Button>
         </div>

@@ -1,0 +1,301 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/articles/[slug]",
+      "regex": "^/articles/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/articles/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/lab-analyzer/[id]",
+      "regex": "^/lab\\-analyzer/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/lab\\-analyzer/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/meal-planner/plans/[id]",
+      "regex": "^/meal\\-planner/plans/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/meal\\-planner/plans/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/medicines/[slug]",
+      "regex": "^/medicines/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/medicines/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/support/[id]",
+      "regex": "^/support/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/support/(?<nxtPid>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/about",
+      "regex": "^/about(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/about(?:/)?$"
+    },
+    {
+      "page": "/admin",
+      "regex": "^/admin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin(?:/)?$"
+    },
+    {
+      "page": "/articles",
+      "regex": "^/articles(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/articles(?:/)?$"
+    },
+    {
+      "page": "/auth/callback",
+      "regex": "^/auth/callback(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/callback(?:/)?$"
+    },
+    {
+      "page": "/auth/forgot-password",
+      "regex": "^/auth/forgot\\-password(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/forgot\\-password(?:/)?$"
+    },
+    {
+      "page": "/auth/login",
+      "regex": "^/auth/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/login(?:/)?$"
+    },
+    {
+      "page": "/auth/register",
+      "regex": "^/auth/register(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/register(?:/)?$"
+    },
+    {
+      "page": "/auth/reset-password",
+      "regex": "^/auth/reset\\-password(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/reset\\-password(?:/)?$"
+    },
+    {
+      "page": "/auth/verify-otp",
+      "regex": "^/auth/verify\\-otp(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/verify\\-otp(?:/)?$"
+    },
+    {
+      "page": "/chronic-disease",
+      "regex": "^/chronic\\-disease(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/chronic\\-disease(?:/)?$"
+    },
+    {
+      "page": "/dashboard",
+      "regex": "^/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard(?:/)?$"
+    },
+    {
+      "page": "/interaction-checker",
+      "regex": "^/interaction\\-checker(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/interaction\\-checker(?:/)?$"
+    },
+    {
+      "page": "/lab-analyzer",
+      "regex": "^/lab\\-analyzer(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/lab\\-analyzer(?:/)?$"
+    },
+    {
+      "page": "/meal-planner",
+      "regex": "^/meal\\-planner(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/meal\\-planner(?:/)?$"
+    },
+    {
+      "page": "/meal-planner/generate",
+      "regex": "^/meal\\-planner/generate(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/meal\\-planner/generate(?:/)?$"
+    },
+    {
+      "page": "/meal-planner/plans",
+      "regex": "^/meal\\-planner/plans(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/meal\\-planner/plans(?:/)?$"
+    },
+    {
+      "page": "/meal-planner/profile",
+      "regex": "^/meal\\-planner/profile(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/meal\\-planner/profile(?:/)?$"
+    },
+    {
+      "page": "/meal-planner/profile/view",
+      "regex": "^/meal\\-planner/profile/view(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/meal\\-planner/profile/view(?:/)?$"
+    },
+    {
+      "page": "/medical-chat",
+      "regex": "^/medical\\-chat(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/medical\\-chat(?:/)?$"
+    },
+    {
+      "page": "/medicine-adherence",
+      "regex": "^/medicine\\-adherence(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/medicine\\-adherence(?:/)?$"
+    },
+    {
+      "page": "/medicines",
+      "regex": "^/medicines(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/medicines(?:/)?$"
+    },
+    {
+      "page": "/privacy-policy",
+      "regex": "^/privacy\\-policy(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/privacy\\-policy(?:/)?$"
+    },
+    {
+      "page": "/profile",
+      "regex": "^/profile(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/profile(?:/)?$"
+    },
+    {
+      "page": "/rehab",
+      "regex": "^/rehab(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/rehab(?:/)?$"
+    },
+    {
+      "page": "/signup",
+      "regex": "^/signup(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/signup(?:/)?$"
+    },
+    {
+      "page": "/stress-wellness",
+      "regex": "^/stress\\-wellness(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/stress\\-wellness(?:/)?$"
+    },
+    {
+      "page": "/stress-wellness/journal",
+      "regex": "^/stress\\-wellness/journal(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/stress\\-wellness/journal(?:/)?$"
+    },
+    {
+      "page": "/stress-wellness/meditation",
+      "regex": "^/stress\\-wellness/meditation(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/stress\\-wellness/meditation(?:/)?$"
+    },
+    {
+      "page": "/stress-wellness/mood",
+      "regex": "^/stress\\-wellness/mood(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/stress\\-wellness/mood(?:/)?$"
+    },
+    {
+      "page": "/stress-wellness/resources",
+      "regex": "^/stress\\-wellness/resources(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/stress\\-wellness/resources(?:/)?$"
+    },
+    {
+      "page": "/stress-wellness/screening",
+      "regex": "^/stress\\-wellness/screening(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/stress\\-wellness/screening(?:/)?$"
+    },
+    {
+      "page": "/stress-wellness/stress-assessment",
+      "regex": "^/stress\\-wellness/stress\\-assessment(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/stress\\-wellness/stress\\-assessment(?:/)?$"
+    },
+    {
+      "page": "/support",
+      "regex": "^/support(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/support(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

@@ -127,7 +127,7 @@ export default function UsersManagement() {
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 className="border-slate-200 focus:border-slate-400 focus:ring-slate-400"
               />
-              <Button onClick={handleSearch} className="bg-slate-800 hover:bg-slate-700 text-white">
+              <Button onClick={handleSearch} className="bg-black hover:bg-slate-700 text-white">
                 <Search className="h-4 w-4" />
               </Button>
             </div>
@@ -176,7 +176,7 @@ export default function UsersManagement() {
                           <span
                             className={`px-2.5 py-1 rounded-full text-xs font-medium ${
                               user.role === "admin"
-                                ? "bg-slate-800 text-white"
+                                ? "bg-black text-white"
                                 : "bg-slate-100 text-slate-600"
                             }`}
                           >

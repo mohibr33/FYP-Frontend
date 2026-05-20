@@ -59,7 +59,7 @@ export default function TicketDetailPage({
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-purple-50">
         {/* Dark header skeleton */}
-        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 py-8 px-4">
+        <div className="bg-gradient-to-r from-slate-900 via-black to-black py-8 px-4">
           <div className="max-w-3xl mx-auto">
             <div className="animate-pulse">
               <div className="h-4 w-32 bg-slate-700 rounded mb-6"></div>
@@ -81,7 +81,7 @@ export default function TicketDetailPage({
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-purple-50">
         {/* Dark header for error state */}
-        <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 py-8 px-4">
+        <div className="bg-gradient-to-r from-slate-900 via-black to-black py-8 px-4">
           <div className="max-w-3xl mx-auto">
             <button
               onClick={() => router.push("/support")}
@@ -99,7 +99,7 @@ export default function TicketDetailPage({
             <p className="text-red-600 font-medium">{error || "Ticket not found"}</p>
             <Button
               onClick={() => router.push("/support")}
-              className="mt-4 bg-slate-800 hover:bg-slate-700 text-white"
+              className="mt-4 bg-black hover:bg-slate-700 text-white"
             >
               Back to Support
             </Button>
@@ -163,7 +163,7 @@ export default function TicketDetailPage({
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-purple-50">
       {/* Dark Hero Header */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 py-8 px-4">
+      <div className="bg-gradient-to-r from-slate-900 via-black to-black py-8 px-4">
         <div className="max-w-3xl mx-auto">
           <button
             onClick={() => router.push("/support")}

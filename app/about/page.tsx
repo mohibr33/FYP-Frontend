@@ -46,7 +46,7 @@ export default function AboutPage() {
   return (
     <main>
       {/* Dark Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-16 md:py-24 px-4">
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-black to-black py-16 md:py-24 px-4">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl" />
@@ -183,7 +183,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 bg-gradient-to-br from-slate-800 to-slate-700">
+      <section className="py-16 px-4 bg-gradient-to-br from-black to-slate-700">
         <div className="max-w-4xl mx-auto text-center space-y-6">
           <h2 className="text-3xl font-bold text-white">Join Our Mission</h2>
           <p className="text-lg text-slate-300">

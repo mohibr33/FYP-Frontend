@@ -104,7 +104,7 @@ export default function SupportPage() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Dark Header */}
-      <div className="bg-slate-800 py-10 px-4">
+      <div className="bg-black py-10 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 bg-slate-700 rounded-full flex items-center justify-center">
@@ -204,7 +204,7 @@ export default function SupportPage() {
                 </div>
                 {error && <p className="text-red-600 text-sm">{error}</p>}
                 {success && <p className="text-emerald-600 text-sm">{success}</p>}
-                <Button type="submit" disabled={submitting} className="w-full bg-slate-800 hover:bg-slate-900 text-white h-10">
+                <Button type="submit" disabled={submitting} className="w-full bg-black hover:bg-black text-white h-10">
                   {submitting ? "Submitting..." : "Submit Ticket"}
                 </Button>
               </form>
@@ -296,7 +296,7 @@ export default function SupportPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800"
+                        className="border-slate-300 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800"
                         onClick={() => setPage((p) => Math.max(1, p - 1))}
                         disabled={page === 1}
                       >
@@ -308,7 +308,7 @@ export default function SupportPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800"
+                        className="border-slate-300 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800"
                         onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                         disabled={page === totalPages}
                       >

@@ -453,10 +453,10 @@ export default function MedicineAdherencePage() {
 
   return (
     <div className="min-h-screen bg-slate-100">
-      <div className="bg-slate-800 px-4 py-10">
+      <div className="bg-black px-4 py-10">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
-            <div className="rounded-[28px] border border-slate-700 bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 p-8 shadow-xl shadow-slate-900/20">
+            <div className="rounded-[28px] border border-slate-700 bg-gradient-to-br from-black via-black to-black p-8 shadow-xl shadow-slate-900/20">
               <div className="mb-6 flex items-start gap-4">
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-700/80 shadow-inner shadow-black/10">
                   <Pill className="h-8 w-8 text-teal-400" />
@@ -489,9 +489,9 @@ export default function MedicineAdherencePage() {
               </div>
 
               <div className="mt-5 flex flex-wrap gap-2">
-                <Button variant="outline" onClick={fetchData} className="border-slate-300 text-slate-700 hover:border-slate-800 hover:bg-slate-800 hover:text-white"><RefreshCw className="mr-2 h-4 w-4" />Refresh</Button>
+                <Button variant="outline" onClick={fetchData} className="border-slate-300 text-slate-700 hover:border-slate-800 hover:bg-black hover:text-white"><RefreshCw className="mr-2 h-4 w-4" />Refresh</Button>
                 <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-                  <DialogTrigger asChild><Button className="bg-slate-800 text-white hover:bg-slate-900"><Plus className="mr-2 h-4 w-4" />Add Medicine</Button></DialogTrigger>
+                  <DialogTrigger asChild><Button className="bg-black text-white hover:bg-black"><Plus className="mr-2 h-4 w-4" />Add Medicine</Button></DialogTrigger>
                   <DialogContent className="sm:max-w-[520px]">
                     <DialogHeader><DialogTitle>Add Medicine</DialogTitle></DialogHeader>
                     <form onSubmit={handleAddMedicine} className="space-y-4">
@@ -501,7 +501,7 @@ export default function MedicineAdherencePage() {
                       {!newMedicine.isLifetime && <div><Label>Duration (days)</Label><Input type="number" value={newMedicine.duration} onChange={(e) => setNewMedicine((prev) => ({ ...prev, duration: +e.target.value || 1 }))} /></div>}
                       <div><Label>Intake times *</Label><div className="mt-2 space-y-2">{newMedicine.intakeTimes.map((time, index) => (<div key={index} className="flex gap-2"><Input type="time" value={time} onChange={(e) => updateIntakeTime(index, e.target.value)} />{newMedicine.intakeTimes.length > 1 && <Button type="button" variant="outline" onClick={() => removeIntakeTime(index)}><X className="h-4 w-4" /></Button>}</div>))}</div><Button type="button" variant="outline" onClick={addIntakeTime} className="mt-2 w-full border-dashed">+ Add Time</Button></div>
                       <div><Label>Notes</Label><Input value={newMedicine.notes} onChange={(e) => setNewMedicine((prev) => ({ ...prev, notes: e.target.value }))} /></div>
-                      <Button type="submit" className="w-full bg-slate-800 hover:bg-slate-900" disabled={saving}>{saving ? "Saving..." : "Add Medicine"}</Button>
+                      <Button type="submit" className="w-full bg-black hover:bg-black" disabled={saving}>{saving ? "Saving..." : "Add Medicine"}</Button>
                     </form>
                   </DialogContent>
                 </Dialog>
@@ -514,18 +514,18 @@ export default function MedicineAdherencePage() {
       <div className="mx-auto max-w-6xl px-4 py-8">
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabValue)}>
           <TabsList className="grid h-auto w-full grid-cols-2 gap-2 rounded-3xl border border-slate-200 bg-white p-2 shadow-sm md:grid-cols-5">
-            <TabsTrigger value="medicines" className="rounded-2xl border border-transparent py-3 data-[state=active]:border-slate-800 data-[state=active]:bg-slate-800 data-[state=active]:text-white"><Pill className="mr-2 h-4 w-4" />Medicines</TabsTrigger>
-            <TabsTrigger value="reminders" className="rounded-2xl border border-transparent py-3 data-[state=active]:border-slate-800 data-[state=active]:bg-slate-800 data-[state=active]:text-white"><Bell className="mr-2 h-4 w-4" />Reminders</TabsTrigger>
-            <TabsTrigger value="guidelines" className="rounded-2xl border border-transparent py-3 data-[state=active]:border-slate-800 data-[state=active]:bg-slate-800 data-[state=active]:text-white"><FileText className="mr-2 h-4 w-4" />Guidelines</TabsTrigger>
-            <TabsTrigger value="report" className="rounded-2xl border border-transparent py-3 data-[state=active]:border-slate-800 data-[state=active]:bg-slate-800 data-[state=active]:text-white"><ClipboardList className="mr-2 h-4 w-4" />Report</TabsTrigger>
-            <TabsTrigger value="dosage" className="rounded-2xl border border-transparent py-3 data-[state=active]:border-slate-800 data-[state=active]:bg-slate-800 data-[state=active]:text-white"><Calculator className="mr-2 h-4 w-4" />Dosage</TabsTrigger>
+            <TabsTrigger value="medicines" className="rounded-2xl border border-transparent py-3 data-[state=active]:border-slate-800 data-[state=active]:bg-black data-[state=active]:text-white"><Pill className="mr-2 h-4 w-4" />Medicines</TabsTrigger>
+            <TabsTrigger value="reminders" className="rounded-2xl border border-transparent py-3 data-[state=active]:border-slate-800 data-[state=active]:bg-black data-[state=active]:text-white"><Bell className="mr-2 h-4 w-4" />Reminders</TabsTrigger>
+            <TabsTrigger value="guidelines" className="rounded-2xl border border-transparent py-3 data-[state=active]:border-slate-800 data-[state=active]:bg-black data-[state=active]:text-white"><FileText className="mr-2 h-4 w-4" />Guidelines</TabsTrigger>
+            <TabsTrigger value="report" className="rounded-2xl border border-transparent py-3 data-[state=active]:border-slate-800 data-[state=active]:bg-black data-[state=active]:text-white"><ClipboardList className="mr-2 h-4 w-4" />Report</TabsTrigger>
+            <TabsTrigger value="dosage" className="rounded-2xl border border-transparent py-3 data-[state=active]:border-slate-800 data-[state=active]:bg-black data-[state=active]:text-white"><Calculator className="mr-2 h-4 w-4" />Dosage</TabsTrigger>
           </TabsList>
 
           <TabsContent value="medicines" className="mt-6">
             <div className="mb-5 flex flex-col gap-4 rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm md:flex-row md:items-end md:justify-between"><div><p className="text-sm font-medium text-teal-600">Medicine schedule</p><h2 className="mt-1 text-2xl font-semibold text-slate-900">My Medicines</h2><p className="mt-1 text-sm text-slate-500">Review every active medicine, timing window, and treatment duration.</p></div><div className="flex items-center gap-3 text-sm text-slate-500"><div className="rounded-2xl bg-slate-100 px-4 py-3"><span className="font-semibold text-slate-800">{medicines.length}</span> medicines listed</div><div className="rounded-2xl bg-teal-50 px-4 py-3 text-teal-700"><span className="font-semibold">{pendingReminders}</span> doses pending today</div></div></div>
 
             {medicines.length === 0 ? (
-              <Card className="rounded-[28px] border border-slate-200 shadow-sm"><CardContent className="flex flex-col items-center py-14"><div className="mb-5 flex h-20 w-20 items-center justify-center rounded-[24px] bg-slate-100"><Pill className="h-10 w-10 text-slate-300" /></div><h3 className="text-xl font-semibold text-slate-700">No medicines added yet</h3><p className="mt-2 max-w-md text-center text-sm text-slate-500">Start by adding your first medicine so reminders and adherence tracking can work for you.</p><Button onClick={() => setIsAddDialogOpen(true)} className="mt-5 bg-slate-800 hover:bg-slate-900 text-white">Add Medicine</Button></CardContent></Card>
+              <Card className="rounded-[28px] border border-slate-200 shadow-sm"><CardContent className="flex flex-col items-center py-14"><div className="mb-5 flex h-20 w-20 items-center justify-center rounded-[24px] bg-slate-100"><Pill className="h-10 w-10 text-slate-300" /></div><h3 className="text-xl font-semibold text-slate-700">No medicines added yet</h3><p className="mt-2 max-w-md text-center text-sm text-slate-500">Start by adding your first medicine so reminders and adherence tracking can work for you.</p><Button onClick={() => setIsAddDialogOpen(true)} className="mt-5 bg-black hover:bg-black text-white">Add Medicine</Button></CardContent></Card>
             ) : (
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {medicines.map((medicine) => (
@@ -563,12 +563,12 @@ export default function MedicineAdherencePage() {
           </TabsContent>
 
           <TabsContent value="report" className="mt-6">
-            <div className="mb-5 flex flex-col gap-4 rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm md:flex-row md:items-center md:justify-between"><div><p className="text-sm font-medium text-teal-600">Progress insight</p><h2 className="mt-1 text-2xl font-semibold text-slate-900">15-Day Report</h2><p className="mt-1 text-sm text-slate-500">A simple view of completed and missed doses over the recent two weeks.</p></div>{summary && <Button onClick={downloadReport} className="bg-slate-800 hover:bg-slate-900 text-white"><Download className="mr-1 h-4 w-4" />Download</Button>}</div>
+            <div className="mb-5 flex flex-col gap-4 rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm md:flex-row md:items-center md:justify-between"><div><p className="text-sm font-medium text-teal-600">Progress insight</p><h2 className="mt-1 text-2xl font-semibold text-slate-900">15-Day Report</h2><p className="mt-1 text-sm text-slate-500">A simple view of completed and missed doses over the recent two weeks.</p></div>{summary && <Button onClick={downloadReport} className="bg-black hover:bg-black text-white"><Download className="mr-1 h-4 w-4" />Download</Button>}</div>
 
             {summary && (
               <>
                 <div className="mb-6 grid gap-4 md:grid-cols-4">
-                  <Card className="rounded-[24px] bg-slate-800 text-white shadow-sm"><CardContent className="pt-5"><p className="text-slate-300">Adherence</p><p className="text-3xl font-bold">{summary.adherenceRate}%</p></CardContent></Card>
+                  <Card className="rounded-[24px] bg-black text-white shadow-sm"><CardContent className="pt-5"><p className="text-slate-300">Adherence</p><p className="text-3xl font-bold">{summary.adherenceRate}%</p></CardContent></Card>
                   <Card className="rounded-[24px] border border-slate-200 bg-white shadow-sm"><CardContent className="pt-5"><p className="text-slate-500">Total</p><p className="text-2xl font-bold text-slate-800">{summary.totalDoses}</p></CardContent></Card>
                   <Card className="rounded-[24px] border border-slate-200 bg-white shadow-sm"><CardContent className="pt-5"><p className="text-emerald-600">Taken</p><p className="text-2xl font-bold text-emerald-600">{summary.takenDoses}</p></CardContent></Card>
                   <Card className="rounded-[24px] border border-slate-200 bg-white shadow-sm"><CardContent className="pt-5"><p className="text-red-500">Missed</p><p className="text-2xl font-bold text-red-500">{summary.missedDoses}</p></CardContent></Card>
@@ -580,7 +580,7 @@ export default function MedicineAdherencePage() {
           </TabsContent>
 
           <TabsContent value="dosage" className="mt-6">
-            <div className="mb-6 rounded-[28px] bg-slate-800 p-6 shadow-lg shadow-slate-900/10"><div className="flex items-center gap-3"><div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-700"><Calculator className="h-6 w-6 text-teal-400" /></div><div><h2 className="text-xl font-bold text-white">Dosage Calculation</h2><p className="text-sm text-slate-300">Use the same module styling while keeping dosage tools easy to scan and verify.</p></div></div></div>
+            <div className="mb-6 rounded-[28px] bg-black p-6 shadow-lg shadow-slate-900/10"><div className="flex items-center gap-3"><div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-700"><Calculator className="h-6 w-6 text-teal-400" /></div><div><h2 className="text-xl font-bold text-white">Dosage Calculation</h2><p className="text-sm text-slate-300">Use the same module styling while keeping dosage tools easy to scan and verify.</p></div></div></div>
 
             <div className="grid gap-6 lg:grid-cols-3">
               <div className="lg:col-span-2">
@@ -599,7 +599,7 @@ export default function MedicineAdherencePage() {
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
           <DialogContent className="sm:max-w-[520px]">
             <DialogHeader><DialogTitle>Edit Medicine</DialogTitle></DialogHeader>
-            {editingMedicine && <form onSubmit={handleUpdateMedicine} className="space-y-4"><div><Label>Name *</Label><Input value={editingMedicine.name} onChange={(e) => setEditingMedicine((prev) => prev ? { ...prev, name: e.target.value } : null)} required /></div><div><Label>Doctor</Label><Input value={editingMedicine.doctorName || ""} onChange={(e) => setEditingMedicine((prev) => prev ? { ...prev, doctorName: e.target.value || null } : null)} /></div><div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2"><Checkbox checked={editingMedicine.isLifetime} onCheckedChange={(checked) => setEditingMedicine((prev) => prev ? { ...prev, isLifetime: checked as boolean } : null)} /><Label>Lifetime medicine</Label></div>{!editingMedicine.isLifetime && <div><Label>Duration (days)</Label><Input type="number" value={editingMedicine.duration} onChange={(e) => setEditingMedicine((prev) => prev ? { ...prev, duration: +e.target.value || 1 } : null)} /></div>}<div><Label>Intake times</Label><div className="mt-2 space-y-2">{editingMedicine.intakeTimes.map((time, index) => (<div key={index} className="flex gap-2"><Input type="time" value={time} onChange={(e) => updateEditIntakeTime(index, e.target.value)} />{editingMedicine.intakeTimes.length > 1 && <Button type="button" variant="outline" onClick={() => removeEditIntakeTime(index)}><X className="h-4 w-4" /></Button>}</div>))}</div><Button type="button" variant="outline" onClick={addEditIntakeTime} className="mt-2 w-full border-dashed">+ Add Time</Button></div><Button type="submit" className="w-full bg-slate-800 hover:bg-slate-900" disabled={saving}>{saving ? "Updating..." : "Update Medicine"}</Button></form>}
+            {editingMedicine && <form onSubmit={handleUpdateMedicine} className="space-y-4"><div><Label>Name *</Label><Input value={editingMedicine.name} onChange={(e) => setEditingMedicine((prev) => prev ? { ...prev, name: e.target.value } : null)} required /></div><div><Label>Doctor</Label><Input value={editingMedicine.doctorName || ""} onChange={(e) => setEditingMedicine((prev) => prev ? { ...prev, doctorName: e.target.value || null } : null)} /></div><div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2"><Checkbox checked={editingMedicine.isLifetime} onCheckedChange={(checked) => setEditingMedicine((prev) => prev ? { ...prev, isLifetime: checked as boolean } : null)} /><Label>Lifetime medicine</Label></div>{!editingMedicine.isLifetime && <div><Label>Duration (days)</Label><Input type="number" value={editingMedicine.duration} onChange={(e) => setEditingMedicine((prev) => prev ? { ...prev, duration: +e.target.value || 1 } : null)} /></div>}<div><Label>Intake times</Label><div className="mt-2 space-y-2">{editingMedicine.intakeTimes.map((time, index) => (<div key={index} className="flex gap-2"><Input type="time" value={time} onChange={(e) => updateEditIntakeTime(index, e.target.value)} />{editingMedicine.intakeTimes.length > 1 && <Button type="button" variant="outline" onClick={() => removeEditIntakeTime(index)}><X className="h-4 w-4" /></Button>}</div>))}</div><Button type="button" variant="outline" onClick={addEditIntakeTime} className="mt-2 w-full border-dashed">+ Add Time</Button></div><Button type="submit" className="w-full bg-black hover:bg-black" disabled={saving}>{saving ? "Updating..." : "Update Medicine"}</Button></form>}
           </DialogContent>
         </Dialog>
       </div>

@@ -34,7 +34,7 @@ export default function PrivacyPolicyPage() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-16 md:py-20 px-4">
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-black to-black py-16 md:py-20 px-4">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl" />
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl" />
@@ -359,7 +359,7 @@ export default function PrivacyPolicyPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 px-4 bg-gradient-to-br from-slate-800 to-slate-700">
+      <section className="py-12 px-4 bg-gradient-to-br from-black to-slate-700">
         <div className="max-w-4xl mx-auto text-center space-y-4">
           <h2 className="text-2xl font-bold text-white">Have Questions?</h2>
           <p className="text-slate-300">

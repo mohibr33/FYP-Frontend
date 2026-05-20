@@ -253,7 +253,7 @@ export default function ReviewsManagement() {
                             <span
                               className={`px-2.5 py-1 rounded-full text-xs font-medium ${
                                 review.isPublished
-                                  ? "bg-slate-800 text-white"
+                                  ? "bg-black text-white"
                                   : "bg-slate-100 text-slate-500"
                               }`}
                             >

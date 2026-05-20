@@ -31,21 +31,6 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Log full error for debugging
-    console.error("API Error occurred:", error.message);
-    console.error("Has response:", !!error.response);
-    console.error("Has request:", !!error.request);
-    console.error("Error code:", error.code);
-    
-    if (error.response) {
-      console.error("Status:", error.response.status);
-      console.error("Data:", error.response.data);
-    }
-    
-    if (error.request) {
-      console.error("Network Error - No response received");
-    }
-    
     return Promise.reject(error);
   }
 );

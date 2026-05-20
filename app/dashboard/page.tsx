@@ -33,6 +33,7 @@ import {
   User,
   TicketPlus,
   HelpCircle,
+  Sparkles,
 } from "lucide-react";
 import { getActiveMealPlan, getHealthProfile, getAllMealPlans } from "@/lib/api/meal-planner";
 import type { MealPlan, HealthProfileResponse } from "@/lib/api/meal-planner";
@@ -238,7 +239,7 @@ export default function DashboardPage() {
     <main className="min-h-screen bg-slate-100 py-8 px-4">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header Section with Greeting - Dark Background */}
-        <div className="bg-slate-800 rounded-2xl shadow-lg p-8 text-white">
+        <div className="bg-black rounded-2xl shadow-lg p-8 text-white">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold mb-2">
@@ -363,7 +364,7 @@ export default function DashboardPage() {
                     <Button
                       onClick={() => router.push("/meal-planner/generate")}
                       size="sm"
-                      className="flex-1 bg-slate-800 hover:bg-slate-700 text-white"
+                      className="flex-1 bg-black hover:bg-slate-700 text-white"
                     >
                       New Plan
                     </Button>
@@ -371,7 +372,7 @@ export default function DashboardPage() {
                       onClick={() => router.push("/meal-planner")}
                       size="sm"
                       variant="outline"
-                      className="border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800"
+                      className="border-slate-300 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800"
                     >
                       All Plans
                     </Button>
@@ -384,7 +385,7 @@ export default function DashboardPage() {
                     <Button
                       onClick={() => router.push("/meal-planner/generate")}
                       size="sm"
-                      className="flex-1 bg-slate-800 hover:bg-slate-700 text-white"
+                      className="flex-1 bg-black hover:bg-slate-700 text-white"
                     >
                       Generate Plan
                     </Button>
@@ -392,7 +393,7 @@ export default function DashboardPage() {
                       onClick={() => router.push("/meal-planner/profile")}
                       size="sm"
                       variant="outline"
-                      className="border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800"
+                      className="border-slate-300 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800"
                     >
                       Health Profile
                     </Button>
@@ -427,7 +428,7 @@ export default function DashboardPage() {
               <Button
                 onClick={() => router.push("/medicines")}
                 size="sm"
-                className="w-full bg-slate-800 hover:bg-slate-700 text-white"
+                className="w-full bg-black hover:bg-slate-700 text-white"
               >
                 <Search className="w-4 h-4 mr-2" />
                 Browse Medicines
@@ -460,7 +461,7 @@ export default function DashboardPage() {
               <Button
                 onClick={() => router.push("/lab-analyzer")}
                 size="sm"
-                className="w-full bg-slate-800 hover:bg-slate-700 text-white"
+                className="w-full bg-black hover:bg-slate-700 text-white"
               >
                 <FlaskConical className="w-4 h-4 mr-2" />
                 Analyze Reports
@@ -493,10 +494,43 @@ export default function DashboardPage() {
               <Button 
                 onClick={() => router.push("/medical-chat")}
                 size="sm"
-                className="w-full bg-slate-800 hover:bg-slate-700 text-white"
+                className="w-full bg-black hover:bg-slate-700 text-white"
               >
                 <MessageSquare className="w-4 h-4 mr-2" />
                 Start Chat
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Stress & Wellness Card */}
+          <Card className="bg-white border-0 shadow-sm">
+            <CardHeader className="pb-2">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-indigo-500" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg text-slate-800">Stress & Wellness</CardTitle>
+                    <CardDescription className="text-slate-500 text-xs">Mental health & self-care</CardDescription>
+                  </div>
+                </div>
+                <Badge className="bg-emerald-100 text-emerald-700 border-0 text-xs">
+                  New
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-0 pb-4 space-y-2">
+              <p className="text-sm text-slate-500">
+                Mood tracking, stress assessment, journaling, meditation, and wellness resources.
+              </p>
+              <Button
+                onClick={() => router.push("/stress-wellness")}
+                size="sm"
+                className="w-full bg-black hover:bg-slate-700 text-white"
+              >
+                <Sparkles className="w-4 h-4 mr-2" />
+                Open Wellness Hub
               </Button>
             </CardContent>
           </Card>
@@ -522,7 +556,7 @@ export default function DashboardPage() {
                 onClick={() => router.push("/meal-planner/profile")}
                 variant="outline"
                 size="sm"
-                className="border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800"
+                className="border-slate-300 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800"
               >
                 {healthProfile ? "Edit Profile" : "Set Up Profile"}
               </Button>
@@ -643,7 +677,7 @@ export default function DashboardPage() {
                 onClick={() => router.push("/support")} 
                 variant="outline" 
                 size="sm"
-                className="border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800"
+                className="border-slate-300 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800"
               >
                 View Tickets
               </Button>

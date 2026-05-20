@@ -42,9 +42,9 @@ export const ChatList: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-900">
+    <div className="flex flex-col h-full bg-black">
       {/* Dark Header */}
-      <div className="bg-slate-800 p-4">
+      <div className="bg-black p-4">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-9 h-9 bg-slate-700 rounded-full flex items-center justify-center">
             <MessageSquare className="h-4 w-4 text-teal-400" />
@@ -87,9 +87,9 @@ export const ChatList: React.FC = () => {
                 key={chat.id}
                 className={cn(
                   "group relative px-3 py-3 mb-1 rounded-lg cursor-pointer transition-all",
-                  "hover:bg-slate-800 hover:shadow-md",
+                  "hover:bg-black hover:shadow-md",
                   currentChat?.id === chat.id 
-                    ? "bg-slate-800 border-l-2 border-teal-500" 
+                    ? "bg-black border-l-2 border-teal-500" 
                     : "border-l-2 border-transparent"
                 )}
                 onClick={() => selectChat(chat.id)}
@@ -136,7 +136,7 @@ export const ChatList: React.FC = () => {
                         <MoreVertical className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="bg-slate-800 border-slate-700">
+                    <DropdownMenuContent align="end" className="bg-black border-slate-700">
                       <DropdownMenuItem
                         onClick={(e) => handleDelete(chat.id, e)}
                         className="text-red-400 hover:text-red-300 hover:bg-slate-700 focus:bg-slate-700 focus:text-red-300"

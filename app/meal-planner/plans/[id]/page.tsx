@@ -135,7 +135,7 @@ function MealPlanDetailContent() {
     return (
       <div className="min-h-screen bg-slate-50">
         {/* Dark header skeleton */}
-        <div className="bg-slate-800 py-8 px-4">
+        <div className="bg-black py-8 px-4">
           <div className="max-w-7xl mx-auto">
             <div className="animate-pulse">
               <div className="h-4 w-32 bg-slate-700 rounded mb-6"></div>
@@ -157,7 +157,7 @@ function MealPlanDetailContent() {
     return (
       <div className="min-h-screen bg-slate-50">
         {/* Dark header for error state */}
-        <div className="bg-slate-800 py-8 px-4">
+        <div className="bg-black py-8 px-4">
           <div className="max-w-7xl mx-auto">
             <button
               onClick={() => router.push("/meal-planner")}
@@ -176,7 +176,7 @@ function MealPlanDetailContent() {
             </AlertDescription>
           </Alert>
           <div className="mt-4 text-center">
-            <Button className="bg-slate-800 hover:bg-slate-700 text-white" onClick={() => router.push("/meal-planner")}>
+            <Button className="bg-black hover:bg-slate-700 text-white" onClick={() => router.push("/meal-planner")}>
               Back to Dashboard
             </Button>
           </div>
@@ -288,7 +288,7 @@ function MealPlanDetailContent() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-orange-50">
       {/* Dark Hero Header */}
-      <div className="bg-slate-800 py-8 px-4">
+      <div className="bg-black py-8 px-4">
         <div className="max-w-7xl mx-auto">
           <button
             onClick={() => router.push("/meal-planner/plans")}
@@ -435,7 +435,7 @@ function MealPlanDetailContent() {
                     onClick={() => setSelectedDay(index + 1)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                       selectedDay === index + 1
-                        ? "bg-slate-800 text-white"
+                        ? "bg-black text-white"
                         : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
                     }`}
                   >
@@ -958,7 +958,7 @@ function MealPlanDetailContent() {
         <div className="mt-8 text-center">
           <Button
             variant="outline"
-            className="border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800"
+            className="border-slate-300 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800"
             onClick={() => router.push("/meal-planner")}
           >
             Back to Dashboard
@@ -972,7 +972,7 @@ function MealPlanDetailContent() {
 function LoadingFallback() {
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="bg-slate-800 py-8 px-4">
+      <div className="bg-black py-8 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="animate-pulse">
             <div className="h-4 w-32 bg-slate-700 rounded mb-6"></div>

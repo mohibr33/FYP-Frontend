@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/chronic-disease/layout,_N_T_/chronic-disease/page,_N_T_/chronic-disease"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/chronic-disease/__PAGE__",
+    "/chronic-disease",
+    "/_index",
+    "/_head"
+  ]
+}

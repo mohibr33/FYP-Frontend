@@ -55,7 +55,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-teal-50 flex items-center justify-center py-10 px-4">
       <div className="w-full max-w-md">
         {/* Header Card */}
-        <div className="bg-gradient-to-r from-slate-800 to-slate-700 rounded-t-xl p-6 text-center">
+        <div className="bg-gradient-to-r from-black to-slate-700 rounded-t-xl p-6 text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 mb-4">
             <LogIn className="h-8 w-8 text-teal-400" />
           </div>
@@ -87,7 +87,7 @@ export default function LoginPage() {
               />
             </div>
             {error && <p className="text-red-600 text-sm">{error}</p>}
-            <Button type="submit" disabled={loading} className="w-full bg-slate-800 hover:bg-slate-700 text-white">
+            <Button type="submit" disabled={loading} className="w-full bg-black hover:bg-slate-700 text-white">
               {loading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
@@ -106,7 +106,7 @@ export default function LoginPage() {
           <Button
             type="button"
             variant="outline"
-            className="w-full border-slate-300 text-slate-700 hover:bg-slate-800 hover:text-white hover:border-slate-800 transition-all duration-200"
+            className="w-full border-slate-300 text-slate-700 hover:bg-black hover:text-white hover:border-slate-800 transition-all duration-200"
             onClick={handleGoogleLogin}
             disabled={loading}
           >

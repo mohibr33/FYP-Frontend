@@ -80,7 +80,7 @@ export default function ViewHealthProfilePage() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-slate-800 py-8 px-4">
+      <div className="bg-black py-8 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -117,7 +117,7 @@ export default function ViewHealthProfilePage() {
           
           {/* Personal Information Card */}
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="h-1 bg-slate-800" />
+            <div className="h-1 bg-black" />
             <div className="px-6 py-4 border-b border-slate-200 flex items-center gap-3">
               <div className="w-9 h-9 bg-slate-100 rounded-lg flex items-center justify-center">
                 <User className="w-4 h-4 text-slate-600" />
@@ -170,7 +170,7 @@ export default function ViewHealthProfilePage() {
 
           {/* Health Status Card */}
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="h-1 bg-slate-800" />
+            <div className="h-1 bg-black" />
             <div className="px-6 py-4 border-b border-slate-200 flex items-center gap-3">
               <div className="w-9 h-9 bg-slate-100 rounded-lg flex items-center justify-center">
                 <Heart className="w-4 h-4 text-slate-600" />
@@ -226,7 +226,7 @@ export default function ViewHealthProfilePage() {
 
           {/* Dietary Preferences Card */}
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="h-1 bg-slate-800" />
+            <div className="h-1 bg-black" />
             <div className="px-6 py-4 border-b border-slate-200 flex items-center gap-3">
               <div className="w-9 h-9 bg-slate-100 rounded-lg flex items-center justify-center">
                 <Utensils className="w-4 h-4 text-slate-600" />
@@ -286,7 +286,7 @@ export default function ViewHealthProfilePage() {
 
           {/* Lifestyle & Goals Card */}
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="h-1 bg-slate-800" />
+            <div className="h-1 bg-black" />
             <div className="px-6 py-4 border-b border-slate-200 flex items-center gap-3">
               <div className="w-9 h-9 bg-slate-100 rounded-lg flex items-center justify-center">
                 <Activity className="w-4 h-4 text-slate-600" />
@@ -299,7 +299,7 @@ export default function ViewHealthProfilePage() {
                   <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">Activity Level</p>
                   <p className="font-semibold text-slate-800 mt-1">{healthProfile.activityLevel}</p>
                 </div>
-                <div className="p-4 bg-slate-800 rounded-xl">
+                <div className="p-4 bg-black rounded-xl">
                   <p className="text-xs font-medium text-slate-400 uppercase tracking-wide">Primary Goal</p>
                   <p className="font-semibold text-white mt-1">{healthProfile.primaryGoal}</p>
                 </div>
@@ -338,7 +338,7 @@ export default function ViewHealthProfilePage() {
           {/* Action Button */}
           <div className="flex justify-end pt-2">
             <Link href="/meal-planner">
-              <Button variant="outline" className="h-11 px-6 border-slate-300 text-slate-600 hover:bg-slate-800 hover:text-white hover:border-slate-800 rounded-lg">
+              <Button variant="outline" className="h-11 px-6 border-slate-300 text-slate-600 hover:bg-black hover:text-white hover:border-slate-800 rounded-lg">
                 Back to Meal Planner
               </Button>
             </Link>

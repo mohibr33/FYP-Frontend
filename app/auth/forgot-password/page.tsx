@@ -45,7 +45,7 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-teal-50 flex items-center justify-center py-10 px-4">
       <div className="w-full max-w-md">
         {/* Header Card */}
-        <div className="bg-gradient-to-r from-slate-800 to-slate-700 rounded-t-xl p-6 text-center">
+        <div className="bg-gradient-to-r from-black to-slate-700 rounded-t-xl p-6 text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 mb-4">
             <KeyRound className="h-8 w-8 text-amber-400" />
           </div>
@@ -69,7 +69,7 @@ export default function ForgotPasswordPage() {
             </div>
             {error && <p className="text-red-600 text-sm">{error}</p>}
             {success && <p className="text-emerald-600 text-sm">{success}</p>}
-            <Button type="submit" disabled={loading} className="w-full bg-slate-800 hover:bg-slate-700 text-white">
+            <Button type="submit" disabled={loading} className="w-full bg-black hover:bg-slate-700 text-white">
               {loading ? "Sending..." : "Send Reset Code"}
             </Button>
           </form>
